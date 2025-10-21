@@ -1,0 +1,204 @@
+# LùnPetShop AI Chatbot
+## Product Requirements Document (PRD)
+
+---
+
+## 1. BUSINESS OVERVIEW
+
+**Business Name:** Lùn PetShop (Lùn PetShop Phụ kiện thức ăn chó mèo)
+
+**Tagline:** "Thức ăn, phụ kiện, spa, lưu trú" (Food, accessories, spa, accommodation)
+
+**Website:** https://lunpetshop.com/
+
+**Location:** 46 Văn Cận, Khuê Trung, Cẩm Lệ, Đà Nẵng 550000, Vietnam
+
+**Contact:** 
+- Phone/Zalo: 0935005762
+- Facebook: https://www.facebook.com/lunpetshop
+- Hours: 8:00 AM – 9:30 PM
+
+---
+
+## 2. CHATBOT OVERVIEW
+
+**Chatbot Name:** KittyCat
+
+**Tagline:** "Your personal AI assistant for LùnPetShop"
+
+**Primary Purpose:** Answer customer questions about pet products and services for cats and dogs
+
+---
+
+## 3. CORE FUNCTIONALITY
+
+The chatbot should answer these questions:
+
+1. **What products do you have for my cat?**
+2. **What products do you have for my dog?**
+3. **What can you tell me about the business?**
+4. **What's your address?**
+5. **How can I reach you on Zalo?**
+
+---
+
+## 4. CHATBOT PERSONALITY & VOICE
+
+**Name:** KittyCat - Your personal AI assistant for LùnPetShop
+
+**Tone:** Friendly, helpful, knowledgeable about pets
+
+**Language Support:** Vietnamese & English (context switching - chatbot responds in user's language)
+
+**Sample Greeting (Vietnamese):**
+"Xin chào! 🐱 Mình là KittyCat, trợ lý AI của LùnPetShop. Mình có thể giúp bạn tìm sản phẩm cho mèo, chó, hoặc bất cứ thông tin gì về shop!"
+
+**Sample Greeting (English):**
+"Hello! 🐱 I'm KittyCat, your personal AI assistant for LùnPetShop. I can help you find products for your cat, dog, or answer any questions about the shop!"
+
+---
+
+## 5. UI/UX DESIGN REQUIREMENTS
+
+### Visual Style
+- **Color Scheme:** Gold/Yellow (#FFC107) + Dark Blue/Black backgrounds
+- **Emoji Usage:** 🐱 🐕 🐾
+- **Logo:** SVG logo with KittyCat character
+
+### Chat Interface
+- Mobile-first widget (icon on bottom-right, expandable)
+- Chat bubbles (bot on left, user on right)
+- Message input field
+- **Quick action buttons (before conversation starts):**
+  - "Products for my cat"
+  - "Products for my dog"
+  - "About the business"
+  - "Contact info"
+
+### Language Toggle
+- Button to switch between Vietnamese/English
+- Header shows current language
+
+---
+
+## 6. FUNCTIONAL REQUIREMENTS
+
+### Product Information
+- List main product categories for cats and dogs
+- Provide price ranges and product examples
+- Handle questions about: food, treats, toys, clothing, grooming supplies, shampoo, litter, etc.
+
+### Business Information
+- Address
+- Zalo contact number
+- Facebook page
+- Operating hours
+- Service types (food, accessories, spa, accommodation)
+
+### Conversation Flow
+- Recognize "cat" / "dog" / "mèo" / "chó"
+- Maintain context within conversation
+- Provide relevant follow-ups
+- Handle multi-turn conversations naturally
+
+---
+
+## 7. KNOWLEDGE BASE - PRODUCT CATEGORIES
+
+**Cat Products:**
+- Thức ăn cho Mèo (Cat Food) - 31 products
+- Pate mèo (Cat Pâté) - 29 products
+- Ăn vặt Bánh Thưởng (Treats & Snacks) - 25 products
+- Sữa tắm (Shampoo) - 26 products
+- Cát vệ sinh (Litter) - 15 products
+- Đồ chơi chó mèo (Toys) - 34 products
+- Quần áo (Clothing) - 35 products
+- Nệm Lót (Beds) - 15 products
+
+**Dog Products:**
+- Thức ăn cho Chó (Dog Food) - 8 products
+- Pate chó (Dog Pâté) - 5 products
+- Ăn vặt Bánh Thưởng (Treats & Snacks) - 25 products
+- Sữa tắm (Shampoo) - 26 products
+- Đồ chơi chó mèo (Toys) - 34 products
+- Quần áo (Clothing) - 35 products
+- Nệm Lót (Beds) - 15 products
+- Vòng Cổ Dây Dắt (Leashes & Collars) - 56 products
+
+**General Categories:**
+- TP chức năng (Supplements) - 16 products
+- Bát ăn Bình Nước (Bowls & Feeders) - 29 products
+- Dụng cụ vệ sinh (Hygiene Tools) - 7 products
+- Ve Rận (Flea & Tick Prevention) - 14 products
+- Loa Vòng chống liếm (Protective Cones) - 9 products
+- Vòng Cổ Dây Dắt (Leashes & Collars) - 56 products
+
+---
+
+## 8. SAMPLE PRODUCTS
+
+### Cat Products
+| Product | Price |
+|---------|-------|
+| Pate Nekko cho mèo 70g | 16,000 ₫ |
+| Thức ăn hạt GV trộn siêu cấp cho mèo – Mix 9 loại 500g | 80,000 ₫ |
+| Sữa tắm cho chó mèo SENTEE 500ml | 80,000 ₫ |
+
+### Dog Products
+| Product | Price |
+|---------|-------|
+| Gà viên mix việt quất sấy lạnh 100g | 40,000 ₫ |
+| Gà viên mix việt quất sấy lạnh 500g | 160,000 ₫ |
+| Cá hồi viên sấy lạnh 200g | 110,000 ₫ |
+| XL Smiling Face Floral Sweater | 90,000 ₫ |
+| Áo 4 chân có mũ adidog | 70,000 ₫ |
+| Bánh Thưởng cho Cún JerHigh Thái Lan | 55,000 ₫ |
+
+---
+
+## 9. TECHNICAL REQUIREMENTS
+
+**Platform:** Web-based chat widget (mobile-first)
+
+**Language:** Vietnamese & English (context switching)
+
+**AI Model:** Grok-4-fast (xAI)
+
+**Context Management:** Standard multi-turn conversation context
+
+---
+
+## 10. SUCCESS METRICS
+
+MVP is successful when the chatbot can:
+
+1. Answer "What products do you have for my cat?"
+2. Answer "What products do you have for my dog?"
+3. Answer "What can you tell me about the business?"
+4. Answer "What's your address?"
+5. Answer "How can I reach you on Zalo?"
+
+---
+
+## 11. FUTURE ENHANCEMENTS (Post-MVP)
+
+- Direct booking for services
+- Image recognition for pet recommendations
+- Appointment scheduling
+- Order tracking
+- Integration with e-commerce system
+- Voice chat capability
+
+---
+
+## 12. BRAND GUIDELINES
+
+### Visual Style
+- Color palette: Gold/Yellow (#FFC107) + Dark Blue/Black
+- Friendly, modern aesthetic
+- Pet-centric imagery
+- Warm, welcoming tone
+
+### Messaging
+- "Thức ăn, phụ kiện, spa, lưu trú" (Food, accessories, spa, accommodation)
+- Focus on quality care and pet wellness
