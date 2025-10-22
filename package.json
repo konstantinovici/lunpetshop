@@ -1,0 +1,13 @@
+{
+  "name": "lunpetshop-chatbot",
+  "version": "1.0.0",
+  "description": "KittyCat AI Chatbot for LùnPetShop - powered by xAI Grok",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": ["chatbot", "xai", "grok", "petshop", "ai"],
+  "author": "LùnPetShop",
+  "license": "MIT"
+}

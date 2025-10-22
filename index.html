@@ -21,7 +21,6 @@
             padding: 20px;
         }
 
-        /* Demo container - in production, this would be the website background */
         .demo-container {
             text-align: center;
             color: white;
@@ -38,7 +37,52 @@
             margin-bottom: 30px;
         }
 
-        /* Chat Widget */
+        .api-setup {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .api-setup input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 2px solid #FFC107;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .api-setup button {
+            margin-top: 10px;
+            padding: 12px 24px;
+            background: #FFC107;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .api-setup button:hover {
+            transform: scale(1.05);
+        }
+
+        .api-status {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .api-status.success {
+            color: #4ade80;
+        }
+
+        .api-status.error {
+            color: #f87171;
+        }
+
         .chat-widget {
             position: fixed;
             bottom: 20px;
@@ -97,7 +141,6 @@
             }
         }
 
-        /* Chat Header */
         .chat-header {
             background: linear-gradient(135deg, #FFC107 0%, #FFA000 100%);
             color: #1a1a2e;
@@ -151,7 +194,6 @@
             line-height: 1;
         }
 
-        /* Chat Messages */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -224,6 +266,7 @@
             border-radius: 18px;
             line-height: 1.5;
             font-size: 14px;
+            white-space: pre-wrap;
         }
 
         .message.bot .message-bubble {
@@ -238,7 +281,6 @@
             border-bottom-right-radius: 4px;
         }
 
-        /* Quick Actions */
         .quick-actions {
             padding: 15px 20px;
             background: #1a1a2e;
@@ -281,7 +323,6 @@
             display: none;
         }
 
-        /* Chat Input */
         .chat-input {
             padding: 15px 20px;
             background: #1a1a2e;
@@ -333,7 +374,6 @@
             cursor: not-allowed;
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 480px) {
             .chat-container {
                 width: calc(100vw - 20px);
@@ -352,7 +392,6 @@
             }
         }
 
-        /* Typing indicator */
         .typing-indicator {
             display: flex;
             gap: 4px;
@@ -388,21 +427,28 @@
     </style>
 </head>
 <body>
-    <!-- Demo Website Background -->
     <div class="demo-container">
         <h1>🐾 Welcome to LùnPetShop</h1>
         <p>Thức ăn, phụ kiện, spa, lưu trú</p>
+        
+        <div class="api-setup" id="apiSetup">
+            <h3>🔑 xAI API Configuration</h3>
+            <p style="font-size: 0.9em; margin: 10px 0;">Enter your xAI API key to activate Grok-4-fast AI</p>
+            <input type="password" id="apiKeyInput" placeholder="Enter your xAI API key (xai-...)">
+            <button id="saveApiKey">Save API Key</button>
+            <div class="api-status" id="apiStatus"></div>
+            <p style="font-size: 0.8em; margin-top: 15px; opacity: 0.8;">
+                Get your API key from: <a href="https://console.x.ai/" target="_blank" style="color: #FFC107;">https://console.x.ai/</a>
+            </p>
+        </div>
+
         <p style="font-size: 1em; opacity: 0.9;">
-            This is a demo page showing the chatbot widget.<br>
             Click the chat icon in the bottom-right corner to start! 👇
         </p>
     </div>
 
-    <!-- Chat Widget -->
     <div class="chat-widget">
-        <div class="chat-icon" id="chatIcon">
-            🐱
-        </div>
+        <div class="chat-icon" id="chatIcon">🐱</div>
 
         <div class="chat-container" id="chatContainer">
             <div class="chat-header">
@@ -416,9 +462,7 @@
                 </div>
             </div>
 
-            <div class="chat-messages" id="chatMessages">
-                <!-- Messages will be added here -->
-            </div>
+            <div class="chat-messages" id="chatMessages"></div>
 
             <div class="quick-actions" id="quickActions">
                 <h4 id="quickActionsTitle">Quick Actions</h4>
@@ -438,232 +482,117 @@
     </div>
 
     <script>
+        // xAI Configuration
+        const XAI_API_URL = 'https://api.x.ai/v1/chat/completions';
+        let xaiApiKey = localStorage.getItem('xai_api_key') || '';
+        
         // Language translations
         const translations = {
             en: {
                 greeting: "Hello! 🐱 I'm KittyCat, your personal AI assistant for LùnPetShop. I can help you find products for your cat, dog, or answer any questions about the shop!",
                 placeholder: "Type your message...",
                 quickActionsTitle: "Quick Actions",
-                quickActions: {
-                    cat: "🐱 Products for my cat",
-                    dog: "🐕 Products for my dog",
-                    business: "ℹ️ About the business",
-                    contact: "📞 Contact info"
-                },
                 headerSubtitle: "Your AI assistant for LùnPetShop"
             },
             vi: {
                 greeting: "Xin chào! 🐱 Mình là KittyCat, trợ lý AI của LùnPetShop. Mình có thể giúp bạn tìm sản phẩm cho mèo, chó, hoặc bất cứ thông tin gì về shop!",
                 placeholder: "Nhập tin nhắn của bạn...",
                 quickActionsTitle: "Thao tác nhanh",
-                quickActions: {
-                    cat: "🐱 Sản phẩm cho mèo",
-                    dog: "🐕 Sản phẩm cho chó",
-                    business: "ℹ️ Về cửa hàng",
-                    contact: "📞 Liên hệ"
-                },
                 headerSubtitle: "Trợ lý AI của LùnPetShop"
             }
         };
 
-        // Knowledge base
-        const knowledgeBase = {
-            en: {
-                catProducts: `We have a wonderful selection of products for your cat! 🐱
+        // System prompt with business knowledge
+        const systemPrompt = {
+            en: `You are KittyCat, a friendly AI assistant for LùnPetShop in Vietnam. Your personality is warm, helpful, and knowledgeable about pets.
 
-**Main Categories:**
-• Cat Food (31 products) - Premium nutrition for your feline friend
-• Cat Pâté (29 products) - Delicious wet food options
-• Treats & Snacks (25 products) - Yummy rewards!
-• Shampoo (26 products) - Keep your cat clean and fresh
-• Cat Litter (15 products) - Various absorbent options
-• Toys (34 products) - Fun playtime guaranteed!
-• Clothing (35 products) - Stylish outfits
-• Beds & Mats (15 products) - Cozy sleeping spots
+BUSINESS INFORMATION:
+- Name: Lùn PetShop (Lùn PetShop Phụ kiện thức ăn chó mèo)
+- Tagline: "Thức ăn, phụ kiện, spa, lưu trú" (Food, accessories, spa, accommodation)
+- Address: 46 Văn Cận, Khuê Trung, Cẩm Lệ, Đà Nẵng 550000, Vietnam
+- Phone/Zalo: 0935005762
+- Facebook: facebook.com/lunpetshop
+- Website: lunpetshop.com
+- Hours: 8:00 AM – 9:30 PM (Daily)
 
-**Sample Products:**
-• Pate Nekko for cats 70g - 16,000 ₫
-• GV Mixed Super Premium Cat Food 500g - 80,000 ₫
-• SENTEE Pet Shampoo 500ml - 80,000 ₫
+CAT PRODUCTS:
+- Cat Food (31 products) - Premium nutrition
+- Cat Pâté (29 products) - Delicious wet food
+- Treats & Snacks (25 products)
+- Shampoo (26 products)
+- Cat Litter (15 products)
+- Toys (34 products)
+- Clothing (35 products)
+- Beds & Mats (15 products)
+Sample: Pate Nekko 70g (16,000₫), GV Cat Food 500g (80,000₫), SENTEE Shampoo 500ml (80,000₫)
 
-Would you like to know more about any specific category?`,
-                
-                dogProducts: `We have amazing products for your dog! 🐕
+DOG PRODUCTS:
+- Dog Food (8 products)
+- Dog Pâté (5 products)
+- Treats & Snacks (25 products)
+- Shampoo (26 products)
+- Toys (34 products)
+- Clothing (35 products)
+- Beds & Mats (15 products)
+- Leashes & Collars (56 products)
+Sample: Freeze-dried chicken 100g (40,000₫), Salmon balls 200g (110,000₫), Adidog hoodie (70,000₫)
 
-**Main Categories:**
-• Dog Food (8 products) - Nutritious meals
-• Dog Pâté (5 products) - Tasty wet food
-• Treats & Snacks (25 products) - Delicious rewards!
-• Shampoo (26 products) - Fresh & clean grooming
-• Toys (34 products) - Hours of fun!
-• Clothing (35 products) - Fashionable wear
-• Beds & Mats (15 products) - Comfortable rest
-• Leashes & Collars (56 products) - Walking essentials
+GENERAL PRODUCTS:
+- Supplements (16 products)
+- Bowls & Feeders (29 products)
+- Hygiene Tools (7 products)
+- Flea & Tick Prevention (14 products)
+- Protective Cones (9 products)
 
-**Sample Products:**
-• Freeze-dried chicken with blueberries 100g - 40,000 ₫
-• Freeze-dried chicken with blueberries 500g - 160,000 ₫
-• Freeze-dried salmon balls 200g - 110,000 ₫
-• XL Smiling Face Floral Sweater - 90,000 ₫
-• 4-leg Adidog hoodie - 70,000 ₫
-• JerHigh Dog Treats (Thailand) - 55,000 ₫
+Keep responses concise, friendly, and helpful. Use emojis naturally (🐱🐕🐾). When asked about products, mention categories and provide examples. Always be ready to share contact information or address.`,
+            
+            vi: `Bạn là KittyCat, trợ lý AI thân thiện của LùnPetShop ở Việt Nam. Tính cách của bạn ấm áp, hữu ích và am hiểu về thú cưng.
 
-What would you like to know more about?`,
-                
-                business: `About LùnPetShop 🐾
+THÔNG TIN CỬA HÀNG:
+- Tên: Lùn PetShop (Lùn PetShop Phụ kiện thức ăn chó mèo)
+- Khẩu hiệu: "Thức ăn, phụ kiện, spa, lưu trú"
+- Địa chỉ: 46 Văn Cận, Khuê Trung, Cẩm Lệ, Đà Nẵng 550000, Việt Nam
+- Điện thoại/Zalo: 0935005762
+- Facebook: facebook.com/lunpetshop
+- Website: lunpetshop.com
+- Giờ mở cửa: 8:00 SA – 9:30 TỐI (Hàng ngày)
 
-**Our Services:**
-"Thức ăn, phụ kiện, spa, lưu trú"
-(Food, accessories, spa, accommodation)
+SẢN PHẨM CHO MÈO:
+- Thức ăn cho Mèo (31 sp)
+- Pate mèo (29 sp)
+- Ăn vặt Bánh Thưởng (25 sp)
+- Sữa tắm (26 sp)
+- Cát vệ sinh (15 sp)
+- Đồ chơi (34 sp)
+- Quần áo (35 sp)
+- Nệm Lót (15 sp)
+Mẫu: Pate Nekko 70g (16.000₫), Thức ăn GV 500g (80.000₫), Sữa tắm SENTEE 500ml (80.000₫)
 
-We're a complete pet care center specializing in:
-• Premium pet food and treats
-• Pet accessories and supplies
-• Professional grooming spa services
-• Pet boarding and accommodation
-• Wide selection for both cats and dogs
+SẢN PHẨM CHO CHÓ:
+- Thức ăn cho Chó (8 sp)
+- Pate chó (5 sp)
+- Ăn vặt Bánh Thưởng (25 sp)
+- Sữa tắm (26 sp)
+- Đồ chơi (34 sp)
+- Quần áo (35 sp)
+- Nệm Lót (15 sp)
+- Vòng Cổ Dây Dắt (56 sp)
+Mẫu: Gà viên 100g (40.000₫), Cá hồi 200g (110.000₫), Áo adidog (70.000₫)
 
-**Operating Hours:**
-Monday - Sunday: 8:00 AM – 9:30 PM
+SẢN PHẨM CHUNG:
+- TP chức năng (16 sp)
+- Bát ăn Bình Nước (29 sp)
+- Dụng cụ vệ sinh (7 sp)
+- Ve Rận (14 sp)
+- Loa Vòng chống liếm (9 sp)
 
-**Our Commitment:**
-We're dedicated to providing quality products and services for your beloved pets. Visit us online at lunpetshop.com or come see us in person!
-
-How else can I help you today?`,
-                
-                address: `📍 **Our Location:**
-
-LùnPetShop
-46 Văn Cận, Khuê Trung
-Cẩm Lệ, Đà Nẵng 550000
-Vietnam
-
-**Operating Hours:**
-8:00 AM – 9:30 PM (Daily)
-
-We're conveniently located and easy to find! Would you like directions or our contact information?`,
-                
-                contact: `📞 **Contact Us:**
-
-**Zalo:** 0935005762
-**Phone:** 0935005762
-**Facebook:** facebook.com/lunpetshop
-**Website:** lunpetshop.com
-
-**Hours:** 8:00 AM – 9:30 PM (Daily)
-
-Feel free to reach out to us on Zalo for quick responses! We're here to help with any questions about our products or services. 🐾`,
-                
-                default: `I'd be happy to help you! I can assist you with:
-
-🐱 Products for cats
-🐕 Products for dogs
-ℹ️ Information about our business
-📍 Our address and location
-📞 Contact details (Zalo, phone, Facebook)
-
-What would you like to know?`
-            },
-            vi: {
-                catProducts: `Chúng mình có rất nhiều sản phẩm tuyệt vời cho mèo của bạn! 🐱
-
-**Các danh mục chính:**
-• Thức ăn cho Mèo (31 sản phẩm) - Dinh dưỡng cao cấp
-• Pate mèo (29 sản phẩm) - Thức ăn ướt ngon miệng
-• Ăn vặt Bánh Thưởng (25 sản phẩm) - Phần thưởng ngon!
-• Sữa tắm (26 sản phẩm) - Giữ mèo sạch sẽ thơm tho
-• Cát vệ sinh (15 sản phẩm) - Nhiều lựa chọn hấp thụ
-• Đồ chơi (34 sản phẩm) - Vui chơi thỏa thích!
-• Quần áo (35 sản phẩm) - Trang phục sành điệu
-• Nệm Lót (15 sản phẩm) - Chỗ ngủ ấm áp
-
-**Sản phẩm mẫu:**
-• Pate Nekko cho mèo 70g - 16,000 ₫
-• Thức ăn hạt GV trộn siêu cấp 500g - 80,000 ₫
-• Sữa tắm SENTEE 500ml - 80,000 ₫
-
-Bạn muốn biết thêm về danh mục nào không?`,
-                
-                dogProducts: `Chúng mình có nhiều sản phẩm tuyệt vời cho chó của bạn! 🐕
-
-**Các danh mục chính:**
-• Thức ăn cho Chó (8 sản phẩm) - Bữa ăn dinh dưỡng
-• Pate chó (5 sản phẩm) - Thức ăn ướt ngon
-• Ăn vặt Bánh Thưởng (25 sản phẩm) - Phần thưởng ngon!
-• Sữa tắm (26 sản phẩm) - Vệ sinh sạch sẽ
-• Đồ chơi (34 sản phẩm) - Vui chơi cả ngày!
-• Quần áo (35 sản phẩm) - Thời trang sành điệu
-• Nệm Lót (15 sản phẩm) - Nghỉ ngơi thoải mái
-• Vòng Cổ Dây Dắt (56 sản phẩm) - Thiết yếu khi đi dạo
-
-**Sản phẩm mẫu:**
-• Gà viên mix việt quất sấy lạnh 100g - 40,000 ₫
-• Gà viên mix việt quất sấy lạnh 500g - 160,000 ₫
-• Cá hồi viên sấy lạnh 200g - 110,000 ₫
-• XL Smiling Face Floral Sweater - 90,000 ₫
-• Áo 4 chân có mũ adidog - 70,000 ₫
-• Bánh Thưởng JerHigh Thái Lan - 55,000 ₫
-
-Bạn muốn biết thêm về gì không?`,
-                
-                business: `Về LùnPetShop 🐾
-
-**Dịch vụ của chúng mình:**
-"Thức ăn, phụ kiện, spa, lưu trú"
-
-Chúng mình là trung tâm chăm sóc thú cưng toàn diện với:
-• Thức ăn và bánh thưởng cao cấp
-• Phụ kiện và đồ dùng cho thú cưng
-• Dịch vụ spa chuyên nghiệp
-• Dịch vụ lưu trú thú cưng
-• Đa dạng sản phẩm cho cả mèo và chó
-
-**Giờ mở cửa:**
-Thứ Hai - Chủ Nhật: 8:00 SA – 9:30 TỐI
-
-**Cam kết:**
-Chúng mình luôn cung cấp sản phẩm và dịch vụ chất lượng cho thú cưng yêu quý của bạn. Ghé thăm chúng mình tại lunpetshop.com hoặc đến trực tiếp cửa hàng!
-
-Mình có thể giúp gì thêm không?`,
-                
-                address: `📍 **Địa chỉ của chúng mình:**
-
-LùnPetShop
-46 Văn Cận, Khuê Trung
-Cẩm Lệ, Đà Nẵng 550000
-Việt Nam
-
-**Giờ mở cửa:**
-8:00 SA – 9:30 TỐI (Hàng ngày)
-
-Chúng mình ở vị trí thuận tiện và dễ tìm! Bạn cần chỉ đường hay thông tin liên hệ không?`,
-                
-                contact: `📞 **Liên hệ với chúng mình:**
-
-**Zalo:** 0935005762
-**Điện thoại:** 0935005762
-**Facebook:** facebook.com/lunpetshop
-**Website:** lunpetshop.com
-
-**Giờ làm việc:** 8:00 SA – 9:30 TỐI (Hàng ngày)
-
-Hãy liên hệ với chúng mình qua Zalo để được hỗ trợ nhanh nhất! Chúng mình luôn sẵn sàng giúp đỡ bạn với bất kỳ câu hỏi nào về sản phẩm hay dịch vụ. 🐾`,
-                
-                default: `Mình rất vui được giúp bạn! Mình có thể hỗ trợ:
-
-🐱 Sản phẩm cho mèo
-🐕 Sản phẩm cho chó
-ℹ️ Thông tin về cửa hàng
-📍 Địa chỉ và vị trí
-📞 Thông tin liên hệ (Zalo, điện thoại, Facebook)
-
-Bạn muốn biết gì nào?`
-            }
+Trả lời ngắn gọn, thân thiện và hữu ích. Dùng emoji tự nhiên (🐱🐕🐾). Khi được hỏi về sản phẩm, nói về các danh mục và cho ví dụ. Luôn sẵn sàng chia sẻ thông tin liên hệ.`
         };
 
         // State
         let currentLanguage = 'en';
         let conversationStarted = false;
+        let conversationHistory = [];
 
         // DOM elements
         const chatIcon = document.getElementById('chatIcon');
@@ -676,12 +605,43 @@ Bạn muốn biết gì nào?`
         const quickActions = document.getElementById('quickActions');
         const headerSubtitle = document.getElementById('headerSubtitle');
         const quickActionsTitle = document.getElementById('quickActionsTitle');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveApiKey = document.getElementById('saveApiKey');
+        const apiStatus = document.getElementById('apiStatus');
+        const apiSetup = document.getElementById('apiSetup');
+
+        // Check if API key exists
+        if (xaiApiKey) {
+            apiSetup.style.display = 'none';
+        }
+
+        // API Key management
+        saveApiKey.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key.startsWith('xai-') && key.length > 10) {
+                xaiApiKey = key;
+                localStorage.setItem('xai_api_key', key);
+                apiStatus.textContent = '✅ API Key saved successfully!';
+                apiStatus.className = 'api-status success';
+                setTimeout(() => {
+                    apiSetup.style.display = 'none';
+                }, 1500);
+            } else {
+                apiStatus.textContent = '❌ Invalid API key format. Should start with "xai-"';
+                apiStatus.className = 'api-status error';
+            }
+        });
 
         // Toggle chat
         chatIcon.addEventListener('click', () => {
+            if (!xaiApiKey) {
+                alert('Please configure your xAI API key first!');
+                return;
+            }
             chatContainer.classList.add('active');
             if (!conversationStarted) {
                 addBotMessage(translations[currentLanguage].greeting);
+                conversationStarted = true;
             }
             messageInput.focus();
         });
@@ -702,12 +662,19 @@ Bạn muốn biết gì nào?`
             messageInput.placeholder = translations[currentLanguage].placeholder;
             quickActionsTitle.textContent = translations[currentLanguage].quickActionsTitle;
             
-            // Update quick action buttons
+            // Update quick action buttons based on language
             const buttons = document.querySelectorAll('.quick-action-btn');
-            buttons[0].textContent = translations[currentLanguage].quickActions.cat;
-            buttons[1].textContent = translations[currentLanguage].quickActions.dog;
-            buttons[2].textContent = translations[currentLanguage].quickActions.business;
-            buttons[3].textContent = translations[currentLanguage].quickActions.contact;
+            if (currentLanguage === 'en') {
+                buttons[0].textContent = '🐱 Products for my cat';
+                buttons[1].textContent = '🐕 Products for my dog';
+                buttons[2].textContent = 'ℹ️ About the business';
+                buttons[3].textContent = '📞 Contact info';
+            } else {
+                buttons[0].textContent = '🐱 Sản phẩm cho mèo';
+                buttons[1].textContent = '🐕 Sản phẩm cho chó';
+                buttons[2].textContent = 'ℹ️ Về cửa hàng';
+                buttons[3].textContent = '📞 Liên hệ';
+            }
         }
 
         // Add message to chat
@@ -721,7 +688,7 @@ Bạn muốn biết gì nào?`
             
             const bubble = document.createElement('div');
             bubble.className = 'message-bubble';
-            bubble.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            bubble.textContent = text;
             
             if (isBot) {
                 message.appendChild(avatar);
@@ -743,7 +710,7 @@ Bạn muốn biết gì nào?`
             addMessage(text, false);
         }
 
-        // Show typing indicator
+        // Show/hide typing indicator
         function showTypingIndicator() {
             const typing = document.createElement('div');
             typing.className = 'message bot';
@@ -765,58 +732,97 @@ Bạn muốn biết gì nào?`
 
         function removeTypingIndicator() {
             const typing = document.getElementById('typing-indicator');
-            if (typing) {
-                typing.remove();
-            }
+            if (typing) typing.remove();
         }
 
-        // Process message
-        function processMessage(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            const lang = currentLanguage;
-            const kb = knowledgeBase[lang];
-            
-            // Detect intent
-            if (lowerMessage.includes('cat') || lowerMessage.includes('mèo') || lowerMessage.includes('meo')) {
-                return kb.catProducts;
-            } else if (lowerMessage.includes('dog') || lowerMessage.includes('chó') || lowerMessage.includes('cho') || lowerMessage.includes('cún') || lowerMessage.includes('cun')) {
-                return kb.dogProducts;
-            } else if (lowerMessage.includes('address') || lowerMessage.includes('location') || lowerMessage.includes('where') || 
-                       lowerMessage.includes('địa chỉ') || lowerMessage.includes('dia chi') || lowerMessage.includes('ở đâu') || lowerMessage.includes('o dau')) {
-                return kb.address;
-            } else if (lowerMessage.includes('zalo') || lowerMessage.includes('contact') || lowerMessage.includes('phone') || 
-                       lowerMessage.includes('liên hệ') || lowerMessage.includes('lien he') || lowerMessage.includes('số điện thoại') || lowerMessage.includes('facebook')) {
-                return kb.contact;
-            } else if (lowerMessage.includes('business') || lowerMessage.includes('about') || lowerMessage.includes('shop') || 
-                       lowerMessage.includes('cửa hàng') || lowerMessage.includes('cua hang') || lowerMessage.includes('về shop') || lowerMessage.includes('giới thiệu')) {
-                return kb.business;
-            } else {
-                return kb.default;
+        // Call xAI Grok API
+        async function callGrokAPI(userMessage) {
+            const messages = [
+                {
+                    role: 'system',
+                    content: systemPrompt[currentLanguage]
+                },
+                ...conversationHistory,
+                {
+                    role: 'user',
+                    content: userMessage
+                }
+            ];
+
+            try {
+                const response = await fetch(XAI_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${xaiApiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'grok-beta',
+                        messages: messages,
+                        temperature: 0.7,
+                        max_tokens: 500
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'API request failed');
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('xAI API Error:', error);
+                
+                // Fallback error messages
+                if (currentLanguage === 'en') {
+                    return `Sorry, I'm having trouble connecting right now. Please try again in a moment. For immediate assistance, contact us at Zalo: 0935005762 🐾`;
+                } else {
+                    return `Xin lỗi, mình đang gặp sự cố kết nối. Vui lòng thử lại sau. Để được hỗ trợ ngay, liên hệ Zalo: 0935005762 🐾`;
+                }
             }
         }
 
         // Send message
-        function sendMessage() {
+        async function sendMessage() {
             const text = messageInput.value.trim();
             if (!text) return;
             
             addUserMessage(text);
             messageInput.value = '';
+            sendBtn.disabled = true;
             
             if (!conversationStarted) {
                 conversationStarted = true;
                 quickActions.classList.add('hidden');
             }
             
+            // Add user message to history
+            conversationHistory.push({
+                role: 'user',
+                content: text
+            });
+            
             // Show typing indicator
             showTypingIndicator();
             
-            // Simulate AI response delay
-            setTimeout(() => {
-                removeTypingIndicator();
-                const response = processMessage(text);
-                addBotMessage(response);
-            }, 800 + Math.random() * 800);
+            // Call xAI API
+            const response = await callGrokAPI(text);
+            
+            // Add bot response to history
+            conversationHistory.push({
+                role: 'assistant',
+                content: response
+            });
+            
+            // Keep only last 10 messages to avoid token limits
+            if (conversationHistory.length > 10) {
+                conversationHistory = conversationHistory.slice(-10);
+            }
+            
+            removeTypingIndicator();
+            addBotMessage(response);
+            sendBtn.disabled = false;
         }
 
         // Quick actions
@@ -849,7 +855,7 @@ Bạn muốn biết gì nào?`
         // Event listeners
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !sendBtn.disabled) {
                 sendMessage();
             }
         });
