@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LùnPetShop - KittyCat AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+        }
+
+        .demo-container h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .demo-container p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .api-setup {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .api-setup input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 2px solid #FFC107;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .api-setup button {
+            margin-top: 10px;
+            padding: 12px 24px;
+            background: #FFC107;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .api-setup button:hover {
+            transform: scale(1.05);
+        }
+
+        .api-status {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .api-status.success {
+            color: #4ade80;
+        }
+
+        .api-status.error {
+            color: #f87171;
+        }
+
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: #FFC107;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            font-size: 30px;
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            height: 600px;
+            max-height: calc(100vh - 120px);
+            background: #1a1a2e;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #FFC107 0%, #FFA000 100%);
+            color: #1a1a2e;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-info {
+            flex: 1;
+        }
+
+        .chat-header h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .language-toggle {
+            background: rgba(26, 26, 46, 0.2);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .language-toggle:hover {
+            background: rgba(26, 26, 46, 0.3);
+        }
+
+        .close-chat {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #16213e;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FFC107;
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: #FFC107;
+        }
+
+        .message.user .message-avatar {
+            background: #0ea5e9;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .message.bot .message-bubble {
+            background: #FFC107;
+            color: #1a1a2e;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: #0ea5e9;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .quick-actions {
+            padding: 15px 20px;
+            background: #1a1a2e;
+            border-top: 1px solid #2d2d44;
+        }
+
+        .quick-actions h4 {
+            color: #FFC107;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-actions-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .quick-action-btn {
+            background: #2d2d44;
+            color: white;
+            border: 1px solid #3d3d54;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-action-btn:hover {
+            background: #FFC107;
+            color: #1a1a2e;
+            border-color: #FFC107;
+        }
+
+        .quick-actions.hidden {
+            display: none;
+        }
+
+        .chat-input {
+            padding: 15px 20px;
+            background: #1a1a2e;
+            border-top: 1px solid #2d2d44;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: #2d2d44;
+            border: 1px solid #3d3d54;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input input:focus {
+            border-color: #FFC107;
+        }
+
+        .chat-input input::placeholder {
+            color: #888;
+        }
+
+        .chat-input button {
+            background: #FFC107;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-input button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 480px) {
+            .chat-container {
+                width: calc(100vw - 20px);
+                height: calc(100vh - 100px);
+                right: 10px;
+                bottom: 80px;
+            }
+
+            .chat-widget {
+                right: 10px;
+                bottom: 10px;
+            }
+
+            .quick-actions-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #1a1a2e;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🐾 Welcome to LùnPetShop</h1>
+        <p>Thức ăn, phụ kiện, spa, lưu trú</p>
+        
+        <div class="api-setup" id="apiSetup">
+            <h3>🔑 xAI API Configuration</h3>
+            <p style="font-size: 0.9em; margin: 10px 0;">Enter your xAI API key to activate Grok-4-fast AI</p>
+            <input type="password" id="apiKeyInput" placeholder="Enter your xAI API key (xai-...)">
+            <button id="saveApiKey">Save API Key</button>
+            <div class="api-status" id="apiStatus"></div>
+            <p style="font-size: 0.8em; margin-top: 15px; opacity: 0.8;">
+                Get your API key from: <a href="https://console.x.ai/" target="_blank" style="color: #FFC107;">https://console.x.ai/</a>
+            </p>
+        </div>
+
+        <p style="font-size: 1em; opacity: 0.9;">
+            Click the chat icon in the bottom-right corner to start! 👇
+        </p>
+    </div>
+
+    <div class="chat-widget">
+        <div class="chat-icon" id="chatIcon">🐱</div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <h3>🐱 KittyCat</h3>
+                    <p id="headerSubtitle">Your AI assistant for LùnPetShop</p>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="language-toggle" id="langToggle">EN</button>
+                    <button class="close-chat" id="closeChat">×</button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="quick-actions" id="quickActions">
+                <h4 id="quickActionsTitle">Quick Actions</h4>
+                <div class="quick-actions-buttons">
+                    <button class="quick-action-btn" data-action="cat">🐱 Products for my cat</button>
+                    <button class="quick-action-btn" data-action="dog">🐕 Products for my dog</button>
+                    <button class="quick-action-btn" data-action="business">ℹ️ About the business</button>
+                    <button class="quick-action-btn" data-action="contact">📞 Contact info</button>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button id="sendBtn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // xAI Configuration
+        const XAI_API_URL = 'https://api.x.ai/v1/chat/completions';
+        let xaiApiKey = localStorage.getItem('xai_api_key') || '';
+        
+        // Language translations
+        const translations = {
+            en: {
+                greeting: "Hello! 🐱 I'm KittyCat, your personal AI assistant for LùnPetShop. I can help you find products for your cat, dog, or answer any questions about the shop!",
+                placeholder: "Type your message...",
+                quickActionsTitle: "Quick Actions",
+                headerSubtitle: "Your AI assistant for LùnPetShop"
+            },
+            vi: {
+                greeting: "Xin chào! 🐱 Mình là KittyCat, trợ lý AI của LùnPetShop. Mình có thể giúp bạn tìm sản phẩm cho mèo, chó, hoặc bất cứ thông tin gì về shop!",
+                placeholder: "Nhập tin nhắn của bạn...",
+                quickActionsTitle: "Thao tác nhanh",
+                headerSubtitle: "Trợ lý AI của LùnPetShop"
+            }
+        };
+
+        // System prompt with business knowledge
+        const systemPrompt = {
+            en: `You are KittyCat, a friendly AI assistant for LùnPetShop in Vietnam. Your personality is warm, helpful, and knowledgeable about pets.
+
+BUSINESS INFORMATION:
+- Name: Lùn PetShop (Lùn PetShop Phụ kiện thức ăn chó mèo)
+- Tagline: "Thức ăn, phụ kiện, spa, lưu trú" (Food, accessories, spa, accommodation)
+- Address: 46 Văn Cận, Khuê Trung, Cẩm Lệ, Đà Nẵng 550000, Vietnam
+- Phone/Zalo: 0935005762
+- Facebook: facebook.com/lunpetshop
+- Website: lunpetshop.com
+- Hours: 8:00 AM – 9:30 PM (Daily)
+
+CAT PRODUCTS:
+- Cat Food (31 products) - Premium nutrition
+- Cat Pâté (29 products) - Delicious wet food
+- Treats & Snacks (25 products)
+- Shampoo (26 products)
+- Cat Litter (15 products)
+- Toys (34 products)
+- Clothing (35 products)
+- Beds & Mats (15 products)
+Sample: Pate Nekko 70g (16,000₫), GV Cat Food 500g (80,000₫), SENTEE Shampoo 500ml (80,000₫)
+
+DOG PRODUCTS:
+- Dog Food (8 products)
+- Dog Pâté (5 products)
+- Treats & Snacks (25 products)
+- Shampoo (26 products)
+- Toys (34 products)
+- Clothing (35 products)
+- Beds & Mats (15 products)
+- Leashes & Collars (56 products)
+Sample: Freeze-dried chicken 100g (40,000₫), Salmon balls 200g (110,000₫), Adidog hoodie (70,000₫)
+
+GENERAL PRODUCTS:
+- Supplements (16 products)
+- Bowls & Feeders (29 products)
+- Hygiene Tools (7 products)
+- Flea & Tick Prevention (14 products)
+- Protective Cones (9 products)
+
+Keep responses concise, friendly, and helpful. Use emojis naturally (🐱🐕🐾). When asked about products, mention categories and provide examples. Always be ready to share contact information or address.`,
+            
+            vi: `Bạn là KittyCat, trợ lý AI thân thiện của LùnPetShop ở Việt Nam. Tính cách của bạn ấm áp, hữu ích và am hiểu về thú cưng.
+
+THÔNG TIN CỬA HÀNG:
+- Tên: Lùn PetShop (Lùn PetShop Phụ kiện thức ăn chó mèo)
+- Khẩu hiệu: "Thức ăn, phụ kiện, spa, lưu trú"
+- Địa chỉ: 46 Văn Cận, Khuê Trung, Cẩm Lệ, Đà Nẵng 550000, Việt Nam
+- Điện thoại/Zalo: 0935005762
+- Facebook: facebook.com/lunpetshop
+- Website: lunpetshop.com
+- Giờ mở cửa: 8:00 SA – 9:30 TỐI (Hàng ngày)
+
+SẢN PHẨM CHO MÈO:
+- Thức ăn cho Mèo (31 sp)
+- Pate mèo (29 sp)
+- Ăn vặt Bánh Thưởng (25 sp)
+- Sữa tắm (26 sp)
+- Cát vệ sinh (15 sp)
+- Đồ chơi (34 sp)
+- Quần áo (35 sp)
+- Nệm Lót (15 sp)
+Mẫu: Pate Nekko 70g (16.000₫), Thức ăn GV 500g (80.000₫), Sữa tắm SENTEE 500ml (80.000₫)
+
+SẢN PHẨM CHO CHÓ:
+- Thức ăn cho Chó (8 sp)
+- Pate chó (5 sp)
+- Ăn vặt Bánh Thưởng (25 sp)
+- Sữa tắm (26 sp)
+- Đồ chơi (34 sp)
+- Quần áo (35 sp)
+- Nệm Lót (15 sp)
+- Vòng Cổ Dây Dắt (56 sp)
+Mẫu: Gà viên 100g (40.000₫), Cá hồi 200g (110.000₫), Áo adidog (70.000₫)
+
+SẢN PHẨM CHUNG:
+- TP chức năng (16 sp)
+- Bát ăn Bình Nước (29 sp)
+- Dụng cụ vệ sinh (7 sp)
+- Ve Rận (14 sp)
+- Loa Vòng chống liếm (9 sp)
+
+Trả lời ngắn gọn, thân thiện và hữu ích. Dùng emoji tự nhiên (🐱🐕🐾). Khi được hỏi về sản phẩm, nói về các danh mục và cho ví dụ. Luôn sẵn sàng chia sẻ thông tin liên hệ.`
+        };
+
+        // State
+        let currentLanguage = 'en';
+        let conversationStarted = false;
+        let conversationHistory = [];
+
+        // DOM elements
+        const chatIcon = document.getElementById('chatIcon');
+        const chatContainer = document.getElementById('chatContainer');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const langToggle = document.getElementById('langToggle');
+        const quickActions = document.getElementById('quickActions');
+        const headerSubtitle = document.getElementById('headerSubtitle');
+        const quickActionsTitle = document.getElementById('quickActionsTitle');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveApiKey = document.getElementById('saveApiKey');
+        const apiStatus = document.getElementById('apiStatus');
+        const apiSetup = document.getElementById('apiSetup');
+
+        // Check if API key exists
+        if (xaiApiKey) {
+            apiSetup.style.display = 'none';
+        }
+
+        // API Key management
+        saveApiKey.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key.startsWith('xai-') && key.length > 10) {
+                xaiApiKey = key;
+                localStorage.setItem('xai_api_key', key);
+                apiStatus.textContent = '✅ API Key saved successfully!';
+                apiStatus.className = 'api-status success';
+                setTimeout(() => {
+                    apiSetup.style.display = 'none';
+                }, 1500);
+            } else {
+                apiStatus.textContent = '❌ Invalid API key format. Should start with "xai-"';
+                apiStatus.className = 'api-status error';
+            }
+        });
+
+        // Toggle chat
+        chatIcon.addEventListener('click', () => {
+            if (!xaiApiKey) {
+                alert('Please configure your xAI API key first!');
+                return;
+            }
+            chatContainer.classList.add('active');
+            if (!conversationStarted) {
+                addBotMessage(translations[currentLanguage].greeting);
+                conversationStarted = true;
+            }
+            messageInput.focus();
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatContainer.classList.remove('active');
+        });
+
+        // Language toggle
+        langToggle.addEventListener('click', () => {
+            currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
+            langToggle.textContent = currentLanguage === 'en' ? 'VI' : 'EN';
+            updateLanguage();
+        });
+
+        function updateLanguage() {
+            headerSubtitle.textContent = translations[currentLanguage].headerSubtitle;
+            messageInput.placeholder = translations[currentLanguage].placeholder;
+            quickActionsTitle.textContent = translations[currentLanguage].quickActionsTitle;
+            
+            // Update quick action buttons based on language
+            const buttons = document.querySelectorAll('.quick-action-btn');
+            if (currentLanguage === 'en') {
+                buttons[0].textContent = '🐱 Products for my cat';
+                buttons[1].textContent = '🐕 Products for my dog';
+                buttons[2].textContent = 'ℹ️ About the business';
+                buttons[3].textContent = '📞 Contact info';
+            } else {
+                buttons[0].textContent = '🐱 Sản phẩm cho mèo';
+                buttons[1].textContent = '🐕 Sản phẩm cho chó';
+                buttons[2].textContent = 'ℹ️ Về cửa hàng';
+                buttons[3].textContent = '📞 Liên hệ';
+            }
+        }
+
+        // Add message to chat
+        function addMessage(text, isBot = false) {
+            const message = document.createElement('div');
+            message.className = `message ${isBot ? 'bot' : 'user'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isBot ? '🐱' : '👤';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+            
+            if (isBot) {
+                message.appendChild(avatar);
+                message.appendChild(bubble);
+            } else {
+                message.appendChild(bubble);
+                message.appendChild(avatar);
+            }
+            
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            addMessage(text, true);
+        }
+
+        function addUserMessage(text) {
+            addMessage(text, false);
+        }
+
+        // Show/hide typing indicator
+        function showTypingIndicator() {
+            const typing = document.createElement('div');
+            typing.className = 'message bot';
+            typing.id = 'typing-indicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = '🐱';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+            
+            typing.appendChild(avatar);
+            typing.appendChild(bubble);
+            chatMessages.appendChild(typing);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        // Call xAI Grok API
+        async function callGrokAPI(userMessage) {
+            const messages = [
+                {
+                    role: 'system',
+                    content: systemPrompt[currentLanguage]
+                },
+                ...conversationHistory,
+                {
+                    role: 'user',
+                    content: userMessage
+                }
+            ];
+
+            try {
+                const response = await fetch(XAI_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${xaiApiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'grok-beta',
+                        messages: messages,
+                        temperature: 0.7,
+                        max_tokens: 500
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'API request failed');
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('xAI API Error:', error);
+                
+                // Fallback error messages
+                if (currentLanguage === 'en') {
+                    return `Sorry, I'm having trouble connecting right now. Please try again in a moment. For immediate assistance, contact us at Zalo: 0935005762 🐾`;
+                } else {
+                    return `Xin lỗi, mình đang gặp sự cố kết nối. Vui lòng thử lại sau. Để được hỗ trợ ngay, liên hệ Zalo: 0935005762 🐾`;
+                }
+            }
+        }
+
+        // Send message
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            
+            addUserMessage(text);
+            messageInput.value = '';
+            sendBtn.disabled = true;
+            
+            if (!conversationStarted) {
+                conversationStarted = true;
+                quickActions.classList.add('hidden');
+            }
+            
+            // Add user message to history
+            conversationHistory.push({
+                role: 'user',
+                content: text
+            });
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Call xAI API
+            const response = await callGrokAPI(text);
+            
+            // Add bot response to history
+            conversationHistory.push({
+                role: 'assistant',
+                content: response
+            });
+            
+            // Keep only last 10 messages to avoid token limits
+            if (conversationHistory.length > 10) {
+                conversationHistory = conversationHistory.slice(-10);
+            }
+            
+            removeTypingIndicator();
+            addBotMessage(response);
+            sendBtn.disabled = false;
+        }
+
+        // Quick actions
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                let message = '';
+                
+                if (currentLanguage === 'en') {
+                    switch(action) {
+                        case 'cat': message = 'What products do you have for my cat?'; break;
+                        case 'dog': message = 'What products do you have for my dog?'; break;
+                        case 'business': message = 'Tell me about the business'; break;
+                        case 'contact': message = 'How can I reach you on Zalo?'; break;
+                    }
+                } else {
+                    switch(action) {
+                        case 'cat': message = 'Có sản phẩm gì cho mèo của mình?'; break;
+                        case 'dog': message = 'Có sản phẩm gì cho chó của mình?'; break;
+                        case 'business': message = 'Cho mình biết về cửa hàng'; break;
+                        case 'contact': message = 'Làm sao liên hệ qua Zalo?'; break;
+                    }
+                }
+                
+                messageInput.value = message;
+                sendMessage();
+            });
+        });
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !sendBtn.disabled) {
+                sendMessage();
+            }
+        });
+
+        // Initialize
+        updateLanguage();
+    </script>
+</body>
+</html>
