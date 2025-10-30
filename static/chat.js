@@ -209,7 +209,13 @@ How can I help you today? 🐾`;
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
-        contentDiv.textContent = content;
+        
+        // Parse markdown for assistant messages, plain text for user messages
+        if (role === 'assistant' && typeof marked !== 'undefined') {
+            contentDiv.innerHTML = marked.parse(content);
+        } else {
+            contentDiv.textContent = content;
+        }
 
         messageDiv.appendChild(avatarDiv);
         messageDiv.appendChild(contentDiv);
