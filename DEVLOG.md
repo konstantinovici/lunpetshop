@@ -415,5 +415,67 @@ The MVP is complete and ready for deployment. All core functionality works, test
 
 ---
 
+### Deploy #002 - November 14, 2025 (v0.1.2) 🎉
+**Status**: ✅ **FIRST LIVE CONNECTION ESTABLISHED**
+
+**The Journey**: From Ideation → Demo → Live Production
+
+This deployment marks a major milestone: **the chatbot is now live and working on lunpetshop.com**! 🚀
+
+#### The Problem
+After initial deployment, the chatbot widget appeared on the site but couldn't connect to the backend API. Console showed 404 errors for `/api/greeting` and `/api/chat` endpoints.
+
+#### Root Cause Discovery
+Through enhanced error observability (added in v0.1.1), we discovered:
+- WordPress plugin was correctly setting `window.KittyCatChatbotConfig` with API base URL
+- JavaScript widget wasn't reading from the global config object
+- Widget was using relative paths (`/api/chat`) instead of full URLs (`https://lunpetshop-chatbot.loca.lt/api/chat`)
+
+#### The Fix
+**Critical Bug**: Widget constructor wasn't reading `window.KittyCatChatbotConfig`
+
+**Solution**:
+1. Updated `ChatWidget` constructor to merge WordPress config with options
+2. Added debug logging to verify config loading
+3. Enhanced `buildApiUrl()` with logging to track URL construction
+4. Properly initialized widget with config from WordPress
+
+**Code Changes**:
+```javascript
+// Before: new ChatWidget() - ignored WordPress config
+// After: 
+const config = window.KittyCatChatbotConfig || {};
+new ChatWidget(config);
+```
+
+#### Testing & Verification
+- ✅ Widget successfully reads API base URL from WordPress settings
+- ✅ API calls now go to `https://lunpetshop-chatbot.loca.lt/api/*` instead of relative paths
+- ✅ Backend connection established and working
+- ✅ Chatbot responds to user messages
+- ✅ Error observability working (helped us debug this!)
+
+#### Technical Details
+- **Version**: 0.1.1 → 0.1.2
+- **Files Changed**: 
+  - `assets/js/chat-widget.js` - Config reading fix
+  - `lunpetshop-chatbot.php` - Version bump
+- **Backend Setup**: FastAPI running locally + localtunnel for public access
+
+#### Lessons Learned
+1. **Observability is Critical**: The error logging we added in v0.1.1 was essential for debugging
+2. **Config Injection**: Always verify global config objects are being read correctly
+3. **WordPress Plugin Development**: Need better local dev workflow (see `LOCAL_DEV_GUIDE.md`)
+
+#### What's Next
+- [ ] Improve local development workflow (no more zip uploads!)
+- [ ] Add more robust error handling for backend connection failures
+- [ ] Consider production deployment strategy (move away from localtunnel)
+- [ ] Add analytics and monitoring
+
+**Milestone**: 🎯 **First working demo live on production site!**
+
+---
+
 *Last Updated: November 14, 2025*
 

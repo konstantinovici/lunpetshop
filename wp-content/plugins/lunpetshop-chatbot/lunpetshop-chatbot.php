@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LùnPetShop KittyCat Chatbot
  * Description: Adds the KittyCat AI chatbot widget to the public-facing site.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Author: LùnPetShop
  */
 
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class LunPetshop_KittyCat_Chatbot {
-    private const VERSION = '0.1.1';
+    private const VERSION = '0.1.2';
     private const OPTION_API_BASE = 'lunpetshop_chatbot_api_base';
     private const OPTION_LANGUAGE = 'lunpetshop_chatbot_initial_language';
 

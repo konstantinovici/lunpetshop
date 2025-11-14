@@ -2,9 +2,13 @@
 
 class ChatWidget {
     constructor(options = {}) {
+        // Merge with global config from WordPress plugin if available
+        const globalConfig = window.KittyCatChatbotConfig || {};
+        const mergedOptions = { ...globalConfig, ...options };
+        
         this.config = {
-            apiBaseUrl: options.apiBaseUrl || '',
-            initialLanguage: options.initialLanguage || 'vi'
+            apiBaseUrl: mergedOptions.apiBaseUrl || '',
+            initialLanguage: mergedOptions.initialLanguage || 'vi'
         };
 
         this.isOpen = false;
@@ -12,6 +16,14 @@ class ChatWidget {
         this.language = this.config.initialLanguage;
         this.conversationStarted = false;
         this.apiBaseUrl = this.normalizeBaseUrl(this.config.apiBaseUrl);
+        
+        // Debug log to verify config is loaded
+        console.log('🐱 KittyCat Chatbot initialized:', {
+            apiBaseUrl: this.apiBaseUrl,
+            initialLanguage: this.language,
+            configSource: window.KittyCatChatbotConfig ? 'WordPress config' : 'default',
+            rawConfig: window.KittyCatChatbotConfig
+        });
         
         this.initElements();
         this.attachEventListeners();
@@ -38,9 +50,12 @@ class ChatWidget {
     buildApiUrl(path) {
         const cleanPath = path.startsWith('/') ? path : `/${path}`;
         if (!this.apiBaseUrl) {
+            console.warn('⚠️ No API base URL configured. Using relative path:', cleanPath);
             return cleanPath;
         }
-        return `${this.apiBaseUrl}${cleanPath}`;
+        const fullUrl = `${this.apiBaseUrl}${cleanPath}`;
+        console.log('🔗 Building API URL:', { path, apiBaseUrl: this.apiBaseUrl, fullUrl });
+        return fullUrl;
     }
 
     initElements() {
@@ -397,6 +412,8 @@ How can I help you today? 🐾`;
 
 // Initialize chat widget when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new ChatWidget();
+    // Read config from WordPress plugin if available
+    const config = window.KittyCatChatbotConfig || {};
+    new ChatWidget(config);
 });
 
