@@ -71,6 +71,20 @@ python main.py
 
 The server will start at http://localhost:8000
 
+### 4.5. Expose the API for WordPress
+
+If you need to let a remote WordPress site reach your local FastAPI server, open a tunnel with [loca.lt](https://github.com/localtunnel/localtunnel):
+
+```bash
+# Terminal 1: keep the chatbot running
+python main.py
+
+# Terminal 2: create the public tunnel
+lt --port 8000 --subdomain lunpetshop-chatbot
+```
+
+The second command prints a URL such as `https://lunpetshop-chatbot.loca.lt`. Use that HTTPS address as the API base when configuring the WordPress plugin. Keep both terminals open while the tunnel is in use.
+
 ### 5. Test the Chatbot
 
 **Run automated tests:**
