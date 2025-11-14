@@ -105,13 +105,27 @@ class ChatWidget {
                 })
             });
 
-            if (!response.ok) throw new Error('Failed to load greeting');
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Greeting API Error:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    body: errorText,
+                    url: this.buildApiUrl('/api/greeting')
+                });
+                throw new Error(`Failed to load greeting: ${response.status} ${response.statusText}`);
+            }
 
             const data = await response.json();
             this.threadId = data.thread_id;
             this.addMessage('assistant', data.greeting);
         } catch (error) {
-            console.error('Error loading greeting:', error);
+            console.error('❌ Error loading greeting:', {
+                message: error.message,
+                stack: error.stack,
+                apiUrl: this.buildApiUrl('/api/greeting'),
+                language: this.language
+            });
             this.addMessage('assistant', this.getDefaultGreeting());
         }
     }
@@ -195,7 +209,27 @@ How can I help you today? 🐾`;
                 })
             });
 
-            if (!response.ok) throw new Error('Failed to send message');
+            if (!response.ok) {
+                let errorBody = '';
+                try {
+                    errorBody = await response.text();
+                    const errorJson = JSON.parse(errorBody);
+                    console.error('❌ API Error Response:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        detail: errorJson.detail || errorJson,
+                        url: this.buildApiUrl('/api/chat')
+                    });
+                } catch (e) {
+                    console.error('❌ API Error (non-JSON):', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: errorBody,
+                        url: this.buildApiUrl('/api/chat')
+                    });
+                }
+                throw new Error(`API Error ${response.status}: ${response.statusText}`);
+            }
 
             const data = await response.json();
             
@@ -215,26 +249,62 @@ How can I help you today? 🐾`;
             this.addMessage('assistant', data.response);
 
         } catch (error) {
-            console.error('Error sending message:', error);
+            // Enhanced error logging for observability
+            const errorDetails = {
+                message: error.message,
+                stack: error.stack,
+                timestamp: new Date().toISOString(),
+                apiUrl: this.buildApiUrl('/api/chat'),
+                userMessage: message,
+                threadId: this.threadId,
+                language: this.language
+            };
+            
+            console.error('❌ Chat Widget Error:', errorDetails);
+            console.error('Full error object:', error);
+            
+            // Try to get more details from response if available
+            if (error.response) {
+                console.error('Response status:', error.response.status);
+                console.error('Response body:', error.response.body);
+            }
+            
             this.removeTypingIndicator(typingId);
-            this.addMessage('assistant', this.getErrorMessage());
+            
+            // Show detailed error message (can be expanded for debugging)
+            const errorMessage = this.getErrorMessage(error);
+            this.addMessage('assistant', errorMessage, { isError: true, errorDetails });
         } finally {
             this.sendBtn.disabled = false;
             this.inputField.focus();
         }
     }
 
-    getErrorMessage() {
-        if (this.language === 'vi') {
-            return 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau. 😔';
-        } else {
-            return 'Sorry, an error occurred. Please try again later. 😔';
+    getErrorMessage(error = null) {
+        // Check if we're in development mode (can be enabled via config)
+        const isDevMode = window.KittyCatChatbotConfig?.debugMode || 
+                         window.location.hostname === 'localhost' ||
+                         window.location.hostname.includes('127.0.0.1') ||
+                         window.location.hostname.includes('loca.lt');
+        
+        const baseMessage = this.language === 'vi' 
+            ? 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau. 😔'
+            : 'Sorry, an error occurred. Please try again later. 😔';
+        
+        if (isDevMode && error) {
+            const errorInfo = error.message || 'Unknown error';
+            return `${baseMessage}\n\n🔍 [Debug] ${errorInfo}`;
         }
+        
+        return baseMessage;
     }
 
-    addMessage(role, content) {
+    addMessage(role, content, options = {}) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${role}`;
+        if (options.isError) {
+            messageDiv.classList.add('error-message');
+        }
 
         const avatarDiv = document.createElement('div');
         avatarDiv.className = 'message-avatar';
@@ -248,6 +318,19 @@ How can I help you today? 🐾`;
             contentDiv.innerHTML = marked.parse(content);
         } else {
             contentDiv.textContent = content;
+        }
+        
+        // Add error details toggle for debugging
+        if (options.isError && options.errorDetails) {
+            const detailsBtn = document.createElement('button');
+            detailsBtn.className = 'error-details-btn';
+            detailsBtn.textContent = this.language === 'vi' ? 'Chi tiết lỗi' : 'Error Details';
+            detailsBtn.onclick = () => {
+                console.log('Full error details:', options.errorDetails);
+                alert(`Error Details:\n\n${JSON.stringify(options.errorDetails, null, 2)}`);
+            };
+            contentDiv.appendChild(document.createElement('br'));
+            contentDiv.appendChild(detailsBtn);
         }
 
         messageDiv.appendChild(avatarDiv);

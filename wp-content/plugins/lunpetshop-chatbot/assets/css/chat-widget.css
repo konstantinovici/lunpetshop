@@ -94,7 +94,12 @@
 }
 
 .lunpetshop-chat-widget .chat-header .avatar {
-    font-size: 2rem;
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .lunpetshop-chat-widget .header-text h3 {
@@ -191,13 +196,13 @@
 }
 
 .lunpetshop-chat-widget .message-avatar {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     flex-shrink: 0;
 }
 
@@ -376,11 +381,11 @@
 
 .lunpetshop-chat-widget .chat-input {
     flex: 1;
-    background: var(--dark-bg);
+    background: var(--dark-bg) !important;
     border: 1px solid var(--border-color);
     border-radius: 25px;
     padding: 12px 20px;
-    color: var(--text-light);
+    color: var(--text-light) !important;
     font-size: 0.95rem;
     outline: none;
     transition: border-color 0.2s ease;
@@ -388,6 +393,18 @@
 
 .lunpetshop-chat-widget .chat-input:focus {
     border-color: var(--primary-color);
+    background: var(--dark-bg) !important;
+    color: var(--text-light) !important;
+}
+
+.lunpetshop-chat-widget .chat-input:-webkit-autofill,
+.lunpetshop-chat-widget .chat-input:-webkit-autofill:hover,
+.lunpetshop-chat-widget .chat-input:-webkit-autofill:focus,
+.lunpetshop-chat-widget .chat-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--dark-bg) inset !important;
+    -webkit-text-fill-color: var(--text-light) !important;
+    background: var(--dark-bg) !important;
+    color: var(--text-light) !important;
 }
 
 .lunpetshop-chat-widget .chat-input::placeholder {
@@ -416,6 +433,29 @@
 .lunpetshop-chat-widget .send-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Error message styling */
+.lunpetshop-chat-widget .message.error-message .message-content {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-color: rgba(244, 67, 54, 0.3) !important;
+}
+
+.lunpetshop-chat-widget .error-details-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: rgba(244, 67, 54, 0.2);
+    border: 1px solid rgba(244, 67, 54, 0.4);
+    border-radius: 6px;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.lunpetshop-chat-widget .error-details-btn:hover {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: rgba(244, 67, 54, 0.6);
 }
 
 @media (max-width: 768px) {

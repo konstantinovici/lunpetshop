@@ -393,5 +393,27 @@ The MVP is complete and ready for deployment. All core functionality works, test
 
 ---
 
-*Last Updated: October 25, 2025*
+---
+
+## 🚀 Deployment History
+
+### Deploy #001 - November 14, 2025 (v0.1.1)
+**Status**: ✅ Successfully deployed to production
+
+**Bugs Fixed**:
+1. ✅ **Error Observability**: Added detailed error logging and debugging tools
+2. ✅ **Avatar Sizing**: Increased header and message avatars by 50%
+3. ✅ **Input Field Visibility**: Fixed white background issue on focus/click
+
+**Changes**:
+- Enhanced error handling with detailed console logging
+- Added error details button for debugging (dev mode)
+- Improved visual hierarchy with larger avatars
+- Fixed input field CSS to prevent white background override
+
+**See**: `DEPLOY_REPORT_001.md` for full details
+
+---
+
+*Last Updated: November 14, 2025*
 
