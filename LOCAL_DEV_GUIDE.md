@@ -38,7 +38,32 @@ If your WordPress site is on the same machine or accessible via network:
 
 ## 🚀 Development Workflow
 
-### Daily Development Cycle
+### Quick Start (Recommended - One Command!)
+
+**Start everything with one command** (backend + tunnel with auto-restart & health checks):
+```bash
+# Start backend + Cloudflare tunnel (recommended)
+./bin/start-all.sh cloudflared 8000
+
+# OR with LocalTunnel
+./bin/start-all.sh localtunnel 8000 lunpetshop-chatbot
+```
+
+This will:
+- ✅ Start the FastAPI backend server
+- ✅ Start the tunnel (Cloudflare or LocalTunnel)
+- ✅ Auto-restart both on failure
+- ✅ Perform health checks every 30 seconds
+- ✅ Show status updates
+- ✅ Log everything to `./logs/`
+
+Press `Ctrl+C` to stop everything cleanly.
+
+---
+
+### Manual Setup (Two Terminals)
+
+If you prefer to run things separately:
 
 1. **Start your backend**:
    ```bash
@@ -49,9 +74,19 @@ If your WordPress site is on the same machine or accessible via network:
 
 2. **Start tunnel** (if needed):
    ```bash
-   # Terminal 2: Public tunnel
-   lt --port 8000 --subdomain lunpetshop-chatbot
+   # Terminal 2: Public tunnel (RECOMMENDED - uses Cloudflare Tunnel)
+   ./bin/start-tunnel.sh cloudflared 8000
+   
+   # OR use LocalTunnel with auto-reconnect (may have connection issues):
+   ./bin/start-tunnel.sh localtunnel 8000 lunpetshop-chatbot
+   
+   # OR manually:
+   cloudflared tunnel --url http://localhost:8000
    ```
+   
+   **Note**: 
+   - **Cloudflare Tunnel** (recommended): More reliable, gives you a random URL like `https://abc123.trycloudflare.com`
+   - **LocalTunnel**: Can specify subdomain but often has "connection refused" errors. The script includes auto-reconnect.
 
 3. **Make changes** to plugin files:
    - Edit `wp-content/plugins/lunpetshop-chatbot/assets/js/chat-widget.js`
@@ -281,6 +316,33 @@ git commit -m "feat: add new feature"
 - Check tunnel is active
 - Verify API base URL in WordPress settings
 - Check CORS configuration in backend
+
+### Issue: LocalTunnel "connection refused" errors
+
+**Problem**: LocalTunnel shows the URL but then terminates with "connection refused" on random ports (e.g., `localtunnel.me:33167`).
+
+**Root Cause**: LocalTunnel uses a control connection on random ports that can be blocked by firewalls or network issues.
+
+**Solutions**:
+1. **Use Cloudflare Tunnel instead** (recommended):
+   ```bash
+   ./bin/start-tunnel.sh cloudflared 8000 lunpetshop-chatbot
+   ```
+   
+2. **Use auto-reconnect wrapper** (if you must use LocalTunnel):
+   ```bash
+   ./bin/start-tunnel.sh localtunnel 8000 lunpetshop-chatbot
+   ```
+   This will automatically reconnect when the tunnel drops.
+
+3. **Check macOS Firewall**:
+   - System Settings → Network → Firewall
+   - Ensure Node.js/Terminal is allowed
+
+4. **Try without subdomain** (may help):
+   ```bash
+   /Users/konstantinovichi/.bun/bin/lt --port 8000
+   ```
 
 ---
 

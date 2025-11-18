@@ -30,3 +30,6 @@ Thumbs.db
 *.log
 logs/
 
+# Process IDs
+.pids/
+
