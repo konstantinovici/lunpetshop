@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LùnPetShop - KittyCat AI Assistant</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/demo.css">
+    <link rel="stylesheet" href="/static/chat-widget.css">
 </head>
 <body>
     <!-- Demo page header -->
@@ -52,20 +53,17 @@
         </div>
     </main>
 
-    <!-- Chat Widget -->
-    <div id="chat-widget" class="chat-widget">
-        <!-- Chat button (when collapsed) -->
+    <!-- Chat Widget - Uses same HTML structure as WordPress plugin -->
+    <div id="chat-widget" class="lunpetshop-chat-widget chat-widget">
         <button id="chat-toggle" class="chat-toggle" aria-label="Toggle chat">
             <span class="chat-icon">🐱</span>
             <span class="close-icon">✕</span>
         </button>
 
-        <!-- Chat window (when expanded) -->
-        <div id="chat-window" class="chat-window">
-            <!-- Chat header -->
+        <div id="chat-window" class="chat-window" role="dialog" aria-live="polite" aria-label="KittyCat chatbot window">
             <div class="chat-header">
                 <div class="chat-header-content">
-                    <span class="avatar">🐱</span>
+                    <span class="avatar" aria-hidden="true">🐱</span>
                     <div class="header-text">
                         <h3>KittyCat</h3>
                         <p>AI Assistant</p>
@@ -79,38 +77,25 @@
                 </div>
             </div>
 
-            <!-- Chat messages -->
-            <div id="chat-messages" class="chat-messages">
-                <!-- Messages will be inserted here -->
-            </div>
+            <div id="chat-messages" class="chat-messages"></div>
 
-            <!-- Quick actions (shown before conversation starts) -->
             <div id="quick-actions" class="quick-actions">
-                <button class="quick-action-btn" data-action="cat">
-                    🐱 Products for my cat
-                </button>
-                <button class="quick-action-btn" data-action="dog">
-                    🐕 Products for my dog
-                </button>
-                <button class="quick-action-btn" data-action="business">
-                    🏪 About the business
-                </button>
-                <button class="quick-action-btn" data-action="contact">
-                    📞 Contact info
-                </button>
+                <button class="quick-action-btn" data-action="cat">🐱 Products for my cat</button>
+                <button class="quick-action-btn" data-action="dog">🐕 Products for my dog</button>
+                <button class="quick-action-btn" data-action="business">🏪 About the business</button>
+                <button class="quick-action-btn" data-action="contact">📞 Contact info</button>
             </div>
 
-            <!-- Chat input -->
             <div class="chat-input-container">
-                <input 
-                    type="text" 
-                    id="chat-input" 
-                    class="chat-input" 
+                <input
+                    type="text"
+                    id="chat-input"
+                    class="chat-input"
                     placeholder="Type your message..."
                     autocomplete="off"
                 />
                 <button id="send-button" class="send-button" aria-label="Send message">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" role="img" aria-hidden="true">
                         <path d="M2 10L18 2L12 10L18 18L2 10Z" fill="currentColor"/>
                     </svg>
                 </button>
@@ -119,7 +104,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <script src="/static/chat.js"></script>
+    <script src="/static/chat-widget.js"></script>
 </body>
 </html>
 

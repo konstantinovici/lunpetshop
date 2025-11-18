@@ -1,0 +1,1 @@
+../../../widget/assets/js/chat-widget.js

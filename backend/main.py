@@ -23,6 +23,13 @@ if __name__ == "__main__":
     print(f"📱 Open in browser: http://localhost:{port}")
     print("\n🐾 Ready to help customers!\n")
     
+    # Change to backend directory for imports
+    import sys
+    import os
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    if backend_dir not in sys.path:
+        sys.path.insert(0, backend_dir)
+    
     uvicorn.run(
         "src.api:app",
         host=host,

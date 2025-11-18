@@ -29,12 +29,13 @@ fi
 # Activate virtual environment and install dependencies
 echo "📦 Installing dependencies..."
 source .venv/bin/activate
-uv pip install -r requirements.txt -q
+uv pip install -r backend/requirements.txt -q
 
 echo ""
 echo "🚀 Starting server..."
 echo ""
 
-# Run the application
+# Run the application from backend directory
+cd backend
 python main.py
 

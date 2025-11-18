@@ -66,6 +66,7 @@ if [ -z "$PORT" ]; then
     export PORT=$AVAILABLE_PORT
 fi
 
-# Start the server
+# Start the server from backend directory
+cd backend
 python main.py
 

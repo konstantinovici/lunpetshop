@@ -22,20 +22,25 @@ The chatbot can answer these key questions:
 
 ```
 lunpetshop/
-├── src/
-│   ├── __init__.py
-│   ├── chatbot.py           # LangGraph chatbot implementation
-│   ├── knowledge_base.py    # Product and business information
-│   └── api.py               # FastAPI backend
-├── static/
-│   ├── index.html           # Frontend UI
-│   ├── style.css            # Styles with brand colors
-│   └── chat.js              # Chat widget functionality
-├── main.py                  # Application entry point
-├── test_chatbot.py          # Test suite for core questions
-├── requirements.txt         # Python dependencies
-└── README.md
+├── backend/                # Python FastAPI backend
+│   ├── src/
+│   │   ├── api.py          # FastAPI routes & endpoints
+│   │   ├── chatbot.py      # LangGraph chatbot implementation
+│   │   └── knowledge_base.py # Product & business data
+│   ├── main.py             # Application entry point
+│   ├── requirements.txt    # Python dependencies
+│   └── test_chatbot.py    # Test suite
+├── widget/                 # Widget UI (single source of truth)
+│   ├── assets/
+│   │   ├── css/chat-widget.css
+│   │   └── js/chat-widget.js
+│   └── index.html          # Demo page
+├── wordpress-plugin/       # WordPress plugin
+│   └── lunpetshop-chatbot/
+└── bin/                    # Utility scripts
 ```
+
+**📚 For detailed architecture and development guide, see [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**
 
 ## 🚀 Getting Started
 
@@ -60,7 +65,7 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 3. **Install dependencies**
 ```bash
-uv pip install -r requirements.txt
+uv pip install -r backend/requirements.txt
 ```
 
 4. **Set up environment variables**
@@ -81,7 +86,9 @@ Get your API key from: https://console.x.ai/
 
 **Start the server:**
 ```bash
+cd backend
 python main.py
+# Or from root: ./run.sh
 ```
 
 The application will be available at:
@@ -92,6 +99,7 @@ The application will be available at:
 
 **Run the test suite:**
 ```bash
+cd backend
 python test_chatbot.py
 ```
 
@@ -185,9 +193,17 @@ Health check endpoint
 
 This project is proprietary and confidential.
 
+## 📚 Documentation
+
+- **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Complete developer documentation
+- **[MIGRATION_NOTES.md](MIGRATION_NOTES.md)** - Migration from old structure
+- **[README_NEW_STRUCTURE.md](README_NEW_STRUCTURE.md)** - Quick reference
+
 ## 🤝 Contributing
 
 For questions or support, contact the development team.
+
+**📖 Developers**: See [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md) for detailed architecture, development workflow, and file reference.
 
 ---
 

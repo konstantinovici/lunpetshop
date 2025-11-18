@@ -113,15 +113,30 @@ async def chat(request: ChatRequest):
 
 
 # Serve static files (frontend)
+# Widget files are served from the widget/ directory (single source of truth)
 try:
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    import os
+    from pathlib import Path
+    
+    # Get the project root (go up from backend/src/api.py -> backend -> project root)
+    backend_dir = Path(__file__).parent.parent
+    project_root = backend_dir.parent
+    widget_dir = project_root / "widget"
+    
+    # Serve widget assets
+    app.mount("/static", StaticFiles(directory=str(widget_dir)), name="static")
     
     @app.get("/")
     async def serve_frontend():
-        """Serve the frontend HTML."""
-        return FileResponse("static/index.html")
-except:
-    # If static directory doesn't exist yet, that's okay
+        """Serve the demo frontend HTML."""
+        widget_html = widget_dir / "index.html"
+        if widget_html.exists():
+            return FileResponse(str(widget_html))
+        else:
+            return {"message": "Widget demo page not found. Please check widget/index.html"}
+except Exception as e:
+    # If widget directory doesn't exist yet, that's okay
+    print(f"⚠️  Warning: Could not mount widget files: {e}")
     pass
 
 
