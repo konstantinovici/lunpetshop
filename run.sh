@@ -8,8 +8,19 @@ echo ""
 # Check if .env exists
 if [ ! -f .env ]; then
     echo "⚠️  Warning: .env file not found!"
-    echo "Creating .env from template..."
-    cp .env.example .env
+    
+    # Create .env from template if it exists
+    if [ -f .env.example ]; then
+        echo "Creating .env from template..."
+        cp .env.example .env
+    else
+        echo "Creating .env file..."
+        cat > .env << EOF
+# LùnPetShop KittyCat Chatbot - Environment Variables
+XAI_API_KEY=your_api_key_here
+EOF
+    fi
+    
     echo ""
     echo "📝 Please edit .env and add your XAI_API_KEY:"
     echo "   XAI_API_KEY=your_api_key_here"
