@@ -1,6 +1,6 @@
 """LangGraph chatbot for LùnPetShop with bilingual support."""
 
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
@@ -24,6 +24,7 @@ from .utils import detect_language, classify_intent
 class ChatbotState(MessagesState):
     """State for the chatbot with language tracking."""
     language: str = "vi"  # Default to Vietnamese
+    forced_intent: Optional[str] = None  # For testing: force a specific intent
 
 
 def chatbot_node(state: ChatbotState) -> ChatbotState:
@@ -43,8 +44,11 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
     # Detect language
     language = detect_language(user_text)
     
-    # Classify intent
-    intent = classify_intent(user_text, language)
+    # Classify intent (or use forced intent for testing)
+    if state.get("forced_intent"):
+        intent = state["forced_intent"]
+    else:
+        intent = classify_intent(user_text, language)
     
     # Generate response based on intent
     try:
