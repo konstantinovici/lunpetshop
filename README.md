@@ -20,6 +20,8 @@ The chatbot can answer these key questions:
 
 ## 🏗️ Architecture
 
+### Project Structure
+
 ```
 lunpetshop/
 ├── backend/                # Python FastAPI backend
@@ -29,16 +31,56 @@ lunpetshop/
 │   │   └── knowledge_base.py # Product & business data
 │   ├── main.py             # Application entry point
 │   ├── requirements.txt    # Python dependencies
-│   └── test_chatbot.py    # Test suite
-├── widget/                 # Widget UI (single source of truth)
+│   └── test_chatbot.py     # Test suite
+├── widget/                 # ⭐ Widget UI (SINGLE SOURCE OF TRUTH)
 │   ├── assets/
-│   │   ├── css/chat-widget.css
-│   │   └── js/chat-widget.js
+│   │   ├── css/chat-widget.css  # Edit widget styles here!
+│   │   └── js/chat-widget.js     # Edit widget JavaScript here!
 │   └── index.html          # Demo page
 ├── wordpress-plugin/       # WordPress plugin
 │   └── lunpetshop-chatbot/
-└── bin/                    # Utility scripts
+│       ├── lunpetshop-chatbot.php
+│       └── assets/         # Symlinks to widget/assets/
+├── bin/                    # Utility scripts
+│   └── build-plugin.sh     # Build WordPress plugin zip
+└── docs/                   # Documentation
+    ├── LOCAL_DEV_GUIDE.md  # WordPress development guide
+    ├── DEVLOG.md           # Development log
+    ├── MIGRATION_NOTES.md  # Migration reference
+    └── reports/            # Deployment reports
 ```
+
+### System Architecture
+
+```
+┌─────────────┐
+│  WordPress  │
+│    Site     │
+└──────┬──────┘
+       │ HTTPS API calls
+       ▼
+┌─────────────┐
+│   Backend   │  Python FastAPI
+│  (backend/) │  Port 8000
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│    xAI      │  Grok API
+│     API     │
+└─────────────┘
+
+Widget UI (widget/) → Embedded in WordPress & Local Demo
+```
+
+### 🎨 Key Principle: Single Source of Truth
+
+**Widget UI code lives in `widget/` directory**
+
+- ✅ Edit widget CSS/JS in ONE place: `widget/assets/`
+- ✅ WordPress plugin uses symlinks → automatic updates
+- ✅ Local dev demo uses same files → exact match
+- ✅ No sync issues, no duplicates
 
 **📚 For detailed architecture and development guide, see [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**
 
@@ -72,7 +114,10 @@ uv pip install -r backend/requirements.txt
 
 Create a `.env` file in the root directory:
 ```bash
-cp .env.example .env
+# Create .env file
+cat > .env << EOF
+XAI_API_KEY=your_xai_api_key_here
+EOF
 ```
 
 Edit `.env` and add your xAI API key:
@@ -104,6 +149,30 @@ python test_chatbot.py
 ```
 
 This will test all 5 core questions in both Vietnamese and English.
+
+## 🚀 Common Tasks
+
+### Edit Widget UI
+```bash
+# Edit widget files
+widget/assets/css/chat-widget.css
+widget/assets/js/chat-widget.js
+
+# Test locally
+# Refresh http://localhost:8000
+```
+
+### Build WordPress Plugin
+```bash
+./bin/build-plugin.sh
+# Creates: lunpetshop-chatbot.zip
+```
+
+### Run Tests
+```bash
+cd backend
+python test_chatbot.py
+```
 
 ## 🎨 UI Preview
 
@@ -196,8 +265,19 @@ This project is proprietary and confidential.
 ## 📚 Documentation
 
 - **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Complete developer documentation
-- **[MIGRATION_NOTES.md](MIGRATION_NOTES.md)** - Migration from old structure
-- **[README_NEW_STRUCTURE.md](README_NEW_STRUCTURE.md)** - Quick reference
+- **[docs/LOCAL_DEV_GUIDE.md](docs/LOCAL_DEV_GUIDE.md)** - WordPress development guide
+- **[docs/DEVLOG.md](docs/DEVLOG.md)** - Development log and history
+- **[docs/MIGRATION_NOTES.md](docs/MIGRATION_NOTES.md)** - Migration from old structure
+- **[docs/reports/](docs/reports/)** - Deployment reports
+
+## ✅ Project Status
+
+- ✅ MVP Complete & Tested (10/10 tests passed)
+- ✅ Folder reorganization complete
+- ✅ Single source of truth established
+- ✅ Symlinks configured
+- ✅ Build scripts ready
+- ✅ Production deployment successful
 
 ## 🤝 Contributing
 
