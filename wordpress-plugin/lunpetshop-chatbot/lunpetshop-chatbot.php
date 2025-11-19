@@ -36,6 +36,16 @@ final class LunPetshop_KittyCat_Chatbot {
             self::VERSION
         );
 
+        // Load theme conflict simulator in debug mode to test CSS collisions locally
+        if (defined('WP_DEBUG') && WP_DEBUG && defined('LUNPETSHOP_SIMULATE_THEME_CONFLICTS') && LUNPETSHOP_SIMULATE_THEME_CONFLICTS) {
+            wp_enqueue_style(
+                'lunpetshop-chatbot-theme-conflict-simulator',
+                $plugin_url . 'assets/css/theme-conflict-simulator.css',
+                ['lunpetshop-chatbot'],
+                self::VERSION
+            );
+        }
+
         wp_enqueue_script(
             'lunpetshop-chatbot-marked',
             'https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js',
