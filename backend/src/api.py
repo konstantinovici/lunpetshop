@@ -9,7 +9,8 @@ from typing import List, Optional
 import uuid
 from langchain_core.messages import HumanMessage
 
-from .chatbot import graph, get_greeting
+from .chatbot import graph
+from .prompts import get_greeting
 
 app = FastAPI(
     title="LùnPetShop KittyCat Chatbot API",
