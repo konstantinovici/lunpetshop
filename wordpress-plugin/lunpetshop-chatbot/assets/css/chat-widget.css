@@ -1,3 +1,24 @@
+/* Host element styling - must not constrain shadow content */
+#chat-widget {
+    display: block;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    contain: none;
+    overflow: visible;
+}
+
 .lunpetshop-chat-widget {
     /* Tailwind Colors */
     --amber-400: #fbbf24;
@@ -30,9 +51,18 @@
     z-index: 9999;
     min-width: 4rem;
     min-height: 4rem;
+    width: auto;
+    height: auto;
     contain: layout paint style;
     isolation: isolate;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: visible;
+}
+
+/* When closed, size to just the toggle button */
+.lunpetshop-chat-widget:not(.open) {
+    width: 4rem;
+    height: 4rem;
 }
 
 .lunpetshop-chat-widget *,
@@ -112,6 +142,13 @@
     /* Keep absolute positioning to maintain layout */
 }
 
+.lunpetshop-chat-widget.open {
+    /* Ensure wrapper expands to contain chat window when open */
+    width: auto;
+    height: auto;
+    min-width: 24rem;
+}
+
 /* Chat Window */
 .lunpetshop-chat-widget .chat-window {
     width: 24rem; /* w-96 */
@@ -124,6 +161,7 @@
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--slate-700);
+    position: relative;
 }
 
 .lunpetshop-chat-widget.open .chat-window {

@@ -1,3 +1,24 @@
+/* Host element styling - must not constrain shadow content */
+#chat-widget {
+    display: block;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    contain: none;
+    overflow: visible;
+}
+
 .lunpetshop-chat-widget {
     /* Tailwind Colors */
     --amber-400: #fbbf24;
@@ -30,9 +51,18 @@
     z-index: 9999;
     min-width: 4rem;
     min-height: 4rem;
+    width: auto;
+    height: auto;
     contain: layout paint style;
     isolation: isolate;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: visible;
+}
+
+/* When closed, size to just the toggle button */
+.lunpetshop-chat-widget:not(.open) {
+    width: 4rem;
+    height: 4rem;
 }
 
 .lunpetshop-chat-widget *,
@@ -46,8 +76,8 @@
     width: 4rem; /* w-16 */
     height: 4rem; /* h-16 */
     border-radius: 9999px; /* rounded-full */
-    background: var(--primary-gradient);
-    border: 4px solid var(--white);
+    background: transparent;
+    border: none;
     box-shadow: var(--shadow-lg);
     cursor: pointer;
     display: flex;
@@ -58,6 +88,7 @@
     bottom: 0;
     right: 0;
     overflow: hidden;
+    padding: 0;
 }
 
 .lunpetshop-chat-widget .chat-toggle:hover {
@@ -70,6 +101,32 @@
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+    display: block;
+}
+
+/* Protect toggle button/logo from theme conflicts (e.g. Cosmobit/LazyPress) */
+#chat-widget.lunpetshop-chat-widget #chat-toggle.chat-toggle {
+    width: 4rem !important;
+    height: 4rem !important;
+    min-width: 4rem !important;
+    min-height: 4rem !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+}
+
+#chat-widget.lunpetshop-chat-widget #chat-toggle.chat-toggle img {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 4rem !important;
+    min-height: 4rem !important;
+    flex: 0 0 auto !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 50% !important;
 }
 
 .lunpetshop-chat-widget .chat-toggle .close-icon {
@@ -85,10 +142,17 @@
     /* Keep absolute positioning to maintain layout */
 }
 
+.lunpetshop-chat-widget.open {
+    /* Ensure wrapper expands to contain chat window when open */
+    width: auto;
+    height: auto;
+    min-width: 24rem;
+}
+
 /* Chat Window */
 .lunpetshop-chat-widget .chat-window {
-    width: 24.5rem; /* w-[392px] */
-    height: clamp(28rem, 68vh, 34rem);
+    width: 24rem; /* w-96 */
+    height: auto;
     max-height: 80vh;
     background: var(--bg-gradient);
     border-radius: 1rem; /* rounded-2xl */
@@ -97,6 +161,7 @@
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--slate-700);
+    position: relative;
 }
 
 .lunpetshop-chat-widget.open .chat-window {
@@ -185,7 +250,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem; /* space-y-3 */
-    min-height: 14rem;
+    max-height: 24rem; /* max-h-96 */
 }
 
 /* Scrollbar */
@@ -242,26 +307,12 @@
 
 /* Quick Actions */
 .lunpetshop-chat-widget .quick-actions {
-    padding: 0.5rem 1rem; /* px-4 py-2 */
-    display: flex;
-    flex-wrap: nowrap;
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
     border-top: 1px solid var(--slate-700);
-    background-color: rgba(30, 41, 59, 0.65);
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--slate-600) transparent;
-    flex-shrink: 0;
-}
-
-.lunpetshop-chat-widget .quick-actions::-webkit-scrollbar {
-    height: 4px;
-}
-
-.lunpetshop-chat-widget .quick-actions::-webkit-scrollbar-thumb {
-    background-color: var(--slate-600);
-    border-radius: 9999px;
+    background-color: rgba(30, 41, 59, 0.5); /* bg-slate-800 bg-opacity-50 */
 }
 
 .lunpetshop-chat-widget .quick-actions.hidden {
@@ -278,12 +329,10 @@
     border: 1px solid var(--slate-600);
     cursor: pointer;
     transition: all 0.2s;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    flex: 0 0 auto;
-    white-space: nowrap;
+    gap: 0.5rem;
 }
 
 .lunpetshop-chat-widget .quick-action-btn:hover {
@@ -297,21 +346,18 @@
     background-color: var(--slate-800);
     border-top: 1px solid var(--slate-700);
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .lunpetshop-chat-widget .chat-input {
     flex: 1;
     background-color: var(--slate-700);
     color: var(--white);
-    padding: 0 1rem;
+    padding: 0.625rem 1rem;
     border-radius: 9999px; /* rounded-full */
     font-size: 0.875rem; /* text-sm */
     border: 1px solid var(--slate-600);
     outline: none;
-    height: 2.75rem;
-    line-height: 2.75rem;
 }
 
 .lunpetshop-chat-widget .chat-input::placeholder {
@@ -324,8 +370,8 @@
 }
 
 .lunpetshop-chat-widget .send-button {
-    width: 2.75rem; /* w-11 */
-    height: 2.75rem; /* h-11 */
+    width: 2.5rem; /* w-10 */
+    height: 2.5rem; /* h-10 */
     background: var(--primary-gradient);
     border-radius: 9999px;
     display: flex;
@@ -349,12 +395,12 @@
     stroke: currentColor;
 }
 
-/* Protect send button from theme conflicts */
+/* Protect send button from theme conflicts (e.g. Cosmobit/LazyPress) */
 #chat-widget.lunpetshop-chat-widget #send-button.send-button {
-    width: 2.75rem !important;
-    height: 2.75rem !important;
-    min-width: 2.75rem !important;
-    min-height: 2.75rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    min-height: 2.5rem !important;
     background: var(--primary-gradient) !important;
     border: none !important;
     padding: 0 !important;
