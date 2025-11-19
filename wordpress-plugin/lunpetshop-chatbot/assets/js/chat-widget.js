@@ -1,1 +1,1 @@
-../../../widget/assets/js/chat-widget.js
+../../../../widget/assets/js/chat-widget.js

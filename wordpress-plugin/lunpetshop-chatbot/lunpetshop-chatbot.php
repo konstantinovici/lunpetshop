@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LùnPetShop KittyCat Chatbot
  * Description: Adds the KittyCat AI chatbot widget to the public-facing site.
- * Version: 0.1.2
+ * Version: 0.2.0
  * Author: LùnPetShop
  */
 
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class LunPetshop_KittyCat_Chatbot {
-    private const VERSION = '0.1.2';
+    private const VERSION = '0.2.0';
     private const OPTION_API_BASE = 'lunpetshop_chatbot_api_base';
     private const OPTION_LANGUAGE = 'lunpetshop_chatbot_initial_language';
 
@@ -69,17 +69,20 @@ final class LunPetshop_KittyCat_Chatbot {
             return;
         }
 
+        $plugin_url = plugin_dir_url(__FILE__);
         ?>
         <div id="chat-widget" class="lunpetshop-chat-widget chat-widget">
             <button id="chat-toggle" class="chat-toggle" aria-label="<?php esc_attr_e('Toggle chat', 'lunpetshop-chatbot'); ?>">
-                <span class="chat-icon">🐱</span>
+                <img src="<?php echo esc_url($plugin_url . 'assets/KittyCatLogo.png'); ?>" alt="KittyCat Logo">
                 <span class="close-icon">✕</span>
             </button>
 
             <div id="chat-window" class="chat-window" role="dialog" aria-live="polite" aria-label="<?php esc_attr_e('KittyCat chatbot window', 'lunpetshop-chatbot'); ?>">
                 <div class="chat-header">
                     <div class="chat-header-content">
-                        <span class="avatar" aria-hidden="true">🐱</span>
+                        <div class="avatar">
+                            <img src="<?php echo esc_url($plugin_url . 'assets/KittyCatLogo.png'); ?>" alt="KittyCat Avatar">
+                        </div>
                         <div class="header-text">
                             <h3><?php esc_html_e('KittyCat', 'lunpetshop-chatbot'); ?></h3>
                             <p><?php esc_html_e('AI Assistant', 'lunpetshop-chatbot'); ?></p>
@@ -89,17 +92,27 @@ final class LunPetshop_KittyCat_Chatbot {
                         <button id="language-toggle" class="language-btn" title="<?php esc_attr_e('Switch language', 'lunpetshop-chatbot'); ?>">
                             <span id="current-lang">VI</span>
                         </button>
-                        <button id="close-chat" class="close-btn" aria-label="<?php esc_attr_e('Close chat', 'lunpetshop-chatbot'); ?>">✕</button>
+                        <button id="close-chat" class="close-btn" aria-label="<?php esc_attr_e('Close chat', 'lunpetshop-chatbot'); ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 18 18"/></svg>
+                        </button>
                     </div>
                 </div>
 
-                <div id="chat-messages" class="chat-messages"></div>
+                <div id="chat-messages" class="chat-messages custom-scrollbar"></div>
 
                 <div id="quick-actions" class="quick-actions">
-                    <button class="quick-action-btn" data-action="cat">🐱 <?php esc_html_e('Products for my cat', 'lunpetshop-chatbot'); ?></button>
-                    <button class="quick-action-btn" data-action="dog">🐕 <?php esc_html_e('Products for my dog', 'lunpetshop-chatbot'); ?></button>
-                    <button class="quick-action-btn" data-action="business">🏪 <?php esc_html_e('About the business', 'lunpetshop-chatbot'); ?></button>
-                    <button class="quick-action-btn" data-action="contact">📞 <?php esc_html_e('Contact info', 'lunpetshop-chatbot'); ?></button>
+                    <button class="quick-action-btn" data-action="cat">
+                        <span>🐱</span> <?php esc_html_e('Products for my cat', 'lunpetshop-chatbot'); ?>
+                    </button>
+                    <button class="quick-action-btn" data-action="dog">
+                        <span>🐕</span> <?php esc_html_e('Products for my dog', 'lunpetshop-chatbot'); ?>
+                    </button>
+                    <button class="quick-action-btn" data-action="business">
+                        <span>ℹ️</span> <?php esc_html_e('About the business', 'lunpetshop-chatbot'); ?>
+                    </button>
+                    <button class="quick-action-btn" data-action="contact">
+                        <span>📞</span> <?php esc_html_e('Contact info', 'lunpetshop-chatbot'); ?>
+                    </button>
                 </div>
 
                 <div class="chat-input-container">
@@ -111,9 +124,7 @@ final class LunPetshop_KittyCat_Chatbot {
                         autocomplete="off"
                     />
                     <button id="send-button" class="send-button" aria-label="<?php esc_attr_e('Send message', 'lunpetshop-chatbot'); ?>">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" role="img" aria-hidden="true">
-                            <path d="M2 10L18 2L12 10L18 18L2 10Z" fill="currentColor"/>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                     </button>
                 </div>
             </div>

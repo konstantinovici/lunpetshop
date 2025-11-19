@@ -321,9 +321,10 @@ How can I help you today? 🐾`;
             messageDiv.classList.add('error-message');
         }
 
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'message-avatar';
-        avatarDiv.textContent = role === 'assistant' ? '🐱' : '👤';
+        // Avatar removed to match new design
+        // const avatarDiv = document.createElement('div');
+        // avatarDiv.className = 'message-avatar';
+        // avatarDiv.textContent = role === 'assistant' ? '🐱' : '👤';
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
@@ -348,7 +349,7 @@ How can I help you today? 🐾`;
             contentDiv.appendChild(detailsBtn);
         }
 
-        messageDiv.appendChild(avatarDiv);
+        // messageDiv.appendChild(avatarDiv);
         messageDiv.appendChild(contentDiv);
 
         this.messagesContainer.appendChild(messageDiv);
@@ -361,9 +362,10 @@ How can I help you today? 🐾`;
         messageDiv.className = 'message assistant';
         messageDiv.id = typingId;
 
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'message-avatar';
-        avatarDiv.textContent = '🐱';
+        // Avatar removed
+        // const avatarDiv = document.createElement('div');
+        // avatarDiv.className = 'message-avatar';
+        // avatarDiv.textContent = '🐱';
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
@@ -373,7 +375,7 @@ How can I help you today? 🐾`;
         typingIndicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
         
         contentDiv.appendChild(typingIndicator);
-        messageDiv.appendChild(avatarDiv);
+        // messageDiv.appendChild(avatarDiv);
         messageDiv.appendChild(contentDiv);
 
         this.messagesContainer.appendChild(messageDiv);

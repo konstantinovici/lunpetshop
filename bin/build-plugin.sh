@@ -63,8 +63,8 @@ if [ -L "$PLUGIN_DIR/assets/css/chat-widget.css" ]; then
     zip -r "$ZIP_FILE" . -x "*.git*" "*.DS_Store" > /dev/null
     # Restore symlinks
     rm assets/css/chat-widget.css assets/js/chat-widget.js 2>/dev/null || true
-    ln -sf ../../../widget/assets/css/chat-widget.css assets/css/chat-widget.css 2>/dev/null || true
-    ln -sf ../../../widget/assets/js/chat-widget.js assets/js/chat-widget.js 2>/dev/null || true
+    ln -sf ../../../../widget/assets/css/chat-widget.css assets/css/chat-widget.css 2>/dev/null || true
+    ln -sf ../../../../widget/assets/js/chat-widget.js assets/js/chat-widget.js 2>/dev/null || true
 fi
 
 echo "✅ Plugin built successfully: $ZIP_FILE"
