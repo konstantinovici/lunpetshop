@@ -15,7 +15,7 @@ from .prompts import get_greeting
 app = FastAPI(
     title="LùnPetShop KittyCat Chatbot API",
     description="AI Chatbot API for LùnPetShop pet store",
-    version="0.2.1",
+    version="0.2.2",
 )
 
 # Enable CORS
