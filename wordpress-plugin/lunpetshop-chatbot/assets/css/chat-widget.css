@@ -50,7 +50,9 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    right: 0;
     overflow: hidden;
     padding: 0;
 }
@@ -100,7 +102,10 @@
 }
 
 .lunpetshop-chat-widget.open .chat-toggle {
-    display: none; /* Or transform to close button if preferred, but React snippet hides it */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    /* Keep absolute positioning to maintain layout */
 }
 
 /* Chat Window */
