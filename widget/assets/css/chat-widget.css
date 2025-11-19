@@ -215,7 +215,8 @@
 
 .lunpetshop-chat-widget .message.user .message-content {
     background-color: var(--amber-500);
-    color: var(--white);
+    color: var(--slate-900);
+    font-weight: 500;
     border-bottom-right-radius: 0;
 }
 

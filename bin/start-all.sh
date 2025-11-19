@@ -108,7 +108,8 @@ start_backend() {
             # Start backend in background
             (
                 export PORT=$port
-                python main.py >> "$LOG_DIR/backend.log" 2>&1
+                cd backend
+                python main.py >> "../$LOG_DIR/backend.log" 2>&1
             ) &
             
             local backend_pid=$!
