@@ -69,11 +69,20 @@ final class LunPetshop_KittyCat_Chatbot {
             return;
         }
 
+        // Use plugins_url() for better WordPress compatibility
+        $logo_url = plugins_url('assets/KittyCatLogo.png', __FILE__);
         $plugin_url = plugin_dir_url(__FILE__);
+        
+        // Debug logging (check WordPress debug.log or enable WP_DEBUG_LOG)
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[KittyCat Chatbot] Plugin URL: ' . $plugin_url);
+            error_log('[KittyCat Chatbot] Logo URL (plugins_url): ' . $logo_url);
+            error_log('[KittyCat Chatbot] Logo URL (plugin_dir_url): ' . $plugin_url . 'assets/KittyCatLogo.png');
+        }
         ?>
         <div id="chat-widget" class="lunpetshop-chat-widget chat-widget">
             <button id="chat-toggle" class="chat-toggle" aria-label="<?php esc_attr_e('Toggle chat', 'lunpetshop-chatbot'); ?>">
-                <img src="<?php echo esc_url($plugin_url . 'assets/KittyCatLogo.png'); ?>" alt="KittyCat Logo">
+                <img src="<?php echo esc_url($logo_url); ?>" alt="KittyCat Logo" onerror="console.error('Failed to load KittyCat logo from: <?php echo esc_js($logo_url); ?>');">
                 <span class="close-icon">✕</span>
             </button>
 
@@ -81,7 +90,7 @@ final class LunPetshop_KittyCat_Chatbot {
                 <div class="chat-header">
                     <div class="chat-header-content">
                         <div class="avatar">
-                            <img src="<?php echo esc_url($plugin_url . 'assets/KittyCatLogo.png'); ?>" alt="KittyCat Avatar">
+                            <img src="<?php echo esc_url($logo_url); ?>" alt="KittyCat Avatar" onerror="console.error('Failed to load KittyCat avatar from: <?php echo esc_js($logo_url); ?>');">
                         </div>
                         <div class="header-text">
                             <h3><?php esc_html_e('KittyCat', 'lunpetshop-chatbot'); ?></h3>
