@@ -79,6 +79,74 @@ fi
 # Activate virtual environment
 source .venv/bin/activate
 
+# Function to check if a port is in use
+check_port() {
+    local port=$1
+    if command -v lsof >/dev/null 2>&1; then
+        lsof -i :"$port" >/dev/null 2>&1
+        return $?
+    elif command -v netstat >/dev/null 2>&1; then
+        netstat -an | grep -q ":$port.*LISTEN"
+        return $?
+    else
+        (echo >/dev/tcp/localhost/"$port") >/dev/null 2>&1
+        return $?
+    fi
+}
+
+# Check for existing processes and restart them
+OLD_TUNNEL_URL=""
+if [ -f "$PID_DIR/backend.pid" ] || [ -f "$PID_DIR/tunnel.pid" ] || check_port "$PORT"; then
+    echo -e "${YELLOW}🔄 Detected existing processes, restarting...${NC}"
+    
+    # Save old tunnel URL if it exists
+    if [ -f "$PID_DIR/tunnel.url" ]; then
+        OLD_TUNNEL_URL=$(cat "$PID_DIR/tunnel.url")
+        echo -e "${BLUE}   Preserving tunnel URL: $OLD_TUNNEL_URL${NC}"
+    fi
+    
+    # Kill existing backend process
+    if [ -f "$PID_DIR/backend.pid" ]; then
+        BACKEND_PID=$(cat "$PID_DIR/backend.pid" 2>/dev/null)
+        if [ -n "$BACKEND_PID" ] && kill -0 "$BACKEND_PID" 2>/dev/null; then
+            echo -e "${YELLOW}   Stopping existing backend (PID: $BACKEND_PID)...${NC}"
+            kill "$BACKEND_PID" 2>/dev/null || true
+            sleep 2
+        fi
+        rm -f "$PID_DIR/backend.pid"
+    fi
+    
+    # Kill existing tunnel process
+    if [ -f "$PID_DIR/tunnel.pid" ]; then
+        TUNNEL_PID=$(cat "$PID_DIR/tunnel.pid" 2>/dev/null)
+        if [ -n "$TUNNEL_PID" ] && kill -0 "$TUNNEL_PID" 2>/dev/null; then
+            echo -e "${YELLOW}   Stopping existing tunnel (PID: $TUNNEL_PID)...${NC}"
+            kill "$TUNNEL_PID" 2>/dev/null || true
+            sleep 2
+        fi
+        rm -f "$PID_DIR/tunnel.pid"
+    fi
+    
+    # Kill any process using the port
+    if check_port "$PORT"; then
+        if command -v lsof >/dev/null 2>&1; then
+            PORT_PID=$(lsof -ti :"$PORT" 2>/dev/null | head -1)
+            if [ -n "$PORT_PID" ]; then
+                echo -e "${YELLOW}   Killing process on port $PORT (PID: $PORT_PID)...${NC}"
+                kill "$PORT_PID" 2>/dev/null || true
+                sleep 2
+            fi
+        fi
+    fi
+    
+    # Kill any remaining child processes from previous runs
+    pkill -f "start_backend\|start_tunnel\|monitor_processes" 2>/dev/null || true
+    sleep 1
+    
+    echo -e "${GREEN}✅ Cleaned up existing processes${NC}"
+    echo ""
+fi
+
 # Health check function
 health_check() {
     local service=$1
@@ -135,6 +203,7 @@ start_tunnel() {
     local port=$1
     local tunnel_type=$2
     local subdomain=$3
+    local old_url=$4  # Old tunnel URL to preserve
     
     while true; do
         set +e  # Don't exit on errors in monitoring loop
@@ -142,6 +211,10 @@ start_tunnel() {
             case $tunnel_type in
                 cloudflared|cf)
                     echo -e "${BLUE}🌐 Starting Cloudflare Tunnel...${NC}"
+                    if [ -n "$old_url" ]; then
+                        echo -e "${YELLOW}   Attempting to reuse: $old_url${NC}"
+                        echo "$old_url" > "$PID_DIR/tunnel.url"
+                    fi
                     
                     (
                         cloudflared tunnel --url "http://localhost:$port" 2>&1 | \
@@ -151,7 +224,12 @@ start_tunnel() {
                             if echo "$line" | grep -qE "https://.*\.trycloudflare\.com"; then
                                 TUNNEL_URL=$(echo "$line" | grep -oE "https://[a-zA-Z0-9-]+\.trycloudflare\.com" | head -1)
                                 if [ -n "$TUNNEL_URL" ]; then
-                                    echo -e "${GREEN}✅ Tunnel URL: $TUNNEL_URL${NC}" >&2
+                                    # If we have an old URL and it matches, keep it; otherwise use new one
+                                    if [ -n "$old_url" ] && [ "$TUNNEL_URL" = "$old_url" ]; then
+                                        echo -e "${GREEN}✅ Tunnel URL (reused): $TUNNEL_URL${NC}" >&2
+                                    else
+                                        echo -e "${GREEN}✅ Tunnel URL (new): $TUNNEL_URL${NC}" >&2
+                                    fi
                                     echo "$TUNNEL_URL" > "$PID_DIR/tunnel.url"
                                 fi
                             fi
@@ -170,6 +248,12 @@ start_tunnel() {
                         continue
                     fi
                     
+                    # For localtunnel, we can reuse the subdomain to get the same URL
+                    if [ -n "$old_url" ]; then
+                        echo -e "${YELLOW}   Attempting to reuse: $old_url${NC}"
+                        echo "$old_url" > "$PID_DIR/tunnel.url"
+                    fi
+                    
                     (
                         "$LT_BIN" --port "$port" --subdomain "$subdomain" 2>&1 | \
                         while IFS= read -r line; do
@@ -178,7 +262,12 @@ start_tunnel() {
                             if echo "$line" | grep -qE "https://.*\.loca\.lt"; then
                                 TUNNEL_URL=$(echo "$line" | grep -oE "https://[a-zA-Z0-9-]+\.loca\.lt" | head -1)
                                 if [ -n "$TUNNEL_URL" ]; then
-                                    echo -e "${GREEN}✅ Tunnel URL: $TUNNEL_URL${NC}" >&2
+                                    # If we have an old URL and it matches, keep it; otherwise use new one
+                                    if [ -n "$old_url" ] && [ "$TUNNEL_URL" = "$old_url" ]; then
+                                        echo -e "${GREEN}✅ Tunnel URL (reused): $TUNNEL_URL${NC}" >&2
+                                    else
+                                        echo -e "${GREEN}✅ Tunnel URL (new): $TUNNEL_URL${NC}" >&2
+                                    fi
                                     echo "$TUNNEL_URL" > "$PID_DIR/tunnel.url"
                                 fi
                             fi
@@ -202,7 +291,18 @@ start_tunnel() {
             # Check if tunnel URL was captured
             if [ -f "$PID_DIR/tunnel.url" ]; then
                 TUNNEL_URL=$(cat "$PID_DIR/tunnel.url")
-                echo -e "${GREEN}✅ Tunnel is active: $TUNNEL_URL${NC}"
+                if [ -n "$old_url" ] && [ "$TUNNEL_URL" = "$old_url" ]; then
+                    echo -e "${GREEN}✅ Tunnel is active (reused): $TUNNEL_URL${NC}"
+                else
+                    echo -e "${GREEN}✅ Tunnel is active: $TUNNEL_URL${NC}"
+                    if [ -n "$old_url" ] && [ "$TUNNEL_URL" != "$old_url" ]; then
+                        echo -e "${YELLOW}   Note: New tunnel URL (old was: $old_url)${NC}"
+                    fi
+                fi
+            elif [ -n "$old_url" ]; then
+                # If we couldn't get a new URL but had an old one, show it
+                echo -e "${YELLOW}⚠️  Using preserved tunnel URL: $old_url${NC}"
+                echo "$old_url" > "$PID_DIR/tunnel.url"
             fi
         fi
         set -e  # Re-enable error exit
@@ -262,7 +362,7 @@ BACKEND_MONITOR_PID=$!
 sleep 5
 
 # Start tunnel in background
-start_tunnel "$PORT" "$TUNNEL_TYPE" "$SUBDOMAIN" &
+start_tunnel "$PORT" "$TUNNEL_TYPE" "$SUBDOMAIN" "$OLD_TUNNEL_URL" &
 TUNNEL_MONITOR_PID=$!
 
 # Start process monitor
