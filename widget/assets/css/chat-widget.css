@@ -326,6 +326,35 @@
     stroke: currentColor;
 }
 
+/* Protect send button from theme conflicts */
+#chat-widget.lunpetshop-chat-widget #send-button.send-button {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    min-height: 2.5rem !important;
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+    color: var(--slate-900) !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+#chat-widget.lunpetshop-chat-widget #send-button.send-button svg {
+    width: 1.125rem !important;
+    height: 1.125rem !important;
+    min-width: 1.125rem !important;
+    min-height: 1.125rem !important;
+    display: block !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    flex-shrink: 0 !important;
+}
+
 /* Language Toggle - Custom addition to match style */
 .lunpetshop-chat-widget .language-btn {
     background: rgba(255, 255, 255, 0.2);
