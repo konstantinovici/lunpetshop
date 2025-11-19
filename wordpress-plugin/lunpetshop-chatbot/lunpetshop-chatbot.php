@@ -36,16 +36,6 @@ final class LunPetshop_KittyCat_Chatbot {
             self::VERSION
         );
 
-        // Load theme conflict simulator in debug mode to test CSS collisions locally
-        if (defined('WP_DEBUG') && WP_DEBUG && defined('LUNPETSHOP_SIMULATE_THEME_CONFLICTS') && LUNPETSHOP_SIMULATE_THEME_CONFLICTS) {
-            wp_enqueue_style(
-                'lunpetshop-chatbot-theme-conflict-simulator',
-                $plugin_url . 'assets/css/theme-conflict-simulator.css',
-                ['lunpetshop-chatbot'],
-                self::VERSION
-            );
-        }
-
         wp_enqueue_script(
             'lunpetshop-chatbot-marked',
             'https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js',
@@ -89,8 +79,13 @@ final class LunPetshop_KittyCat_Chatbot {
             error_log('[KittyCat Chatbot] Logo URL (plugins_url): ' . $logo_url);
             error_log('[KittyCat Chatbot] Logo URL (plugin_dir_url): ' . $plugin_url . 'assets/KittyCatLogo.png');
         }
+        $style_url = $plugin_url . 'assets/css/chat-widget.css';
         ?>
-        <div id="chat-widget" class="lunpetshop-chat-widget chat-widget">
+        <div
+            id="chat-widget"
+            class="lunpetshop-chat-widget chat-widget"
+            data-style-url="<?php echo esc_url($style_url); ?>"
+        >
             <button id="chat-toggle" class="chat-toggle" aria-label="<?php esc_attr_e('Toggle chat', 'lunpetshop-chatbot'); ?>">
                 <img src="<?php echo esc_url($logo_url); ?>" alt="KittyCat Logo" onerror="console.error('Failed to load KittyCat logo from: <?php echo esc_js($logo_url); ?>');">
                 <span class="close-icon">✕</span>

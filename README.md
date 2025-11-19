@@ -73,6 +73,14 @@ lunpetshop/
 Widget UI (widget/) → Embedded in WordPress & Local Demo
 ```
 
+#### Why keep `widget/`, `wordpress-plugin/`, and `wordpress-debug-config/` separate?
+
+- `widget/` is the single source of truth for all UI assets; the FastAPI demo (`backend/src/api.py`), every document in `docs/`, and the build scripts under `bin/` assume those files live here.
+- `wordpress-plugin/` is the exact directory that gets zipped and mounted by `docker-compose.yml`, `bin/build-plugin.sh`, and `bin/setup-local-wordpress.sh`. Keeping it isolated prevents non-WordPress files from leaking into the plugin bundle.
+- `wordpress-debug-config/` contains the optional snippet that `docker-compose.yml` bind-mounts into the running WordPress container as `wp-config-debug.php`. Splitting it out keeps sensitive overrides out of the plugin itself.
+
+If we ever collapse these directories, we must update `docker-compose.yml`, every script in `bin/`, and the guides under `docs/` that refer to the current paths. For now we keep the separation to avoid churn and accidental regressions.
+
 ### 🎨 Key Principle: Single Source of Truth
 
 **Widget UI code lives in `widget/` directory**

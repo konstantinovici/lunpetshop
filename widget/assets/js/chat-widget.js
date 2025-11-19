@@ -1,5 +1,34 @@
 // Chat Widget JavaScript
 
+const LUNPETSHOP_CHAT_WIDGET_SCRIPT_URL = (() => {
+    if (document.currentScript && document.currentScript.src) {
+        return document.currentScript.src;
+    }
+
+    const scripts = document.getElementsByTagName('script');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+        const src = scripts[i].src || '';
+        if (src.includes('chat-widget.js')) {
+            return src;
+        }
+    }
+
+    return '';
+})();
+
+const LUNPETSHOP_CHAT_WIDGET_DEFAULT_STYLE_URL = (() => {
+    if (!LUNPETSHOP_CHAT_WIDGET_SCRIPT_URL) {
+        return '';
+    }
+
+    try {
+        return new URL('../css/chat-widget.css', LUNPETSHOP_CHAT_WIDGET_SCRIPT_URL).toString();
+    } catch (error) {
+        console.warn('ChatWidget: Unable to derive default style URL', error);
+        return '';
+    }
+})();
+
 class ChatWidget {
     constructor(options = {}) {
         // Merge with global config from WordPress plugin if available
@@ -16,6 +45,9 @@ class ChatWidget {
         this.language = this.config.initialLanguage;
         this.conversationStarted = false;
         this.apiBaseUrl = this.normalizeBaseUrl(this.config.apiBaseUrl);
+        this.shadowRoot = null;
+        this.shadowWrapper = null;
+        this.widget = null;
         
         // Debug log to verify config is loaded
         console.log('🐱 KittyCat Chatbot initialized:', {
@@ -25,6 +57,7 @@ class ChatWidget {
             rawConfig: window.KittyCatChatbotConfig
         });
         
+        this.initShadowDom();
         this.initElements();
         this.attachEventListeners();
         this.updateInputPlaceholder();
@@ -59,15 +92,86 @@ class ChatWidget {
     }
 
     initElements() {
-        this.widget = document.getElementById('chat-widget');
-        this.toggleBtn = document.getElementById('chat-toggle');
-        this.closeBtn = document.getElementById('close-chat');
-        this.messagesContainer = document.getElementById('chat-messages');
-        this.inputField = document.getElementById('chat-input');
-        this.sendBtn = document.getElementById('send-button');
-        this.quickActions = document.getElementById('quick-actions');
-        this.languageBtn = document.getElementById('language-toggle');
-        this.currentLangSpan = document.getElementById('current-lang');
+        if (!this.shadowRoot || !this.widget) {
+            this.initShadowDom();
+        }
+
+        this.toggleBtn = this.shadowRoot.getElementById('chat-toggle');
+        this.closeBtn = this.shadowRoot.getElementById('close-chat');
+        this.messagesContainer = this.shadowRoot.getElementById('chat-messages');
+        this.inputField = this.shadowRoot.getElementById('chat-input');
+        this.sendBtn = this.shadowRoot.getElementById('send-button');
+        this.quickActions = this.shadowRoot.getElementById('quick-actions');
+        this.languageBtn = this.shadowRoot.getElementById('language-toggle');
+        this.currentLangSpan = this.shadowRoot.getElementById('current-lang');
+    }
+
+    initShadowDom() {
+        this.widget = this.widget || document.getElementById('chat-widget');
+
+        if (!this.widget) {
+            throw new Error('ChatWidget: Host element #chat-widget not found.');
+        }
+
+        if (this.widget.shadowRoot) {
+            this.shadowRoot = this.widget.shadowRoot;
+            const wrapperSelector = this.widget.id ? `#${this.widget.id}` : '.lunpetshop-chat-widget';
+            this.shadowWrapper = this.shadowRoot.querySelector(wrapperSelector) || this.shadowRoot.querySelector('.lunpetshop-chat-widget');
+            this.syncShadowWrapperState();
+            return;
+        }
+
+        const templateHtml = this.widget.innerHTML;
+        const shadowRoot = this.widget.attachShadow({ mode: 'open' });
+        this.widget.innerHTML = '';
+
+        this.injectShadowStyles(shadowRoot);
+
+        const wrapper = document.createElement('div');
+        wrapper.className = this.widget.className || 'lunpetshop-chat-widget';
+        if (this.widget.id) {
+            wrapper.id = this.widget.id;
+        }
+        wrapper.innerHTML = templateHtml;
+        shadowRoot.appendChild(wrapper);
+
+        this.shadowRoot = shadowRoot;
+        this.shadowWrapper = wrapper;
+        this.syncShadowWrapperState();
+    }
+
+    syncShadowWrapperState() {
+        if (!this.shadowWrapper || !this.widget) {
+            return;
+        }
+
+        const isOpen = this.widget.classList.contains('open');
+        this.shadowWrapper.classList.toggle('open', isOpen);
+    }
+
+    injectShadowStyles(shadowRoot) {
+        const styleUrl = this.getStyleUrl();
+
+        if (styleUrl) {
+            const styleLink = document.createElement('link');
+            styleLink.rel = 'stylesheet';
+            styleLink.href = styleUrl;
+            shadowRoot.appendChild(styleLink);
+        } else {
+            console.warn('ChatWidget: Style URL not provided; widget may be unstyled inside Shadow DOM.');
+        }
+    }
+
+    getStyleUrl() {
+        if (this.config.styleUrl) {
+            return this.config.styleUrl;
+        }
+
+        if (this.widget?.dataset?.styleUrl) {
+            return this.widget.dataset.styleUrl;
+        }
+
+        return LUNPETSHOP_CHAT_WIDGET_DEFAULT_STYLE_URL;
     }
 
     attachEventListeners() {
@@ -85,7 +189,7 @@ class ChatWidget {
         });
 
         // Quick actions
-        const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+        const quickActionBtns = this.shadowRoot.querySelectorAll('.quick-action-btn');
         quickActionBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const action = btn.dataset.action;
@@ -100,6 +204,7 @@ class ChatWidget {
     toggleChat() {
         this.isOpen = !this.isOpen;
         this.widget.classList.toggle('open', this.isOpen);
+        this.syncShadowWrapperState();
 
         if (this.isOpen && !this.conversationStarted) {
             // Focus input when opening
@@ -385,7 +490,7 @@ How can I help you today? 🐾`;
     }
 
     removeTypingIndicator(typingId) {
-        const typingElement = document.getElementById(typingId);
+        const typingElement = this.shadowRoot.getElementById(typingId);
         if (typingElement) {
             typingElement.remove();
         }
