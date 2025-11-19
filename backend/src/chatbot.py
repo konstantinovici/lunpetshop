@@ -106,7 +106,7 @@ def get_llm():
         # xAI uses OpenAI-compatible API
         # Latest model: Grok 4 Fast with 2M context window
         llm = ChatOpenAI(
-            model="grok-4-fast",  # Latest xAI model (2M context window)
+            model="grok-4-fast-non-reasoning",  # Latest xAI model (2M context window)
             api_key=api_key,
             base_url="https://api.x.ai/v1",
             temperature=0.7,
