@@ -28,6 +28,10 @@
     bottom: 1.5rem;
     right: 1.5rem;
     z-index: 9999;
+    min-width: 4rem;
+    min-height: 4rem;
+    contain: layout paint style;
+    isolation: isolate;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
