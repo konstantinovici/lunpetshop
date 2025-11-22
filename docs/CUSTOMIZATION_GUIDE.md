@@ -103,3 +103,4 @@ Script này sẽ sao chép các thay đổi của bạn vào thư mục plugin v
     Clear your browser cache or try Incognito mode. If using WordPress, reinstall the plugin zip file.
     Xóa cache trình duyệt hoặc thử chế độ Ẩn danh. Nếu dùng WordPress, hãy cài lại tệp zip plugin.
 
+
