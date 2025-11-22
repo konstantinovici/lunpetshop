@@ -1,21 +1,63 @@
 """FastAPI backend for LùnPetShop chatbot."""
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional
+from contextlib import asynccontextmanager
 import uuid
+import time
+import asyncio
+import os
 from langchain_core.messages import HumanMessage
 
 from .chatbot import graph
 from .prompts import get_greeting
+from .metrics import metrics_collector, get_system_metrics, get_service_health
+from .discord_monitor import DiscordHealthMonitor
+
+# Initialize Discord monitor
+discord_monitor = DiscordHealthMonitor()
+monitor_task = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup/shutdown."""
+    # Startup
+    global monitor_task
+    
+    if discord_monitor.enabled:
+        print("🔔 Starting Discord health monitoring...")
+        # Start monitoring in background
+        interval = int(os.getenv("DISCORD_CHECK_INTERVAL", "3600"))  # Default 1 hour
+        monitor_task = asyncio.create_task(
+            discord_monitor.start_monitoring(interval_seconds=interval)
+        )
+        print(f"✅ Discord monitoring started (checking every {interval}s)")
+    else:
+        print("ℹ️  Discord monitoring disabled (set DISCORD_WEBHOOK_URL to enable)")
+    
+    yield
+    
+    # Shutdown
+    if monitor_task:
+        print("🛑 Stopping Discord monitoring...")
+        monitor_task.cancel()
+        try:
+            await monitor_task
+        except asyncio.CancelledError:
+            pass
+        print("✅ Discord monitoring stopped")
+
 
 app = FastAPI(
     title="LùnPetShop KittyCat Chatbot API",
     description="AI Chatbot API for LùnPetShop pet store",
-    version="0.4.0",
+    version="0.4.1",
+    lifespan=lifespan,
 )
 
 # Enable CORS
@@ -26,6 +68,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Middleware to track request metrics
+@app.middleware("http")
+async def track_metrics(request: Request, call_next):
+    """Track request metrics."""
+    start_time = time.time()
+    endpoint = f"{request.method} {request.url.path}"
+    
+    try:
+        response = await call_next(request)
+        response_time = time.time() - start_time
+        is_error = response.status_code >= 400
+        metrics_collector.record_request(endpoint, response_time, is_error)
+        return response
+    except Exception as e:
+        response_time = time.time() - start_time
+        metrics_collector.record_request(endpoint, response_time, is_error=True)
+        raise
 
 
 # Request/Response Models
@@ -58,8 +119,36 @@ class GreetingResponse(BaseModel):
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
+    """Basic health check endpoint."""
     return {"status": "healthy", "service": "LùnPetShop KittyCat Chatbot"}
+
+
+# Comprehensive health metrics endpoint
+@app.get("/health/metrics")
+async def health_metrics():
+    """Comprehensive health metrics endpoint."""
+    app_stats = metrics_collector.get_stats()
+    system_metrics = get_system_metrics()
+    service_health = get_service_health()
+    
+    # Determine overall health status
+    overall_status = "healthy"
+    if app_stats["error_rate"] > 0.1:  # More than 10% error rate
+        overall_status = "degraded"
+    if app_stats["error_rate"] > 0.5:  # More than 50% error rate
+        overall_status = "unhealthy"
+    if not service_health["xai_api"]["configured"]:
+        overall_status = "degraded"  # Can still work with rule-based responses
+    
+    return {
+        "status": overall_status,
+        "service": "LùnPetShop KittyCat Chatbot",
+        "version": "0.4.0",
+        "timestamp": time.time(),
+        "application": app_stats,
+        "system": system_metrics,
+        "services": service_health,
+    }
 
 
 # Greeting endpoint

@@ -1,11 +1,14 @@
 """Main entry point for LùnPetShop KittyCat Chatbot."""
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import uvicorn
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from project root
+backend_dir = Path(__file__).parent
+project_root = backend_dir.parent
+load_dotenv(project_root / ".env")  # Load from project root .env file
 
 # Check for required environment variables
 if not os.getenv("XAI_API_KEY"):
