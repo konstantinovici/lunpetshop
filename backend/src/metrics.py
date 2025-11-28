@@ -146,5 +146,85 @@ def get_service_health() -> Dict:
             health_status["xai_api"]["status"] = "error"
             health_status["xai_api"]["error"] = str(e)
     
+    # Check tunnel accessibility (if tunnel URL file exists)
+    try:
+        from pathlib import Path
+        backend_dir = Path(__file__).parent.parent
+        project_root = backend_dir.parent
+        tunnel_url_file = project_root / ".pids" / "tunnel.url"
+        
+        if tunnel_url_file.exists():
+            tunnel_url = tunnel_url_file.read_text().strip()
+            health_status["tunnel"] = {
+                "url": tunnel_url,
+                "status": "unknown"
+            }
+            
+            # Test tunnel accessibility
+            try:
+                import httpx
+                response = httpx.get(f"{tunnel_url}/health", timeout=5.0)
+                if response.status_code == 200:
+                    health_status["tunnel"]["status"] = "healthy"
+                else:
+                    health_status["tunnel"]["status"] = "unhealthy"
+                    health_status["tunnel"]["error"] = f"HTTP {response.status_code}"
+            except httpx.TimeoutException:
+                health_status["tunnel"]["status"] = "unhealthy"
+                health_status["tunnel"]["error"] = "Timeout - tunnel unreachable"
+            except httpx.ConnectError:
+                health_status["tunnel"]["status"] = "unhealthy"
+                health_status["tunnel"]["error"] = "Connection error - tunnel down"
+            except Exception as e:
+                health_status["tunnel"]["status"] = "unhealthy"
+                health_status["tunnel"]["error"] = str(e)
+        else:
+            health_status["tunnel"] = {
+                "status": "not_configured",
+                "message": "No tunnel URL file found"
+            }
+    except Exception as e:
+        health_status["tunnel"] = {
+            "status": "error",
+            "error": str(e)
+        }
+    
     return health_status
+
+
+def test_chat_endpoint() -> Dict:
+    """Test if the chat endpoint is actually working."""
+    try:
+        from .chatbot import graph
+        from langchain_core.messages import HumanMessage
+        
+        # Try a simple test invocation
+        test_input = {
+            "messages": [HumanMessage(content="test")],
+            "language": "vi",
+        }
+        config = {"configurable": {"thread_id": "health-check-test"}}
+        
+        result = graph.invoke(test_input, config)
+        
+        # Check if we got a valid response
+        if result and "messages" in result and len(result["messages"]) > 0:
+            return {
+                "status": "healthy",
+                "test_passed": True,
+                "response_received": True
+            }
+        else:
+            return {
+                "status": "degraded",
+                "test_passed": False,
+                "error": "No response from graph"
+            }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "test_passed": False,
+            "error": str(e),
+            "error_type": type(e).__name__
+        }
 

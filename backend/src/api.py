@@ -15,7 +15,7 @@ from langchain_core.messages import HumanMessage
 
 from .chatbot import graph
 from .prompts import get_greeting
-from .metrics import metrics_collector, get_system_metrics, get_service_health
+from .metrics import metrics_collector, get_system_metrics, get_service_health, test_chat_endpoint
 from .discord_monitor import DiscordHealthMonitor
 
 # Initialize Discord monitor
@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="LùnPetShop KittyCat Chatbot API",
     description="AI Chatbot API for LùnPetShop pet store",
-    version="0.4.1",
+    version="0.4.2",
     lifespan=lifespan,
 )
 
@@ -131,13 +131,33 @@ async def health_metrics():
     system_metrics = get_system_metrics()
     service_health = get_service_health()
     
+    # Test actual chat endpoint functionality
+    chat_endpoint_test = test_chat_endpoint()
+    
     # Determine overall health status
     overall_status = "healthy"
+    
+    # Check tunnel first (critical for production)
+    tunnel_status = service_health.get("tunnel", {}).get("status", "unknown")
+    if tunnel_status == "unhealthy":
+        overall_status = "unhealthy"  # Tunnel down = production broken
+    elif tunnel_status == "not_configured" and overall_status == "healthy":
+        overall_status = "degraded"  # No tunnel = can't serve production
+    
+    # Check chat endpoint (most critical for functionality)
+    if chat_endpoint_test["status"] == "unhealthy":
+        overall_status = "unhealthy"
+    elif chat_endpoint_test["status"] == "degraded" and overall_status == "healthy":
+        overall_status = "degraded"
+    
+    # Check error rates
     if app_stats["error_rate"] > 0.1:  # More than 10% error rate
         overall_status = "degraded"
     if app_stats["error_rate"] > 0.5:  # More than 50% error rate
         overall_status = "unhealthy"
-    if not service_health["xai_api"]["configured"]:
+    
+    # xAI API not configured is OK (rule-based responses work)
+    if not service_health["xai_api"]["configured"] and overall_status == "healthy":
         overall_status = "degraded"  # Can still work with rule-based responses
     
     return {
@@ -148,6 +168,9 @@ async def health_metrics():
         "application": app_stats,
         "system": system_metrics,
         "services": service_health,
+        "endpoints": {
+            "chat": chat_endpoint_test
+        }
     }
 
 

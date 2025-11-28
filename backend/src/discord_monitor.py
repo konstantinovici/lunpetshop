@@ -43,6 +43,7 @@ class DiscordHealthMonitor:
         app_stats = metrics.get("application", {})
         system_metrics = metrics.get("system", {})
         services = metrics.get("services", {})
+        endpoints = metrics.get("endpoints", {})
         
         # Build embed
         embed = {
@@ -101,9 +102,33 @@ class DiscordHealthMonitor:
             xai_configured = xai_status.get("configured", False)
             xai_status_text = "✅ Configured" if xai_configured else "⚠️ Not Configured"
             
+            service_text = f"**xAI API:** {xai_status_text}"
+            
+            # Add tunnel status
+            tunnel_info = services.get("tunnel", {})
+            if tunnel_info:
+                tunnel_status = tunnel_info.get("status", "unknown")
+                tunnel_emoji = "✅" if tunnel_status == "healthy" else ("⚠️" if tunnel_status == "degraded" else "❌")
+                tunnel_url = tunnel_info.get("url", "N/A")
+                if tunnel_url != "N/A" and len(tunnel_url) > 40:
+                    tunnel_url = tunnel_url[:37] + "..."
+                service_text += f"\n**Tunnel:** {tunnel_emoji} {tunnel_status.title()}"
+                if tunnel_status != "healthy" and tunnel_info.get("error"):
+                    service_text += f"\n_Error: {tunnel_info.get('error', 'Unknown')[:50]}..._"
+            
+            # Add endpoint test results
+            if endpoints:
+                chat_test = endpoints.get("chat", {})
+                chat_status = chat_test.get("status", "unknown")
+                chat_emoji = "✅" if chat_status == "healthy" else ("⚠️" if chat_status == "degraded" else "❌")
+                service_text += f"\n**Chat Endpoint:** {chat_emoji} {chat_status.title()}"
+                
+                if not chat_test.get("test_passed", True) and chat_test.get("error"):
+                    service_text += f"\n_Error: {chat_test.get('error', 'Unknown')[:50]}..._"
+            
             embed["fields"].append({
-                "name": "🔧 Services",
-                "value": f"**xAI API:** {xai_status_text}",
+                "name": "🔧 Services & Endpoints",
+                "value": service_text,
                 "inline": False
             })
         
