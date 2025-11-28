@@ -141,6 +141,11 @@ async def health_metrics():
     tunnel_status = service_health.get("tunnel", {}).get("status", "unknown")
     if tunnel_status == "unhealthy":
         overall_status = "unhealthy"  # Tunnel down = production broken
+    elif tunnel_status == "degraded":
+        # Tunnel process running but can't verify - likely still works externally
+        # Don't mark as unhealthy, just degraded
+        if overall_status == "healthy":
+            overall_status = "degraded"
     elif tunnel_status == "not_configured" and overall_status == "healthy":
         overall_status = "degraded"  # No tunnel = can't serve production
     
