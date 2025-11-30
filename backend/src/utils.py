@@ -40,15 +40,42 @@ def classify_intent(text: str, language: str) -> str:
     contact_keywords_vi = ["liên hệ", "địa chỉ", "zalo", "phone", "facebook", "contact", "address"]
     contact_keywords_en = ["contact", "address", "phone", "zalo", "facebook", "reach"]
     
-    # Check for cat products
+    # Product search keywords (specific product queries, prices, stock, etc.)
+    product_search_keywords_vi = [
+        "giá", "price", "có", "còn", "kho", "stock", "tìm", "tìm kiếm", "search",
+        "show me", "cho tôi xem", "hiển thị", "danh sách", "list", "sản phẩm nào",
+        "sản phẩm gì", "loại nào", "dưới", "under", "rẻ", "cheap", "đắt", "expensive"
+    ]
+    product_search_keywords_en = [
+        "price", "cost", "show me", "find", "search", "what", "which", "list",
+        "have", "stock", "available", "under", "below", "cheap", "expensive",
+        "products", "items"
+    ]
+    
+    # Check for cat products (general category overview)
     cat_keywords = cat_keywords_vi if language == "vi" else cat_keywords_en
+    # Only return cat_products if it's a general question, not a specific search
     if any(keyword in text_lower for keyword in cat_keywords):
+        # Check if it's a specific search query
+        product_search_keywords = product_search_keywords_vi + product_search_keywords_en
+        if any(keyword in text_lower for keyword in product_search_keywords):
+            return "product_search"
         return "cat_products"
     
-    # Check for dog products
+    # Check for dog products (general category overview)
     dog_keywords = dog_keywords_vi if language == "vi" else dog_keywords_en
+    # Only return dog_products if it's a general question, not a specific search
     if any(keyword in text_lower for keyword in dog_keywords):
+        # Check if it's a specific search query
+        product_search_keywords = product_search_keywords_vi + product_search_keywords_en
+        if any(keyword in text_lower for keyword in product_search_keywords):
+            return "product_search"
         return "dog_products"
+    
+    # Check for product search (specific queries)
+    product_search_keywords = product_search_keywords_vi + product_search_keywords_en
+    if any(keyword in text_lower for keyword in product_search_keywords):
+        return "product_search"
     
     # Check for contact info
     contact_keywords = contact_keywords_vi + contact_keywords_en
