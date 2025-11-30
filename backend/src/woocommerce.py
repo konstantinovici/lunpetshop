@@ -75,7 +75,16 @@ class WooCommerceClient:
         if params:
             url += "?" + urlencode(params)
         
-        with httpx.Client(timeout=self.timeout) as client:
+        # Use httpx with SSL verification and proper headers
+        with httpx.Client(
+            timeout=self.timeout,
+            verify=True,  # SSL verification
+            follow_redirects=True,
+            headers={
+                "User-Agent": "LunPetShop-Chatbot/1.0",
+                "Accept": "application/json"
+            }
+        ) as client:
             response = client.get(url)
             response.raise_for_status()
             return response.json()
