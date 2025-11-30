@@ -176,11 +176,11 @@ def get_products_by_category_tool(category_name: str) -> str:
 ### Binding Tools to the LLM
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI 
 
 def get_llm(tools):
     llm = ChatOpenAI(
-        model="grok-4-fast-non-reasoning",  # or "gpt-4", "claude-3", etc.
+        model="grok-4-1-fast-non-reasoning",  # or "gpt-4", "claude-3", etc.
         api_key=api_key,
         base_url="https://api.x.ai/v1",  # xAI endpoint
         temperature=0.7,

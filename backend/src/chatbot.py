@@ -17,7 +17,10 @@ from .knowledge_base import (
     BUSINESS_INFO,
 )
 from .prompts import get_system_prompt
-from .utils import detect_language, classify_intent
+from .utils import detect_language, classify_intent  # classify_intent for fallback only
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # Extended State with language tracking
@@ -64,6 +67,8 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
             get_product_details_tool
         ]
         
+        logger.info(f"Processing query: '{user_text[:50]}...' | Language: {language}")
+        
         llm = get_llm(tools=tools)
         
         if llm is None:
@@ -94,6 +99,7 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
             tool_calls = getattr(llm_response, 'tool_calls', None) or []
             
             if tool_calls:
+                logger.info(f"Tool calls requested: {[getattr(tc, 'name', tc.get('name') if isinstance(tc, dict) else 'unknown') for tc in tool_calls]}")
                 # Execute tools that LLM requested
                 tool_messages = []
                 tool_map = {tool.name: tool for tool in tools}
@@ -134,6 +140,7 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
                 response = final_response.content
             else:
                 # No tool calls - LLM responded directly
+                logger.info("No tool calls - LLM responded directly")
                 response = llm_response.content
                 
     except Exception as e:
@@ -174,11 +181,11 @@ def get_llm(tools: Optional[List] = None):
         # xAI uses OpenAI-compatible API
         # Latest model: Grok 4 Fast with 2M context window
         llm = ChatOpenAI(
-            model="grok-4-fast-non-reasoning",  # Latest xAI model (2M context window)
+            model="grok-4-1-fast-non-reasoning",  # Latest xAI model (2M context window)
             api_key=api_key,
             base_url="https://api.x.ai/v1",
-            temperature=0.7,
-            max_tokens=500,
+            temperature=0.3,   # Lower for reliable tool calling
+            max_tokens=1500,   # Room for product lists
         )
         
         # Bind tools if provided
