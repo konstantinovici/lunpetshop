@@ -28,7 +28,11 @@ class ChatbotState(MessagesState):
 
 
 def chatbot_node(state: ChatbotState) -> ChatbotState:
-    """Main chatbot node that processes user messages."""
+    """Main chatbot node that processes user messages using ReAct pattern.
+    
+    ReAct (Reasoning + Acting): Tools are always available, LLM decides when to use them.
+    No intent classification needed - the LLM reasons about tool usage dynamically.
+    """
     messages = state["messages"]
     
     # Get the last user message
@@ -44,115 +48,94 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
     # Detect language
     language = detect_language(user_text)
     
-    # Classify intent (or use forced intent for testing)
-    if state.get("forced_intent"):
-        intent = state["forced_intent"]
-    else:
-        intent = classify_intent(user_text, language)
-    
-    # Generate response based on intent
     try:
-        if intent == "cat_products":
-            response = get_cat_products_text(language)
-        elif intent == "dog_products":
-            response = get_dog_products_text(language)
-        elif intent == "business":
-            response = get_business_info_text(language)
-        elif intent == "contact":
-            response = get_contact_info_text(language)
-        else:
-            # Use LLM for general conversation or product_search
-            # Import tools lazily to avoid circular imports
-            from .woocommerce_tools import (
-                search_products_tool,
-                get_products_by_category_tool,
-                get_product_details_tool
-            )
-            
-            # Determine if we should use tools (for product_search or general queries)
-            use_tools = (intent == "product_search" or intent == "general")
-            tools = None
-            if use_tools:
-                tools = [
-                    search_products_tool,
-                    get_products_by_category_tool,
-                    get_product_details_tool
-                ]
-            
-            llm = get_llm(tools=tools)
-            
-            if llm is None:
-                # Fallback to friendly message if no LLM
+        # ReAct Pattern: Always import and bind tools
+        # The LLM will decide when to use them based on the conversation
+        from .woocommerce_tools import (
+            search_products_tool,
+            get_products_by_category_tool,
+            get_product_details_tool
+        )
+        
+        # Always bind tools - let LLM decide when to use them
+        tools = [
+            search_products_tool,
+            get_products_by_category_tool,
+            get_product_details_tool
+        ]
+        
+        llm = get_llm(tools=tools)
+        
+        if llm is None:
+            # Fallback: Use simple intent classification only if no LLM available
+            intent = classify_intent(user_text, language)
+            if intent == "cat_products":
+                response = get_cat_products_text(language)
+            elif intent == "dog_products":
+                response = get_dog_products_text(language)
+            elif intent == "business":
+                response = get_business_info_text(language)
+            elif intent == "contact":
+                response = get_contact_info_text(language)
+            else:
                 if language == "vi":
                     response = "Xin lỗi, tôi không thể xử lý câu hỏi này ngay bây giờ. Vui lòng liên hệ với chúng tôi qua Zalo: 0935005762 🐾"
                 else:
                     response = "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 🐾"
+        else:
+            # ReAct: LLM reasons about when to use tools
+            system_prompt = get_system_prompt(language)
+            llm_messages = [SystemMessage(content=system_prompt)] + messages
+            
+            # Get LLM response (with tools available)
+            llm_response = llm.invoke(llm_messages)
+            
+            # Check if LLM decided to use tools
+            tool_calls = getattr(llm_response, 'tool_calls', None) or []
+            
+            if tool_calls:
+                # Execute tools that LLM requested
+                tool_messages = []
+                tool_map = {tool.name: tool for tool in tools}
+                
+                for tool_call in tool_calls:
+                    # Handle different tool_call formats
+                    if isinstance(tool_call, dict):
+                        tool_name = tool_call.get("name")
+                        tool_args = tool_call.get("args", {})
+                        tool_call_id = tool_call.get("id")
+                    else:
+                        tool_name = getattr(tool_call, "name", None)
+                        tool_args = getattr(tool_call, "args", {})
+                        tool_call_id = getattr(tool_call, "id", None)
+                    
+                    if tool_name and tool_name in tool_map:
+                        try:
+                            # Execute tool
+                            tool_result = tool_map[tool_name].invoke(tool_args)
+                            tool_messages.append(ToolMessage(
+                                content=str(tool_result),
+                                tool_call_id=tool_call_id or f"call_{tool_name}"
+                            ))
+                        except Exception as e:
+                            # Handle tool execution errors
+                            import traceback
+                            error_msg = f"Error executing tool {tool_name}: {str(e)}"
+                            print(f"Tool execution error: {error_msg}")
+                            traceback.print_exc()
+                            tool_messages.append(ToolMessage(
+                                content=error_msg,
+                                tool_call_id=tool_call_id or f"call_{tool_name}"
+                            ))
+                
+                # LLM processes tool results and generates final response
+                updated_messages = llm_messages + [llm_response] + tool_messages
+                final_response = llm.invoke(updated_messages)
+                response = final_response.content
             else:
-                system_prompt = get_system_prompt(language)
+                # No tool calls - LLM responded directly
+                response = llm_response.content
                 
-                # Prepare messages for LLM
-                llm_messages = [SystemMessage(content=system_prompt)] + messages
-                
-                # Get LLM response
-                llm_response = llm.invoke(llm_messages)
-                
-                # Check if LLM wants to use tools
-                tool_calls = None
-                if hasattr(llm_response, 'tool_calls'):
-                    tool_calls = llm_response.tool_calls
-                elif hasattr(llm_response, 'tool_calls') and callable(getattr(llm_response, 'tool_calls', None)):
-                    tool_calls = llm_response.tool_calls()
-                
-                if tool_calls and len(tool_calls) > 0:
-                    # Execute tools and create tool messages
-                    tool_messages = []
-                    tool_map = {tool.name: tool for tool in (tools or [])}
-                    
-                    for tool_call in tool_calls:
-                        # Handle different tool_call formats
-                        if isinstance(tool_call, dict):
-                            tool_name = tool_call.get("name")
-                            tool_args = tool_call.get("args", {})
-                            tool_call_id = tool_call.get("id")
-                        else:
-                            # Assume it's an object with attributes
-                            tool_name = getattr(tool_call, "name", None)
-                            tool_args = getattr(tool_call, "args", {})
-                            tool_call_id = getattr(tool_call, "id", None)
-                        
-                        if tool_name and tool_name in tool_map:
-                            try:
-                                # Execute tool
-                                tool_result = tool_map[tool_name].invoke(tool_args)
-                                
-                                # Create tool message
-                                tool_message = ToolMessage(
-                                    content=str(tool_result),
-                                    tool_call_id=tool_call_id or f"call_{tool_name}"
-                                )
-                                tool_messages.append(tool_message)
-                            except Exception as e:
-                                # Handle tool execution errors
-                                import traceback
-                                error_msg = f"Error executing tool {tool_name}: {str(e)}"
-                                print(f"Tool execution error: {error_msg}")
-                                traceback.print_exc()
-                                
-                                tool_message = ToolMessage(
-                                    content=error_msg,
-                                    tool_call_id=tool_call_id or f"call_{tool_name}"
-                                )
-                                tool_messages.append(tool_message)
-                    
-                    # Add tool messages and LLM response to conversation
-                    updated_messages = llm_messages + [llm_response] + tool_messages
-                    
-                    # Invoke LLM again with tool results
-                    final_response = llm.invoke(updated_messages)
-                    response = final_response.content
-                else:
-                    # No tool calls, use direct response
-                    response = llm_response.content
     except Exception as e:
         # Log the error for debugging
         import traceback
