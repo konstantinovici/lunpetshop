@@ -1,6 +1,7 @@
 """Main entry point for LùnPetShop KittyCat Chatbot."""
 
 import os
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import uvicorn
@@ -17,6 +18,17 @@ if not os.getenv("XAI_API_KEY"):
     print("XAI_API_KEY=your_api_key_here")
     print("\nYou can get an API key from: https://console.x.ai/")
 
+
+class HealthCheckFilter(logging.Filter):
+    """Filter to suppress health check request logs."""
+    def filter(self, record):
+        # Suppress logs for GET /health requests
+        message = record.getMessage()
+        if 'GET /health HTTP' in message or 'GET /health/metrics HTTP' in message:
+            return False
+        return True
+
+
 if __name__ == "__main__":
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", 8000))
@@ -32,6 +44,10 @@ if __name__ == "__main__":
     backend_dir = os.path.dirname(os.path.abspath(__file__))
     if backend_dir not in sys.path:
         sys.path.insert(0, backend_dir)
+    
+    # Configure logging to filter out health check requests
+    access_logger = logging.getLogger("uvicorn.access")
+    access_logger.addFilter(HealthCheckFilter())
     
     uvicorn.run(
         "src.api:app",
