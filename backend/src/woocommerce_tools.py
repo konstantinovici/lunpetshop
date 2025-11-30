@@ -130,7 +130,11 @@ def search_products_tool(query: str) -> str:
         products = client.search_products(query, per_page=max_results)
         return format_products_list(products, max_results)
     except Exception as e:
-        return f"Sorry, I encountered an error searching for products: {str(e)}. Please contact us via Zalo: 0935005762 for assistance."
+        error_msg = str(e)
+        # Check if it's a connection error
+        if "Connection" in error_msg or "connection" in error_msg.lower():
+            return "Xin lỗi, hiện tại không thể kết nối đến hệ thống sản phẩm. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua Zalo: 0935005762 để được hỗ trợ."
+        return f"Xin lỗi, đã có lỗi xảy ra khi tìm kiếm sản phẩm: {error_msg}. Vui lòng liên hệ qua Zalo: 0935005762 để được hỗ trợ."
 
 
 @tool
@@ -153,7 +157,11 @@ def get_products_by_category_tool(category_name: str) -> str:
         products = client.get_products_by_category_name(category_name, per_page=max_results)
         return format_products_list(products, max_results)
     except Exception as e:
-        return f"Sorry, I encountered an error getting products from category '{category_name}': {str(e)}. Please contact us via Zalo: 0935005762 for assistance."
+        error_msg = str(e)
+        # Check if it's a connection error
+        if "Connection" in error_msg or "connection" in error_msg.lower():
+            return f"Xin lỗi, hiện tại không thể kết nối đến hệ thống sản phẩm để lấy danh mục '{category_name}'. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua Zalo: 0935005762 để được hỗ trợ."
+        return f"Xin lỗi, đã có lỗi xảy ra khi lấy sản phẩm từ danh mục '{category_name}': {error_msg}. Vui lòng liên hệ qua Zalo: 0935005762 để được hỗ trợ."
 
 
 @tool
@@ -230,7 +238,11 @@ def get_product_details_tool(product_name: str) -> str:
         
         return "\n".join(lines)
     except ValueError as e:
-        return f"Product '{product_name}' not found. Please try a different search term or contact us via Zalo: 0935005762."
+        return f"Không tìm thấy sản phẩm '{product_name}'. Vui lòng thử tìm kiếm với từ khóa khác hoặc liên hệ qua Zalo: 0935005762."
     except Exception as e:
-        return f"Sorry, I encountered an error getting product details: {str(e)}. Please contact us via Zalo: 0935005762 for assistance."
+        error_msg = str(e)
+        # Check if it's a connection error
+        if "Connection" in error_msg or "connection" in error_msg.lower():
+            return f"Xin lỗi, hiện tại không thể kết nối đến hệ thống sản phẩm để lấy thông tin chi tiết. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua Zalo: 0935005762 để được hỗ trợ."
+        return f"Xin lỗi, đã có lỗi xảy ra khi lấy thông tin sản phẩm: {error_msg}. Vui lòng liên hệ qua Zalo: 0935005762 để được hỗ trợ."
 

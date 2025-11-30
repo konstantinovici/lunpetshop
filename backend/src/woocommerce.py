@@ -5,6 +5,10 @@ import time
 import httpx
 from typing import List, Dict, Optional
 from urllib.parse import urlencode
+import logging
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 
 class WooCommerceClient:
@@ -14,7 +18,9 @@ class WooCommerceClient:
         self,
         base_url: Optional[str] = None,
         cache_ttl: int = 300,
-        timeout: int = 10
+        timeout: int = 10,
+        max_retries: int = 3,
+        retry_delay: float = 1.0
     ):
         """Initialize WooCommerce client.
         
@@ -22,13 +28,38 @@ class WooCommerceClient:
             base_url: Base URL for WooCommerce API (defaults to env var or production)
             cache_ttl: Cache TTL in seconds (default: 300)
             timeout: Request timeout in seconds (default: 10)
+            max_retries: Maximum number of retry attempts (default: 3)
+            retry_delay: Initial delay between retries in seconds (default: 1.0)
         """
-        self.base_url = base_url or os.getenv(
-            "WOOCOMMERCE_API_BASE_URL",
-            "https://lunpetshop.com/wp-json/wc/store/v1"
-        )
+        # Priority order for base URL:
+        # 1. WOOCOMMERCE_API_PROXY_URL - WordPress proxy endpoint (recommended for remote backend)
+        # 2. WOOCOMMERCE_API_INTERNAL_URL - Direct internal URL (for same-server deployments)
+        # 3. base_url parameter (if passed to constructor)
+        # 4. WOOCOMMERCE_API_BASE_URL - Direct public URL
+        # 5. Default: Public URL
+        
+        proxy_url = os.getenv("WOOCOMMERCE_API_PROXY_URL")
+        if proxy_url:
+            # Use WordPress proxy endpoint (backend → WordPress → WooCommerce)
+            self.base_url = proxy_url.rstrip('/')
+            self.use_proxy = True
+        else:
+            internal_url = os.getenv("WOOCOMMERCE_API_INTERNAL_URL")
+            if internal_url:
+                # Use internal/localhost URL (for same-server deployments)
+                self.base_url = internal_url
+                self.use_proxy = False
+            else:
+                # Use direct public URL (may be blocked)
+                self.base_url = base_url or os.getenv(
+                    "WOOCOMMERCE_API_BASE_URL",
+                    "https://lunpetshop.com/wp-json/wc/store/v1"
+                )
+                self.use_proxy = False
         self.cache_ttl = cache_ttl
         self.timeout = timeout
+        self.max_retries = max_retries
+        self.retry_delay = retry_delay
         self._cache: Dict[str, tuple] = {}  # {cache_key: (data, timestamp)}
         self._categories_cache: Optional[List[Dict]] = None
         self._categories_cache_time: float = 0
@@ -58,7 +89,7 @@ class WooCommerceClient:
         self._cache[cache_key] = (data, time.time())
     
     def _make_request(self, endpoint: str, params: Optional[Dict] = None) -> any:
-        """Make HTTP request to WooCommerce API.
+        """Make HTTP request to WooCommerce API with retry logic.
         
         Args:
             endpoint: API endpoint (e.g., '/products')
@@ -68,26 +99,91 @@ class WooCommerceClient:
             JSON response data
             
         Raises:
-            httpx.HTTPError: On HTTP errors
-            httpx.TimeoutException: On timeout
+            httpx.HTTPError: On HTTP errors after all retries
+            httpx.TimeoutException: On timeout after all retries
+            httpx.ConnectError: On connection errors after all retries
         """
-        url = f"{self.base_url}{endpoint}"
-        if params:
-            url += "?" + urlencode(params)
+        # If using proxy, endpoint is passed as path parameter
+        if hasattr(self, 'use_proxy') and self.use_proxy:
+            # Proxy format: /wp-json/lunpetshop/v1/woocommerce-proxy/{endpoint}
+            url = f"{self.base_url}/{endpoint.lstrip('/')}"
+            if params:
+                url += "?" + urlencode(params)
+        else:
+            # Direct WooCommerce API format
+            url = f"{self.base_url}{endpoint}"
+            if params:
+                url += "?" + urlencode(params)
         
-        # Use httpx with SSL verification and proper headers
-        with httpx.Client(
-            timeout=self.timeout,
-            verify=True,  # SSL verification
-            follow_redirects=True,
-            headers={
-                "User-Agent": "LunPetShop-Chatbot/1.0",
-                "Accept": "application/json"
-            }
-        ) as client:
-            response = client.get(url)
-            response.raise_for_status()
-            return response.json()
+        last_exception = None
+        
+        # Retry logic with exponential backoff
+        for attempt in range(self.max_retries):
+            try:
+                # Use httpx with SSL verification and proper headers
+                # Try with different connection settings
+                client_config = {
+                    "timeout": httpx.Timeout(self.timeout, connect=10.0),
+                    "verify": True,  # SSL verification
+                    "follow_redirects": True,
+                    "headers": {
+                        "User-Agent": "Mozilla/5.0 (compatible; LunPetShop-Chatbot/1.0; +https://lunpetshop.com)",
+                        "Accept": "application/json",
+                        "Accept-Encoding": "gzip, deflate",
+                        "Connection": "keep-alive"
+                    }
+                }
+                
+                # On later attempts, try with slightly different settings
+                if attempt > 0:
+                    # Add a small delay before retry
+                    time.sleep(self.retry_delay * (2 ** (attempt - 1)))
+                    logger.info(f"Retrying WooCommerce API request (attempt {attempt + 1}/{self.max_retries}) to {url}")
+                
+                with httpx.Client(**client_config) as client:
+                    response = client.get(url)
+                    response.raise_for_status()
+                    return response.json()
+                    
+            except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout) as e:
+                last_exception = e
+                error_type = type(e).__name__
+                logger.warning(f"Connection error on attempt {attempt + 1}/{self.max_retries}: {error_type} - {str(e)}")
+                
+                if attempt < self.max_retries - 1:
+                    continue  # Retry
+                else:
+                    # Last attempt failed
+                    logger.error(f"Failed to connect to WooCommerce API after {self.max_retries} attempts: {str(e)}")
+                    raise httpx.ConnectError(
+                        f"Connection to WooCommerce API failed after {self.max_retries} attempts. "
+                        f"Last error: {str(e)}. "
+                        f"Please check your network connection and the API endpoint: {self.base_url}"
+                    ) from e
+                    
+            except httpx.HTTPStatusError as e:
+                # HTTP errors (4xx, 5xx) - don't retry these
+                logger.error(f"HTTP error from WooCommerce API: {e.response.status_code} - {str(e)}")
+                raise
+                
+            except httpx.TimeoutException as e:
+                last_exception = e
+                logger.warning(f"Timeout on attempt {attempt + 1}/{self.max_retries}: {str(e)}")
+                
+                if attempt < self.max_retries - 1:
+                    continue  # Retry
+                else:
+                    logger.error(f"Request to WooCommerce API timed out after {self.max_retries} attempts")
+                    raise
+                    
+            except Exception as e:
+                # Unexpected errors - log and re-raise
+                logger.error(f"Unexpected error in WooCommerce API request: {type(e).__name__} - {str(e)}")
+                raise
+        
+        # Should never reach here, but just in case
+        if last_exception:
+            raise last_exception
     
     def search_products(self, query: str, per_page: int = 10) -> List[Dict]:
         """Search products by name or description.

@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="LùnPetShop KittyCat Chatbot API",
     description="AI Chatbot API for LùnPetShop pet store",
-    version="0.4.2",
+    version="1.0.0",
     lifespan=lifespan,
 )
 

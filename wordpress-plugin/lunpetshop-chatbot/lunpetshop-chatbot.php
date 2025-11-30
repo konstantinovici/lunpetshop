@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LùnPetShop KittyCat Chatbot
  * Description: Adds the KittyCat AI chatbot widget to the public-facing site.
- * Version: 0.4.2
+ * Version: 1.0.0
  * Author: LùnPetShop
  */
 
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class LunPetshop_KittyCat_Chatbot {
-    private const VERSION = '0.4.2';
+    private const VERSION = '1.0.0';
     private const OPTION_API_BASE = 'lunpetshop_chatbot_api_base';
     private const OPTION_LANGUAGE = 'lunpetshop_chatbot_initial_language';
 
@@ -20,6 +20,7 @@ final class LunPetshop_KittyCat_Chatbot {
         add_action('wp_footer', [$this, 'render_widget'], 20);
         add_action('admin_menu', [$this, 'register_settings_page']);
         add_action('admin_init', [$this, 'register_settings']);
+        add_action('rest_api_init', [$this, 'register_woocommerce_proxy']);
     }
 
     public function enqueue_assets(): void {
@@ -279,6 +280,71 @@ final class LunPetshop_KittyCat_Chatbot {
     public function sanitize_language($value): string {
         $value = is_scalar($value) ? strtolower((string) $value) : '';
         return in_array($value, ['vi', 'en'], true) ? $value : 'vi';
+    }
+
+    /**
+     * Register WooCommerce proxy endpoint for backend to access WooCommerce API.
+     * This allows the backend (running on different server) to access WooCommerce
+     * through WordPress (same server), bypassing firewall/security blocks.
+     */
+    public function register_woocommerce_proxy(): void {
+        register_rest_route('lunpetshop/v1', '/woocommerce-proxy/(?P<endpoint>.*)', [
+            'methods' => 'GET',
+            'callback' => [$this, 'woocommerce_proxy_handler'],
+            'permission_callback' => '__return_true', // Public endpoint for backend access
+            'args' => [
+                'endpoint' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Handle WooCommerce proxy requests.
+     * Proxies requests from backend to WooCommerce Store API.
+     */
+    public function woocommerce_proxy_handler($request): WP_REST_Response {
+        $endpoint = $request->get_param('endpoint');
+        $params = $request->get_query_params();
+        
+        // Remove our custom params
+        unset($params['endpoint']);
+        
+        // Build WooCommerce Store API URL (internal, same server)
+        $wc_base = home_url('/wp-json/wc/store/v1');
+        $wc_url = $wc_base . '/' . $endpoint;
+        
+        if (!empty($params)) {
+            $wc_url .= '?' . http_build_query($params);
+        }
+        
+        // Make internal request to WooCommerce Store API
+        $response = wp_remote_get($wc_url, [
+            'timeout' => 10,
+            'sslverify' => false, // Internal request, no SSL needed
+        ]);
+        
+        if (is_wp_error($response)) {
+            return new WP_REST_Response([
+                'error' => $response->get_error_message(),
+                'code' => $response->get_error_code(),
+            ], 500);
+        }
+        
+        $status_code = wp_remote_retrieve_response_code($response);
+        $body = wp_remote_retrieve_body($response);
+        
+        // Try to decode JSON
+        $data = json_decode($body, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // If not JSON, return as string
+            $data = $body;
+        }
+        
+        return new WP_REST_Response($data, $status_code);
     }
 }
 
