@@ -488,6 +488,1717 @@
           "result_quality": "poor"
         }
       ]
+    },
+    {
+      "timestamp": "2025-11-30T20:09:38.655012",
+      "label": "run",
+      "metrics": {
+        "total_tests": 27,
+        "passed_tests": 10,
+        "failed_tests": 17,
+        "tool_calling_rate": 0.0,
+        "tool_selection_accuracy": 0.0,
+        "parameter_accuracy": 0.058823529411764705,
+        "parameter_hallucination_rate": 0.0,
+        "parameter_missing_rate": 0.9411764705882353,
+        "progress_rate": 0.37037037037037035,
+        "success_rate": 0.37037037037037035,
+        "first_try_resolution": 0.0,
+        "hallucinated_answer_rate": 0.0,
+        "avg_response_quality": 0.9629629629629629,
+        "avg_turns_to_resolution": 1.0,
+        "execution_success_rate": 0.0,
+        "avg_response_time": 0.003511314038877134,
+        "metrics_by_type": {
+          "product_search": {
+            "total": 12,
+            "passed": 0,
+            "success_rate": 0.0,
+            "tool_calling_rate": 0.0
+          },
+          "category_browse": {
+            "total": 3,
+            "passed": 0,
+            "success_rate": 0.0,
+            "tool_calling_rate": 0.0
+          },
+          "product_details": {
+            "total": 2,
+            "passed": 0,
+            "success_rate": 0.0,
+            "tool_calling_rate": 0.0
+          },
+          "business_info": {
+            "total": 2,
+            "passed": 2,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "contact_info": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "general": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          }
+        },
+        "timestamp": "2025-11-30T20:09:38.652664",
+        "success_probability": 0.37037037037037035,
+        "meets_targets": {
+          "tool_selection_accuracy": false,
+          "parameter_accuracy": false,
+          "parameter_hallucination_rate": true,
+          "parameter_missing_rate": false,
+          "progress_rate": false,
+          "success_rate": false,
+          "first_try_resolution": false,
+          "hallucinated_answer_rate": true
+        }
+      },
+      "test_results": [
+        {
+          "query_id": "prod_search_001",
+          "query": "ok , what cat products you have total ?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_002",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho m\u00e8o?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 0.5,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_003",
+          "query": "What products do you have for my dog?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_004",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho ch\u00f3 c\u1ee7a t\u00f4i?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_005",
+          "query": "show me all products",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_006",
+          "query": "Do you have any pate?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_007",
+          "query": "C\u00f3 pate kh\u00f4ng?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_008",
+          "query": "What cat food do you have under 50000 VND?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_001",
+          "query": "Show me cat food category",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_002",
+          "query": "Cho t\u00f4i xem danh m\u1ee5c th\u1ee9c \u0103n cho ch\u00f3",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_003",
+          "query": "What categories do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_001",
+          "query": "Tell me more about Pate Nekko",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\n\ud83c\udfea **About L\u00f9n PetShop**\n\n\ud83d\udccd **Address:** 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam\n\n\ud83d\udcde **Contact:**\n\u2022 Phone/Zalo: 0935005762\n\u2022 Facebook: https://www.facebook.com/lunpetshop\n\n\ud83d\udd50 **Hours:** ",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_002",
+          "query": "How much is the Whiskas cat food?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udc31 **Cat Products:**\n\n\u2022 **Cat Food** - 31 products\n  - Th\u1ee9c \u0103n h\u1ea1t GV tr\u1ed9n si\u00eau c\u1ea5p cho m\u00e8o \u2013 Mix 9 lo\u1ea1i 500g: 80,000 \u20ab\n\u2022 **Cat P\u00e2t\u00e9** - 29 products\n  - Pate Nekko cho m\u00e8o 70g: 16,000 \u20ab\n\u2022 **Treats & Sn",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_001",
+          "query": "What can you tell me about the business?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_002",
+          "query": "Cho t\u00f4i bi\u1ebft v\u1ec1 c\u1eeda h\u00e0ng c\u1ee7a b\u1ea1n?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\n\ud83c\udfea **Th\u00f4ng tin v\u1ec1 L\u00f9n PetShop**\n\n\ud83d\udccd **\u0110\u1ecba ch\u1ec9:** 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam\n\n\ud83d\udcde **Li\u00ean h\u1ec7:**\n\u2022 Phone/Zalo: 0935005762\n\u2022 Facebook: https://www.facebook.com/lunpetshop\n\n\ud83d\udd50 **Gi",
+          "error": null
+        },
+        {
+          "query_id": "contact_001",
+          "query": "What's your address?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "contact_002",
+          "query": "\u0110\u1ecba ch\u1ec9 c\u1ee7a b\u1ea1n \u1edf \u0111\u00e2u?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\n\ud83d\udcf1 **Th\u00f4ng tin Li\u00ean h\u1ec7:**\n\n\u2022 **Zalo:** 0935005762\n\u2022 **Phone:** 0935005762\n\u2022 **Facebook:** https://www.facebook.com/lunpetshop\n\u2022 **\u0110\u1ecba ch\u1ec9:** 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam\n\nCh",
+          "error": null
+        },
+        {
+          "query_id": "contact_003",
+          "query": "How can I reach you on Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\n\ud83d\udcf1 **Contact Information:**\n\n\u2022 **Zalo:** 0935005762\n\u2022 **Phone:** 0935005762\n\u2022 **Facebook:** https://www.facebook.com/lunpetshop\n\u2022 **Address:** 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam\n\n",
+          "error": null
+        },
+        {
+          "query_id": "contact_004",
+          "query": "L\u00e0m th\u1ebf n\u00e0o \u0111\u1ec3 li\u00ean h\u1ec7 v\u1edbi b\u1ea1n qua Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\n\ud83d\udcf1 **Th\u00f4ng tin Li\u00ean h\u1ec7:**\n\n\u2022 **Zalo:** 0935005762\n\u2022 **Phone:** 0935005762\n\u2022 **Facebook:** https://www.facebook.com/lunpetshop\n\u2022 **\u0110\u1ecba ch\u1ec9:** 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam\n\nCh",
+          "error": null
+        },
+        {
+          "query_id": "edge_001",
+          "query": "What do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "edge_002",
+          "query": "cat fod for sale",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udc31 **Cat Products:**\n\n\u2022 **Cat Food** - 31 products\n  - Th\u1ee9c \u0103n h\u1ea1t GV tr\u1ed9n si\u00eau c\u1ea5p cho m\u00e8o \u2013 Mix 9 lo\u1ea1i 500g: 80,000 \u20ab\n\u2022 **Cat P\u00e2t\u00e9** - 29 products\n  - Pate Nekko cho m\u00e8o 70g: 16,000 \u20ab\n\u2022 **Treats & Sn",
+          "error": null
+        },
+        {
+          "query_id": "edge_003",
+          "query": "Show me pate cho m\u00e8o",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "edge_004",
+          "query": "products?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "general_001",
+          "query": "My pet won't eat, do you have any advice?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "general_002",
+          "query": "I want to adopt a pet for the first time, can you help?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "general_003",
+          "query": "Hello!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Sorry, I can't process that question right now. Please contact us on Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "general_004",
+          "query": "Xin ch\u00e0o!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 0.5,
+          "response_preview": "Xin l\u1ed7i, t\u00f4i kh\u00f4ng th\u1ec3 x\u1eed l\u00fd c\u00e2u h\u1ecfi n\u00e0y ngay b\u00e2y gi\u1edd. Vui l\u00f2ng li\u00ean h\u1ec7 v\u1edbi ch\u00fang t\u00f4i qua Zalo: 0935005762 \ud83d\udc3e",
+          "error": null
+        }
+      ],
+      "tool_call_metrics": [
+        {
+          "query_id": "prod_search_001",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_002",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_003",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_004",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_005",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_006",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_007",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_008",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "cat_browse_001",
+          "selected_tool": null,
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "cat_browse_002",
+          "selected_tool": null,
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "cat_browse_003",
+          "selected_tool": null,
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_001",
+          "selected_tool": null,
+          "correct_tool": "get_product_details_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_002",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_001",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_002",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_003",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_004",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        }
+      ]
+    },
+    {
+      "timestamp": "2025-11-30T20:15:49.481176",
+      "label": "run",
+      "metrics": {
+        "total_tests": 4,
+        "passed_tests": 0,
+        "failed_tests": 4,
+        "tool_calling_rate": 0.0,
+        "tool_selection_accuracy": 0.0,
+        "parameter_accuracy": 0.0,
+        "parameter_hallucination_rate": 0.0,
+        "parameter_missing_rate": 1.0,
+        "progress_rate": 0.0,
+        "success_rate": 0.0,
+        "first_try_resolution": 0.0,
+        "hallucinated_answer_rate": 0.0,
+        "avg_response_quality": 1.0,
+        "avg_turns_to_resolution": 1.0,
+        "execution_success_rate": 0.0,
+        "avg_response_time": 11.224594950675964,
+        "metrics_by_type": {
+          "product_search": {
+            "total": 4,
+            "passed": 0,
+            "success_rate": 0.0,
+            "tool_calling_rate": 0.0
+          }
+        },
+        "timestamp": "2025-11-30T20:15:49.475917",
+        "success_probability": 0.0,
+        "meets_targets": {
+          "tool_selection_accuracy": false,
+          "parameter_accuracy": false,
+          "parameter_hallucination_rate": true,
+          "parameter_missing_rate": false,
+          "progress_rate": false,
+          "success_rate": false,
+          "first_try_resolution": false,
+          "hallucinated_answer_rate": true
+        }
+      },
+      "test_results": [
+        {
+          "query_id": "prod_search_001",
+          "query": "ok , what cat products you have total ?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Ch\u00fang m\u00ecnh c\u00f3 **h\u01a1n 50 s\u1ea3n ph\u1ea9m cho m\u00e8o** nh\u00e9, t\u1eeb th\u1ee9c \u0103n h\u1ea1t, pate, c\u00e1t v\u1ec7 sinh, \u0111\u1ed3 ch\u01a1i \u0111\u1ebfn ph\u1ee5 ki\u1ec7n! \n\nM\u1ed9t s\u1ed1 hot hit:\n- **Th\u1ee9c \u0103n h\u1ea1t**: Catsrang 1kg (90k), Royal Canin Indoor (230k) ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_002",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho m\u00e8o?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 L\u00f9n PetShop c\u00f3 \u0111\u1ea7y s\u1ea3n ph\u1ea9m cho m\u00e8o n\u00e8: th\u1ee9c \u0103n h\u1ea1t, pate, snack s\u1ea5y kh\u00f4... D\u01b0\u1edbi \u0111\u00e2y l\u00e0 m\u1ed9t s\u1ed1 hot nh\u1ea5t:\n\n**Th\u1ee9c \u0103n h\u1ea1t & snack:**\n- Th\u1ee9c \u0103n h\u1ea1t GV Mix 9 lo\u1ea1i th\u1ecbt 500g: 80k (c\u00f2n 20)\n- C\u00e1 h",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_003",
+          "query": "What products do you have for my dog?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc36\ud83d\udc3e We have these yummy dog products for your furry friend:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (Low stock: 1 left)  \n   [View](https://lunpetshop.com/sa",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_004",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho ch\u00f3 c\u1ee7a t\u00f4i?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc15 L\u00f9n PetShop c\u00f3 nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon cho ch\u00f3 c\u01b0ng nh\u00e9:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (C\u00f2n 1)\n2. **Th\u1ee9c \u0102n H\u1ea1t Cho Ch\u00f3 M\u1ecdi L\u1ee9a Tu\u1ed5i HUG T\u00fai 2kg H\u00e0n ",
+          "error": null
+        }
+      ],
+      "tool_call_metrics": [
+        {
+          "query_id": "prod_search_001",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_002",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_003",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_004",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        }
+      ]
+    },
+    {
+      "timestamp": "2025-11-30T20:18:20.127640",
+      "label": "run",
+      "metrics": {
+        "total_tests": 4,
+        "passed_tests": 0,
+        "failed_tests": 4,
+        "tool_calling_rate": 1.0,
+        "tool_selection_accuracy": 0.0,
+        "parameter_accuracy": 0.0,
+        "parameter_hallucination_rate": 1.0,
+        "parameter_missing_rate": 1.0,
+        "progress_rate": 0.0,
+        "success_rate": 0.0,
+        "first_try_resolution": 0.0,
+        "hallucinated_answer_rate": 0.0,
+        "avg_response_quality": 1.0,
+        "avg_turns_to_resolution": 1.0,
+        "execution_success_rate": 0.0,
+        "avg_response_time": 12.868261456489563,
+        "metrics_by_type": {
+          "product_search": {
+            "total": 4,
+            "passed": 0,
+            "success_rate": 0.0,
+            "tool_calling_rate": 1.0
+          }
+        },
+        "timestamp": "2025-11-30T20:18:20.124864",
+        "success_probability": 0.0,
+        "meets_targets": {
+          "tool_selection_accuracy": false,
+          "parameter_accuracy": false,
+          "parameter_hallucination_rate": false,
+          "parameter_missing_rate": false,
+          "progress_rate": false,
+          "success_rate": false,
+          "first_try_resolution": false,
+          "hallucinated_answer_rate": true
+        }
+      },
+      "test_results": [
+        {
+          "query_id": "prod_search_001",
+          "query": "ok , what cat products you have total ?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 We have **over 50 unique cat products** total, including kibble, pate, treats, litter, toys & more! Here's a quick highlight from our top cat categories (some overlaps):\n\n**Cat Food (20+ ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_002",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho m\u00e8o?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 L\u00f9n PetShop c\u00f3 r\u1ea5t nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon l\u00e0nh cho m\u00e8o n\u00e8: th\u1ee9c \u0103n h\u1ea1t, pate, topping th\u1ecbt s\u1ea5y... D\u01b0\u1edbi \u0111\u00e2y l\u00e0 m\u1ed9t s\u1ed1 hot nh\u1ea5t:\n\n**Th\u1ee9c \u0103n h\u1ea1t & snack:**\n- Th\u1ee9c \u0103n h\u1ea1t GV Mix 9 lo\u1ea1i th\u1ecbt 500g: ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_003",
+          "query": "What products do you have for my dog?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Hi there! \ud83d\udc15 We have some great dog products, especially food options! Here's what we have in stock:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (Low stock: 1 left) [View](",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_004",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho ch\u00f3 c\u1ee7a t\u00f4i?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc15 L\u00f9n PetShop c\u00f3 nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon cho ch\u00f3 c\u01b0ng \u0111\u00e2y \u1ea1:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (C\u00f2n 1 sp)  \n   [Xem ngay](https://lunpetshop.com/sanpham/pr",
+          "error": null
+        }
+      ],
+      "tool_call_metrics": [
+        {
+          "query_id": "prod_search_001",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_003",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_004",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        }
+      ]
+    },
+    {
+      "timestamp": "2025-11-30T20:21:18.782120",
+      "label": "run",
+      "metrics": {
+        "total_tests": 27,
+        "passed_tests": 15,
+        "failed_tests": 12,
+        "tool_calling_rate": 0.8235294117647058,
+        "tool_selection_accuracy": 0.29411764705882354,
+        "parameter_accuracy": 0.23529411764705882,
+        "parameter_hallucination_rate": 0.5882352941176471,
+        "parameter_missing_rate": 0.7058823529411765,
+        "progress_rate": 0.5555555555555556,
+        "success_rate": 0.5555555555555556,
+        "first_try_resolution": 0.18518518518518517,
+        "hallucinated_answer_rate": 0.0,
+        "avg_response_quality": 1.0,
+        "avg_turns_to_resolution": 1.0,
+        "execution_success_rate": 0.23529411764705882,
+        "avg_response_time": 5.835253371132745,
+        "metrics_by_type": {
+          "product_search": {
+            "total": 12,
+            "passed": 2,
+            "success_rate": 0.16666666666666666,
+            "tool_calling_rate": 0.8333333333333334
+          },
+          "category_browse": {
+            "total": 3,
+            "passed": 2,
+            "success_rate": 0.6666666666666666,
+            "tool_calling_rate": 0.6666666666666666
+          },
+          "product_details": {
+            "total": 2,
+            "passed": 1,
+            "success_rate": 0.5,
+            "tool_calling_rate": 1.0
+          },
+          "business_info": {
+            "total": 2,
+            "passed": 2,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "contact_info": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "general": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          }
+        },
+        "timestamp": "2025-11-30T20:21:18.779406",
+        "success_probability": 0.5555555555555556,
+        "meets_targets": {
+          "tool_selection_accuracy": false,
+          "parameter_accuracy": false,
+          "parameter_hallucination_rate": false,
+          "parameter_missing_rate": false,
+          "progress_rate": false,
+          "success_rate": false,
+          "first_try_resolution": false,
+          "hallucinated_answer_rate": true
+        }
+      },
+      "test_results": [
+        {
+          "query_id": "prod_search_001",
+          "query": "ok , what cat products you have total ?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Ch\u00fang m\u00ecnh c\u00f3 **h\u01a1n 50 s\u1ea3n ph\u1ea9m cho m\u00e8o** nh\u00e9, t\u1eeb th\u1ee9c \u0103n h\u1ea1t, pate, c\u00e1t v\u1ec7 sinh, \u0111\u1ed3 ch\u01a1i \u0111\u1ebfn ph\u1ee5 ki\u1ec7n! \n\nTop hot: \n- Th\u1ee9c \u0103n h\u1ea1t Catsrang 1kg: 90k \ud83e\udd70\n- Pate Nekko 70g: 16k \n- C\u00e1t v\u1ec7 sinh ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_002",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho m\u00e8o?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 L\u00f9n PetShop c\u00f3 r\u1ea5t nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon l\u00e0nh cho m\u00e8o n\u00e8: th\u1ee9c \u0103n h\u1ea1t, pate, topping s\u1ea5y kh\u00f4... D\u01b0\u1edbi \u0111\u00e2y l\u00e0 m\u1ed9t s\u1ed1 hot nh\u1ea5t:\n\n**Th\u1ee9c \u0103n h\u1ea1t & topping:**\n- Th\u1ee9c \u0103n h\u1ea1t GV Mix 9 lo\u1ea1i th\u1ecbt 500g:",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_003",
+          "query": "What products do you have for my dog?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc36\ud83d\udc3e We have these yummy dog products for your furry friend:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (Low stock: 1 left)  \n   [View](https://lunpetshop.com/sa",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_004",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho ch\u00f3 c\u1ee7a t\u00f4i?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc15 L\u00f9n PetShop c\u00f3 nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon cho ch\u00f3 c\u01b0ng nh\u00e9, ch\u1ee7 y\u1ebfu l\u00e0 th\u1ee9c \u0103n h\u1ea1t ch\u1ea5t l\u01b0\u1ee3ng cao. \u0110\u00e2y l\u00e0 m\u1ed9t s\u1ed1 g\u1ee3i \u00fd hot nh\u1ea5t:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_005",
+          "query": "show me all products",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Xin ch\u00e0o! \ud83d\ude3a Hi\u1ec7n t\u1ea1i ch\u01b0a c\u00f3 danh s\u00e1ch s\u1ea3n ph\u1ea9m \u0111\u1ea7y \u0111\u1ee7, b\u1ea1n li\u00ean h\u1ec7 Zalo 0935005762 \u0111\u1ec3 \u0111\u01b0\u1ee3c t\u01b0 v\u1ea5n chi ti\u1ebft nh\u00e9! \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_006",
+          "query": "Do you have any pate?",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "C\u00f3 n\u00e8 meo meo! \ud83d\udc31 Ch\u00fang m\u00ecnh c\u00f3 r\u1ea5t nhi\u1ec1u lo\u1ea1i pate cho m\u00e8o v\u00e0 ch\u00f3 lu\u00f4n:\n\n**M\u1ed9t s\u1ed1 g\u1ee3i \u00fd hot:**\n- **Pate Nekko cho m\u00e8o 70g**: 16k, c\u00f2n 29 h\u1ed9p \ud83d\udc3e [Xem ngay](https://lunpetshop.com/sanpham/product-925/)\n-",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_007",
+          "query": "C\u00f3 pate kh\u00f4ng?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "C\u00f3 pate cho m\u00e8o n\u00e8 meo meo! \ud83d\udc31 C\u00f3 h\u01a1n 20 lo\u1ea1i, gi\u00e1 t\u1eeb 1.500\u20ab th\u00f4i:\n\n1. **Pate nekko 70g** - 16k (c\u00f2n 29)\n2. **Minino Plus 70g** - 15k (c\u00f2n 32)\n3. **Kucinta 80g** - 11k (c\u00f2n 45)\n4. **Meowcat lon 400g** ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_008",
+          "query": "What cat food do you have under 50000 VND?",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 \u0110\u00e2y l\u00e0 th\u1ee9c \u0103n cho m\u00e8o d\u01b0\u1edbi 50.000 VND \u0111ang c\u00f3 nha:\n\n- **H\u1ea1t MeO c\u00e1 ng\u1eeb v\u00e0 c\u00e1 bi\u1ec3n 350g**: 30.000 \u20ab (C\u00f2n 49 g\u00f3i) [Xem](https://lunpetshop.com/sanpham/product-409/)\n- **Minino Tuna 480g**: 4",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_001",
+          "query": "Show me cat food category",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 No cat food products found right now. Please contact us via Zalo: **0935005762** for the latest stock! \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_002",
+          "query": "Cho t\u00f4i xem danh m\u1ee5c th\u1ee9c \u0103n cho ch\u00f3",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "\u0110\u00e2y l\u00e0 danh s\u00e1ch **Th\u1ee9c \u0103n cho ch\u00f3** t\u1ea1i L\u00f9n PetShop nh\u00e9! \ud83d\udc15\ud83c\udf56 (C\u00f3 8 s\u1ea3n ph\u1ea9m):\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (C\u00f2n 1)  \n   [Xem chi ti\u1ebft](https://lunpetshop.co",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_003",
+          "query": "What categories do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "D\u1ea1 anh/ch\u1ecb \u01a1i, L\u00f9n PetShop c\u00f3 c\u00e1c h\u1ea1ng m\u1ee5c ch\u00ednh sau n\u00e8 \ud83d\udc31\ud83d\udc36:\n\n- **Th\u1ee9c \u0103n cho M\u00e8o** (Cat Food, Pate m\u00e8o...)\n- **Th\u1ee9c \u0103n cho Ch\u00f3** (Dog Food, Pate ch\u00f3...)\n- **Qu\u1ea7n \u00e1o & Ph\u1ee5 ki\u1ec7n** (Clothes, Toys, Beds..",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_001",
+          "query": "Tell me more about Pate Nekko",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 **Pate Nekko cho m\u00e8o 70g** si\u00eau ngon \u0111\u00e2y \u1ea1:\n\n\ud83d\udcb0 **Gi\u00e1**: 16.000 \u20ab  \n\ud83d\udce6 **T\u1ed3n kho**: C\u00f2n 29 g\u00f3i  \n\ud83d\udcdd **M\u00f4 t\u1ea3**: Pate Nekko cho m\u00e8o 70g \u2013 dinh d\u01b0\u1ee1ng \u0111\u1ea7y \u0111\u1ee7, m\u00e8o y\u00eau th\u00edch!  \n\n\ud83d\udc49 [Xem chi ti\u1ebft &",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_002",
+          "query": "How much is the Whiskas cat food?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 Kh\u00f4ng t\u00ecm th\u1ea5y Whiskas cat food \u1edf shop m\u00ecnh \u1ea1. B\u1ea1n th\u1eed search c\u00e1c lo\u1ea1i pate m\u00e8o kh\u00e1c nh\u00e9, ho\u1eb7c li\u00ean h\u1ec7 Zalo 0935005762 \u0111\u1ec3 h\u1ecfi th\u00eam nha! \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_001",
+          "query": "What can you tell me about the business?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Hi there! \ud83d\udc31 I'm KittyCat, your friendly AI assistant at **L\u00f9n PetShop** \u2013 your go-to spot for all things pets in \u0110\u00e0 N\u1eb5ng! \n\n\ud83d\udccd **Address**: 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam  \n\ud83d\udcde *",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_002",
+          "query": "Cho t\u00f4i bi\u1ebft v\u1ec1 c\u1eeda h\u00e0ng c\u1ee7a b\u1ea1n?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31 L\u00f9n PetShop l\u00e0 c\u1eeda h\u00e0ng th\u00fa c\u01b0ng y\u00eau th\u00edch c\u1ee7a c\u00e1c b\u00e9 m\u00e8o ch\u00f3 \u1edf \u0110\u00e0 N\u1eb5ng nh\u00e9!\n\n\ud83d\udccd **\u0110\u1ecba ch\u1ec9**: 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000  \n\ud83d\udcde **Zalo**: 0935005762 (chat ngay \u0111\u1ec3 t\u01b0 v\u1ea5n!) ",
+          "error": null
+        },
+        {
+          "query_id": "contact_001",
+          "query": "What's your address?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udccd 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "contact_002",
+          "query": "\u0110\u1ecba ch\u1ec9 c\u1ee7a b\u1ea1n \u1edf \u0111\u00e2u?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udccd L\u00f9n PetShop \u1edf **46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam** nh\u00e9! \ud83d\udc31\ud83d\udc3e\n\nC\u00f3 g\u00ec c\u1ea7n h\u1ed7 tr\u1ee3 th\u00eam kh\u00f4ng \u1ea1? \ud83d\ude0a",
+          "error": null
+        },
+        {
+          "query_id": "contact_003",
+          "query": "How can I reach you on Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "B\u1ea1n c\u00f3 th\u1ec3 li\u00ean h\u1ec7 m\u00ecnh qua Zalo s\u1ed1 **0935005762** nh\u00e9! \ud83d\udc31\ud83d\udc3e M\u00ecnh s\u1ebd h\u1ed7 tr\u1ee3 nhanh l\u1eafm!",
+          "error": null
+        },
+        {
+          "query_id": "contact_004",
+          "query": "L\u00e0m th\u1ebf n\u00e0o \u0111\u1ec3 li\u00ean h\u1ec7 v\u1edbi b\u1ea1n qua Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Zalo c\u1ee7a shop l\u00e0 **0935005762** nh\u00e9! \ud83d\udc31  \nB\u1ea5m nh\u1eafn ngay \u0111\u1ec3 \u0111\u01b0\u1ee3c t\u01b0 v\u1ea5n nhanh ch\u00f3ng \u1ea1! \ud83d\udcf1\ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "edge_001",
+          "query": "What do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31\ud83d\udc15 L\u00f9n PetShop c\u00f3 \u0111\u1ea7y \u0111\u1ee7 \u0111\u1ed3 d\u00f9ng cho m\u00e8o, ch\u00f3 n\u00e8: th\u1ee9c \u0103n, pate, qu\u1ea7n \u00e1o, \u0111\u1ed3 ch\u01a1i, ph\u1ee5 ki\u1ec7n... B\u1ea1n \u0111ang t\u00ecm g\u00ec c\u1ee5 th\u1ec3 \u1ea1? Meo meo~ \ud83d\ude3b",
+          "error": null
+        },
+        {
+          "query_id": "edge_002",
+          "query": "cat fod for sale",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 No cat food in stock right now. Contact us on Zalo: 0935005762 for the latest! \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "edge_003",
+          "query": "Show me pate cho m\u00e8o",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "\u0110\u00e2y l\u00e0 c\u00e1c lo\u1ea1i pate cho m\u00e8o \u0111ang c\u00f3 s\u1eb5n t\u1ea1i L\u00f9n PetShop nh\u00e9! \ud83d\udc31\ud83d\udc3e C\u00f3 nhi\u1ec1u l\u1ef1a ch\u1ecdn gi\u00e1 r\u1ebb t\u1eeb 10k, \u0111\u1ee7 v\u1ecb cho b\u00e9 nh\u00e0 b\u1ea1n:\n\n1. **Pate Nekko 70g** - 16.000\u20ab (C\u00f2n 29) [Xem](https://lunpetshop.com/sanpham/p",
+          "error": null
+        },
+        {
+          "query_id": "edge_004",
+          "query": "products?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31\ud83d\udc3e We have tons of goodies for cats & dogs at L\u00f9n PetShop! Tell me what you're looking for (e.g., cat food, toys, clothes) or a category? \ud83d\ude3a\n\n\ud83d\udccd 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng  \n\ud83d\udcde Zalo",
+          "error": null
+        },
+        {
+          "query_id": "general_001",
+          "query": "My pet won't eat, do you have any advice?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Aww, sorry to hear your pet isn't eating, that's worrying! \ud83d\udc31\ud83d\udc36 Here are some quick tips:\n\n- **Check basics**: Fresh water? Clean bowls? Recent diet change or stress?\n- **Try tempting**: Warm wet food, ",
+          "error": null
+        },
+        {
+          "query_id": "general_002",
+          "query": "I want to adopt a pet for the first time, can you help?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31\ud83d\udc36 Si\u00eau vui khi b\u1ea1n mu\u1ed1n nh\u1eadn nu\u00f4i th\u00fa c\u01b0ng l\u1ea7n \u0111\u1ea7u nh\u00e9! L\u00f9n PetShop chuy\u00ean pet kh\u1ecfe m\u1ea1nh, \u0111\u00e3 ti\u00eam ng\u1eeba \u0111\u1ea7y \u0111\u1ee7.\n\n**L\u1eddi khuy\u00ean cho newbie:**\n- **Ch\u1ecdn pet ph\u00f9 h\u1ee3p:** M\u00e8o n\u1ebfu th\u00edch \u0111\u1ed9c l\u1eadp, ch\u00f3",
+          "error": null
+        },
+        {
+          "query_id": "general_003",
+          "query": "Hello!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Hello! Welcome to L\u00f9n PetShop! What can I help you with today? \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "general_004",
+          "query": "Xin ch\u00e0o!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31\ud83d\udc95  \nM\u00ecnh l\u00e0 KittyCat, tr\u1ee3 l\u00fd b\u00e1n h\u00e0ng c\u1ee7a L\u00f9n PetShop. B\u1ea1n c\u1ea7n t\u01b0 v\u1ea5n \u0111\u1ed3 \u0103n, ph\u1ee5 ki\u1ec7n cho m\u00e8o hay ch\u00f3 g\u00ec kh\u00f4ng \u1ea1? \ud83d\udc3e",
+          "error": null
+        }
+      ],
+      "tool_call_metrics": [
+        {
+          "query_id": "prod_search_001",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_003",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_004",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_005",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_006",
+          "selected_tool": "search_products_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "prod_search_007",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_008",
+          "selected_tool": "search_products_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "cat_browse_001",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "cat_browse_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "cat_browse_003",
+          "selected_tool": null,
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_001",
+          "selected_tool": "get_product_details_tool",
+          "correct_tool": "get_product_details_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_002",
+          "selected_tool": "get_product_details_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_001",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_003",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_004",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        }
+      ]
+    },
+    {
+      "timestamp": "2025-11-30T20:22:15.177406",
+      "label": "baseline",
+      "metrics": {
+        "total_tests": 27,
+        "passed_tests": 15,
+        "failed_tests": 12,
+        "tool_calling_rate": 0.7647058823529411,
+        "tool_selection_accuracy": 0.29411764705882354,
+        "parameter_accuracy": 0.23529411764705882,
+        "parameter_hallucination_rate": 0.5294117647058824,
+        "parameter_missing_rate": 0.7058823529411765,
+        "progress_rate": 0.5555555555555556,
+        "success_rate": 0.5555555555555556,
+        "first_try_resolution": 0.18518518518518517,
+        "hallucinated_answer_rate": 0.0,
+        "avg_response_quality": 1.0,
+        "avg_turns_to_resolution": 1.0,
+        "execution_success_rate": 0.23529411764705882,
+        "avg_response_time": 5.029551355927079,
+        "metrics_by_type": {
+          "product_search": {
+            "total": 12,
+            "passed": 2,
+            "success_rate": 0.16666666666666666,
+            "tool_calling_rate": 0.75
+          },
+          "category_browse": {
+            "total": 3,
+            "passed": 2,
+            "success_rate": 0.6666666666666666,
+            "tool_calling_rate": 0.6666666666666666
+          },
+          "product_details": {
+            "total": 2,
+            "passed": 1,
+            "success_rate": 0.5,
+            "tool_calling_rate": 1.0
+          },
+          "business_info": {
+            "total": 2,
+            "passed": 2,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "contact_info": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          },
+          "general": {
+            "total": 4,
+            "passed": 4,
+            "success_rate": 1.0,
+            "tool_calling_rate": 0.0
+          }
+        },
+        "timestamp": "2025-11-30T20:22:15.172763",
+        "success_probability": 0.5555555555555556,
+        "meets_targets": {
+          "tool_selection_accuracy": false,
+          "parameter_accuracy": false,
+          "parameter_hallucination_rate": false,
+          "parameter_missing_rate": false,
+          "progress_rate": false,
+          "success_rate": false,
+          "first_try_resolution": false,
+          "hallucinated_answer_rate": true
+        }
+      },
+      "test_results": [
+        {
+          "query_id": "prod_search_001",
+          "query": "ok , what cat products you have total ?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Ch\u00fang m\u00ecnh c\u00f3 **h\u00e0ng tr\u0103m s\u1ea3n ph\u1ea9m cho m\u00e8o** nh\u00e9, t\u1eeb th\u1ee9c \u0103n h\u1ea1t (nh\u01b0 Royal Canin, Catsrang), pate (Nekko, Meowcat), c\u00e1t v\u1ec7 sinh, nh\u00e0 c\u00e2y, \u0111\u1ed3 ch\u01a1i \u0111\u1ebfn ph\u1ee5 ki\u1ec7n! \n\nV\u00ed d\u1ee5 top hot:\n- **Th\u1ee9c ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_002",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho m\u00e8o?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 L\u00f9n PetShop c\u00f3 r\u1ea5t nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon l\u00e0nh cho m\u00e8o n\u00e8: th\u1ee9c \u0103n h\u1ea1t, pate, topping th\u1ecbt s\u1ea5y... D\u01b0\u1edbi \u0111\u00e2y l\u00e0 m\u1ed9t s\u1ed1 hot nh\u1ea5t:\n\n**Th\u1ee9c \u0103n h\u1ea1t & snack:**\n- Th\u1ee9c \u0103n h\u1ea1t GV Mix 9 lo\u1ea1i th\u1ecbt 500g: ",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_003",
+          "query": "What products do you have for my dog?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow! \ud83d\udc36\ud83d\udc3e We have these awesome dog products (mostly food options) in stock:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (Low stock: 1 left)  \n   [View](https://lunpetshop.",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_004",
+          "query": "B\u1ea1n c\u00f3 s\u1ea3n ph\u1ea9m g\u00ec cho ch\u00f3 c\u1ee7a t\u00f4i?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc36\ud83d\udc3e L\u00f9n PetShop c\u00f3 nhi\u1ec1u s\u1ea3n ph\u1ea9m ngon cho ch\u00f3 c\u01b0ng nh\u00e9:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (C\u00f2n 1)\n2. **Th\u1ee9c \u0102n H\u1ea1t Cho Ch\u00f3 M\u1ecdi L\u1ee9a Tu\u1ed5i HUG T\u00fai 2kg H\u00e0n",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_005",
+          "query": "show me all products",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 We have tons of awesome products for cats, dogs & more at L\u00f9n PetShop! To show you the best matches, tell me a category like \"Cat Food\", \"Th\u1ee9c \u0103n cho M\u00e8o\", \"Dog Toys\" or a keyword? \ud83d\udc3e\n\nOr ch",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_006",
+          "query": "Do you have any pate?",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meo meo! \ud83d\udc31 C\u00f3 nhi\u1ec1u lo\u1ea1i pate cho m\u00e8o v\u00e0 ch\u00f3 l\u1eafm nha! \u0110\u00e2y l\u00e0 v\u00e0i g\u1ee3i \u00fd hot nh\u1ea5t:\n\n- **Pate nekko cho m\u00e8o 70g** - 16.000\u20ab (C\u00f2n 29)\n- **Th\u1ee9c \u0103n Pate Minino Plus 70g** - 15.000\u20ab (C\u00f2n 32)\n- **Pate Neeka 8",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_007",
+          "query": "C\u00f3 pate kh\u00f4ng?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "C\u00f3 pate m\u00e8o nh\u00e9 meo meo! \ud83d\udc31 C\u00f3 t\u1edbi 20 lo\u1ea1i, gi\u00e1 t\u1eeb 1.500\u20ab - 40.000\u20ab, h\u1ea7u h\u1ebft c\u00f2n h\u00e0ng. D\u01b0\u1edbi \u0111\u00e2y v\u00e0i lo\u1ea1i hot:\n\n1. **Pate nekko cho m\u00e8o 70g** - 16.000\u20ab (C\u00f2n 29)\n2. **Pate Kucinta 80g** - 11.000\u20ab (C\u00f2n 45",
+          "error": null
+        },
+        {
+          "query_id": "prod_search_008",
+          "query": "What cat food do you have under 50000 VND?",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 No cat food under 50,000 VND right now. Check with us on Zalo for the latest: 0935005762! \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_001",
+          "query": "Show me cat food category",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 No cat food products found right now. Contact us via Zalo: 0935005762 for the latest stock! \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_002",
+          "query": "Cho t\u00f4i xem danh m\u1ee5c th\u1ee9c \u0103n cho ch\u00f3",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "\u0110\u00e2y l\u00e0 danh s\u00e1ch **Th\u1ee9c \u0103n cho ch\u00f3** t\u1ea1i L\u00f9n PetShop nh\u00e9 \ud83d\udc15! C\u00f3 8 s\u1ea3n ph\u1ea9m \u0111ang b\u00e1n:\n\n1. **Th\u1ee9c \u0102n H\u1ea1t Maxime Elite Cho Ch\u00f3 Tr\u01b0\u1edfng Th\u00e0nh \u2013 V\u1ecb B\u00f2** - 55.000 \u20ab (C\u00f2n 1)  \n   [Xem chi ti\u1ebft](https://lunpets",
+          "error": null
+        },
+        {
+          "query_id": "cat_browse_003",
+          "query": "What categories do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31 Ch\u00fang m\u00ecnh c\u00f3 c\u00e1c h\u1ea1ng m\u1ee5c ch\u00ednh sau nh\u00e9:\n\n- **Th\u1ee9c \u0103n cho M\u00e8o** (Cat Food, Pate m\u00e8o...)\n- **Th\u1ee9c \u0103n cho Ch\u00f3** (Dog Food, Pate ch\u00f3...)\n- **Qu\u1ea7n \u00e1o & Ph\u1ee5 ki\u1ec7n** (Clothes, Toys, Beds...)\n- *",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_001",
+          "query": "Tell me more about Pate Nekko",
+          "passed": true,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Pate Nekko cho m\u00e8o 70g si\u00eau ngon \u0111\u00e2y \u1ea1!\n\n\ud83d\udcb0 Gi\u00e1: 16.000 \u20ab  \n\ud83d\udce6 C\u00f2n 29 h\u1ed9p trong kho  \n\ud83d\udcdd M\u00f4 t\u1ea3: Pate Nekko cho m\u00e8o 70g \u2013 dinh d\u01b0\u1ee1ng \u0111\u1ea7y \u0111\u1ee7, m\u00e8o y\u00eau th\u00edch!  \n\n[Xem chi ti\u1ebft tr\u00ean web](https://",
+          "error": null
+        },
+        {
+          "query_id": "prod_detail_002",
+          "query": "How much is the Whiskas cat food?",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 Kh\u00f4ng t\u00ecm th\u1ea5y Whiskas cat food \u1edf shop m\u00ecnh \u0111\u00e2u \u1ea1. B\u1ea1n th\u1eed search c\u00e1c lo\u1ea1i pate m\u00e8o kh\u00e1c nh\u00e9, ho\u1eb7c li\u00ean h\u1ec7 Zalo \u0111\u1ec3 h\u1ecfi th\u00eam: **0935005762**! \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_001",
+          "query": "What can you tell me about the business?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Hi! \ud83d\udc31 I'm KittyCat, your AI sales assistant for **L\u00f9n PetShop** \u2013 your go-to spot for all things pets in \u0110\u00e0 N\u1eb5ng! \n\n\ud83d\udccd **Address**: 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam  \n\ud83d\udcde **Contact",
+          "error": null
+        },
+        {
+          "query_id": "biz_info_002",
+          "query": "Cho t\u00f4i bi\u1ebft v\u1ec1 c\u1eeda h\u00e0ng c\u1ee7a b\u1ea1n?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31 L\u00f9n PetShop c\u1ee7a m\u00ecnh \u1edf:\n\n\ud83d\udccd **46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam**  \n\ud83d\udcde **Zalo: 0935005762**  \n\ud83d\udd50 **8:00 AM \u2013 9:30 PM**  \n\ud83c\udf10 **https://lunpetshop.com/**  \n\nChuy\u00ean pet food",
+          "error": null
+        },
+        {
+          "query_id": "contact_001",
+          "query": "What's your address?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udccd 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "contact_002",
+          "query": "\u0110\u1ecba ch\u1ec9 c\u1ee7a b\u1ea1n \u1edf \u0111\u00e2u?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "\ud83d\udccd L\u00f9n PetShop \u1edf **46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m L\u1ec7, \u0110\u00e0 N\u1eb5ng 550000, Vietnam** nh\u00e9! \ud83d\udc3e\n\nC\u00f3 g\u00ec c\u1ea7n h\u1ed7 tr\u1ee3 th\u00eam kh\u00f4ng \u1ea1? \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "contact_003",
+          "query": "How can I reach you on Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "B\u1ea1n c\u00f3 th\u1ec3 li\u00ean h\u1ec7 m\u00ecnh qua Zalo s\u1ed1 **0935005762** nh\u00e9! \ud83d\udc31\ud83d\udc3e M\u00ecnh s\u1ebd h\u1ed7 tr\u1ee3 nhanh l\u1eafm!",
+          "error": null
+        },
+        {
+          "query_id": "contact_004",
+          "query": "L\u00e0m th\u1ebf n\u00e0o \u0111\u1ec3 li\u00ean h\u1ec7 v\u1edbi b\u1ea1n qua Zalo?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "B\u1ea1n c\u00f3 th\u1ec3 li\u00ean h\u1ec7 KittyCat qua Zalo s\u1ed1 **0935005762** nh\u00e9! \ud83d\udc31\ud83d\udcf1 M\u00ecnh s\u1ebd h\u1ed7 tr\u1ee3 nhanh l\u1eafm!",
+          "error": null
+        },
+        {
+          "query_id": "edge_001",
+          "query": "What do you have?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31\ud83d\udc15 L\u00f9n PetShop c\u00f3 \u0111\u1ea7y \u0111\u1ee7 \u0111\u1ed3 cho m\u00e8o, ch\u00f3 nh\u00e9: th\u1ee9c \u0103n, pate, \u0111\u1ed3 ch\u01a1i, qu\u1ea7n \u00e1o, ph\u1ee5 ki\u1ec7n... B\u1ea1n \u0111ang t\u00ecm g\u00ec c\u1ee5 th\u1ec3 \u1ea1? Meo meo~ \ud83d\ude3a",
+          "error": null
+        },
+        {
+          "query_id": "edge_002",
+          "query": "cat fod for sale",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31 No cat food in stock right now. Contact us on Zalo: 0935005762 for the latest! \ud83d\udc3e",
+          "error": null
+        },
+        {
+          "query_id": "edge_003",
+          "query": "Show me pate cho m\u00e8o",
+          "passed": false,
+          "tool_called": true,
+          "response_quality": 1.0,
+          "response_preview": "\u0110\u00e2y l\u00e0 c\u00e1c lo\u1ea1i pate cho m\u00e8o \u0111ang c\u00f3 \u1edf L\u00f9n PetShop nh\u00e9! \ud83d\udc31\ud83d\udc3e C\u00f3 nhi\u1ec1u l\u1ef1a ch\u1ecdn gi\u00e1 r\u1ebb t\u1eeb 10k, c\u00f2n h\u00e0ng \u0111\u1ea7y \u0111\u1ee7:\n\n1. **Pate Nekko 70g** - 16k (29 kho) [Xem](https://lunpetshop.com/sanpham/product-925/)\n2.",
+          "error": null
+        },
+        {
+          "query_id": "edge_004",
+          "query": "products?",
+          "passed": false,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\udc31\ud83d\udc3e We have tons of goodies for cats, dogs & more at L\u00f9n PetShop! What are you looking for? Like cat food, toys, or a specific category? Tell me to show you! \ud83d\ude3a\n\n\ud83d\udccd 46 V\u0103n C\u1eadn, Khu\u00ea Trung, C\u1ea9m",
+          "error": null
+        },
+        {
+          "query_id": "general_001",
+          "query": "My pet won't eat, do you have any advice?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Aww, sorry to hear your pet isn't eating, that's worrying! \ud83d\udc31\ud83d\udc36 Here are some quick tips:\n\n- **Check basics**: Fresh water? Clean bowls? Recent diet change or stress?\n- **Try tempting**: Warm wet food, ",
+          "error": null
+        },
+        {
+          "query_id": "general_002",
+          "query": "I want to adopt a pet for the first time, can you help?",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31\ud83d\udc36 Si\u00eau vui khi b\u1ea1n mu\u1ed1n nh\u1eadn nu\u00f4i th\u00fa c\u01b0ng l\u1ea7n \u0111\u1ea7u! L\u00f9n PetShop c\u00f3 nhi\u1ec1u b\u00e9 m\u00e8o, ch\u00f3 \u0111\u00e1ng y\u00eau \u0111ang ch\u1edd ch\u1ee7 m\u1edbi \u0111\u1ea5y. \n\n\u0110\u1ec3 t\u01b0 v\u1ea5n chi ti\u1ebft (gi\u1ed1ng n\u00e0o ph\u00f9 h\u1ee3p, c\u00e1ch ch\u0103m s\u00f3c newbie), b\u1ea1n add Z",
+          "error": null
+        },
+        {
+          "query_id": "general_003",
+          "query": "Hello!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Meow meow! \ud83d\ude3b Hello! Welcome to L\u00f9n PetShop \ud83d\udc3e How can KittyCat help you today? Looking for treats, toys, or something special for your furry friend? \ud83d\udc31",
+          "error": null
+        },
+        {
+          "query_id": "general_004",
+          "query": "Xin ch\u00e0o!",
+          "passed": true,
+          "tool_called": false,
+          "response_quality": 1.0,
+          "response_preview": "Ch\u00e0o b\u1ea1n! \ud83d\udc31 M\u00ecnh l\u00e0 KittyCat, tr\u1ee3 l\u00fd b\u00e1n h\u00e0ng c\u1ee7a L\u00f9n PetShop \u0111\u00e2y \u1ea1. B\u1ea1n c\u1ea7n t\u01b0 v\u1ea5n s\u1ea3n ph\u1ea9m cho boss l\u00f4ng x\u00f9 n\u00e0o kh\u00f4ng? \ud83d\ude3b",
+          "error": null
+        }
+      ],
+      "tool_call_metrics": [
+        {
+          "query_id": "prod_search_001",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_003",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_004",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_005",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_006",
+          "selected_tool": "search_products_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "prod_search_007",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_search_008",
+          "selected_tool": "search_products_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "cat_browse_001",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "cat_browse_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "excellent"
+        },
+        {
+          "query_id": "cat_browse_003",
+          "selected_tool": null,
+          "correct_tool": "get_products_by_category_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 1.0,
+          "phr": 0.0,
+          "pmr": 0.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_001",
+          "selected_tool": "get_product_details_tool",
+          "correct_tool": "get_product_details_tool",
+          "tool_selection_correct": true,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "prod_detail_002",
+          "selected_tool": "get_product_details_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_001",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_002",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_003",
+          "selected_tool": "get_products_by_category_tool",
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 1.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        },
+        {
+          "query_id": "edge_004",
+          "selected_tool": null,
+          "correct_tool": "search_products_tool",
+          "tool_selection_correct": false,
+          "parameter_accuracy": 0.0,
+          "phr": 0.0,
+          "pmr": 1.0,
+          "result_quality": "poor"
+        }
+      ]
     }
   ]
 }

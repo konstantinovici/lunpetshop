@@ -34,6 +34,8 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 
 # Load environment variables
+# Try both locations: project root and backend directory
+load_dotenv(project_root / ".env")
 load_dotenv(project_root / "backend" / ".env")
 
 from evaluation_framework import (

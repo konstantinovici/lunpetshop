@@ -138,6 +138,13 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
                 updated_messages = llm_messages + [llm_response] + tool_messages
                 final_response = llm.invoke(updated_messages)
                 response = final_response.content
+                
+                # Return full conversation history including tool calls for evaluation
+                # This allows the evaluation framework to detect tool usage
+                return {
+                    "messages": [llm_response] + tool_messages + [AIMessage(content=response)],
+                    "language": language,
+                }
             else:
                 # No tool calls - LLM responded directly
                 logger.info("No tool calls - LLM responded directly")
@@ -155,7 +162,7 @@ def chatbot_node(state: ChatbotState) -> ChatbotState:
         else:
             response = "Sorry, an error occurred. Please try again later. 😔"
     
-    # Add response to messages
+    # Add response to messages (for non-tool-call path or error path)
     return {
         "messages": [AIMessage(content=response)],
         "language": language,
