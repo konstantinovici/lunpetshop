@@ -34,3 +34,6 @@ logs/
 # Process IDs
 .pids/
 
+# Product cache (synced from WooCommerce)
+backend/data/products_cache.json
+
