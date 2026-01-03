@@ -41,10 +41,11 @@ def classify_intent(text: str, language: str) -> str:
     contact_keywords_en = ["contact", "address", "phone", "zalo", "facebook", "reach"]
     
     # Product search keywords (specific product queries, prices, stock, etc.)
+    # Note: "sản phẩm" alone is NOT a search keyword - it's used in general questions
     product_search_keywords_vi = [
-        "giá", "price", "có", "còn", "kho", "stock", "tìm", "tìm kiếm", "search",
-        "show me", "cho tôi xem", "hiển thị", "danh sách", "list", "sản phẩm nào",
-        "sản phẩm gì", "loại nào", "dưới", "under", "rẻ", "cheap", "đắt", "expensive"
+        "giá", "price", "còn", "kho", "stock", "tìm kiếm", "search",
+        "show me", "cho tôi xem", "hiển thị", "danh sách", "list",
+        "loại nào", "dưới", "under", "rẻ", "cheap", "đắt", "expensive"
     ]
     product_search_keywords_en = [
         "price", "cost", "show me", "find", "search", "what", "which", "list",
