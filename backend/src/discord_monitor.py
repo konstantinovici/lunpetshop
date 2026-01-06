@@ -103,19 +103,7 @@ class DiscordHealthMonitor:
             xai_status_text = "✅ Configured" if xai_configured else "⚠️ Not Configured"
             
             service_text = f"**xAI API:** {xai_status_text}"
-            
-            # Add tunnel status
-            tunnel_info = services.get("tunnel", {})
-            if tunnel_info:
-                tunnel_status = tunnel_info.get("status", "unknown")
-                tunnel_emoji = "✅" if tunnel_status == "healthy" else ("⚠️" if tunnel_status == "degraded" else "❌")
-                tunnel_url = tunnel_info.get("url", "N/A")
-                if tunnel_url != "N/A" and len(tunnel_url) > 40:
-                    tunnel_url = tunnel_url[:37] + "..."
-                service_text += f"\n**Tunnel:** {tunnel_emoji} {tunnel_status.title()}"
-                if tunnel_status != "healthy" and tunnel_info.get("error"):
-                    service_text += f"\n_Error: {tunnel_info.get('error', 'Unknown')[:50]}..._"
-            
+
             # Add endpoint test results
             if endpoints:
                 chat_test = endpoints.get("chat", {})

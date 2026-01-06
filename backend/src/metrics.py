@@ -146,67 +146,8 @@ def get_service_health() -> Dict:
             health_status["xai_api"]["status"] = "error"
             health_status["xai_api"]["error"] = str(e)
     
-    # Check tunnel accessibility (if tunnel URL file exists)
-    try:
-        from pathlib import Path
-        import subprocess
-        backend_dir = Path(__file__).parent.parent
-        project_root = backend_dir.parent
-        tunnel_url_file = project_root / ".pids" / "tunnel.url"
-        tunnel_pid_file = project_root / ".pids" / "tunnel.pid"
-        
-        # Check if tunnel process is running
-        tunnel_process_running = False
-        if tunnel_pid_file.exists():
-            try:
-                pid = int(tunnel_pid_file.read_text().strip())
-                # Use kill -0 to check if process exists (works on Unix-like systems)
-                # This doesn't actually kill the process, just checks if it exists
-                try:
-                    subprocess.run(["kill", "-0", str(pid)], 
-                                  capture_output=True, 
-                                  timeout=1, 
-                                  check=True)
-                    tunnel_process_running = True
-                except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-                    tunnel_process_running = False
-            except (ValueError, OSError):
-                tunnel_process_running = False
-        
-        if tunnel_url_file.exists():
-            tunnel_url = tunnel_url_file.read_text().strip()
-            health_status["tunnel"] = {
-                "url": tunnel_url,
-                "status": "unknown"
-            }
-            
-            # If process is running, assume tunnel is working
-            # Don't try to reach the public tunnel URL from backend - it may not be reachable
-            # The tunnel works for external users, that's what matters
-            if tunnel_process_running:
-                # Process is running and URL file exists - tunnel is healthy
-                health_status["tunnel"]["status"] = "healthy"
-            else:
-                # Process not running - definitely unhealthy
-                health_status["tunnel"]["status"] = "unhealthy"
-                health_status["tunnel"]["error"] = "Tunnel process not running"
-        else:
-            if tunnel_process_running:
-                # Process running but no URL file yet - might be starting up
-                health_status["tunnel"] = {
-                    "status": "degraded",
-                    "message": "Tunnel starting (URL not yet available)"
-                }
-            else:
-                health_status["tunnel"] = {
-                    "status": "not_configured",
-                    "message": "No tunnel URL file found"
-                }
-    except Exception as e:
-        health_status["tunnel"] = {
-            "status": "error",
-            "error": str(e)
-        }
+    # Note: Tunnel check removed - production uses nginx reverse proxy on media.bluume.space
+    # The tunnel was only for local development
     
     return health_status
 

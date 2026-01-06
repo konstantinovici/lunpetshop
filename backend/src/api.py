@@ -136,18 +136,9 @@ async def health_metrics():
     
     # Determine overall health status
     overall_status = "healthy"
-    
-    # Check tunnel first (critical for production)
-    tunnel_status = service_health.get("tunnel", {}).get("status", "unknown")
-    if tunnel_status == "unhealthy":
-        overall_status = "unhealthy"  # Tunnel down = production broken
-    elif tunnel_status == "degraded":
-        # Tunnel process running but can't verify - likely still works externally
-        # Don't mark as unhealthy, just degraded
-        if overall_status == "healthy":
-            overall_status = "degraded"
-    elif tunnel_status == "not_configured" and overall_status == "healthy":
-        overall_status = "degraded"  # No tunnel = can't serve production
+
+    # Note: Tunnel check removed - production uses nginx reverse proxy on media.bluume.space
+    # The tunnel was only for local development and is not needed for production health
     
     # Check chat endpoint (most critical for functionality)
     if chat_endpoint_test["status"] == "unhealthy":
